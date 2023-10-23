@@ -1,15 +1,15 @@
 from api.models.db import db
 
-class Type(db.Model):
-    __tablename__='type'
+class OcassionalCategory(db.Model):
+    __tablename__='ocassional_category'
+    name = db.Column(db.String(80))
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
 
     def __repr__(self):
         return f'{self.name}'
 
     def serialize(self):
         return {
+            "name": self.name,
             "id": self.id,
-            "name": self.name
         }

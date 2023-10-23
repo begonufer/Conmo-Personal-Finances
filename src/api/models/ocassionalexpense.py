@@ -1,11 +1,12 @@
 from api.models.db import db
-class Income(db.Model):
-    __tablename__='income'
+
+class OcassionalExpense(db.Model):
+    __tablename__='ocassional_expense'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref='income')
+    user = db.relationship('User', backref='ocassional_expense')
     value = db.Column(db.Float, nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('income_category.id'))
-    category = db.relationship('IncomeCategory', backref='income')
+    category_id = db.Column(db.Integer, db.ForeignKey('ocassional_category.id'))
+    category = db.relationship('OcassionalCategory', backref='ocassional_expense')
     dateTime = db.Column(db.DateTime(), unique=False, nullable=False)
     id = db.Column(db.Integer, primary_key=True)
 
@@ -16,7 +17,7 @@ class Income(db.Model):
         return {
             "user": self.user.serialize(),
             "value": self.value,
-            "category": self.income_category.serialize(),
+            "ocassional_category": self.category.serialize(),
             "dateTime": self.dateTime,
             "id": self.id,
         }

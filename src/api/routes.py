@@ -97,7 +97,7 @@ def add_income():
     income = Income()
     income.user_id = get_jwt_identity()
     income.value = request.json.get("value",None)
-    income.category_id = request.json.get("category_id",None)
+    income.category_id = request.json.get("incomecategory_id",None)
     category = IncomeCategory.query.filter_by(id=income.category_id).first()
     income.category = category
     income.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()

@@ -1,0 +1,21 @@
+#sidebar {
+	background: rgb(40, 124, 147);
+}
+
+a {
+    height: 5rem;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    font-size:large;
+    text-decoration: none;
+}
+
+a:link {
+    color:white;
+}
+
+a:hover {
+    color:white;
+    font-weight: bold;
+}

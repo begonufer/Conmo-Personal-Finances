@@ -1,0 +1,76 @@
+#landing /*No hace nada, temporal para recordar el uso de este id*/{
+	height: 100%;
+}
+
+.navbar {
+	background: rgb(40, 124, 147);
+}
+
+#offcanvasNavbar {
+	background: rgb(40, 124, 147);
+}
+
+.conmo /*Da formato al logo*/ {
+    font-family: 'Righteous', cursive;
+    color:white;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 5em;
+}
+
+/* #login {
+    font-size: 5em;
+} */
+
+#left-background {
+	background-color: rgb(40, 124, 147, 0.564);
+}
+
+#right-background {
+	background-color: rgb(40, 124, 147);
+}
+
+
+/*Edicion de input repetida, para borrar o mover a forms*/
+input {
+	font-size: 1.3em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: white;
+}
+
+input::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+
+#button-confirm {
+    background-color: rgb(33, 107, 127);
+}
+
+a {
+    height: 5rem;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    font-size:x-large;
+    text-decoration: none;
+}
+
+a:link {
+    color:white;
+}
+
+a:hover {
+    color:white;
+    font-weight: bold;
+}
+
+.sidebar {
+	background: rgb(40, 124, 147);
+}
+.available {
+    background-color: rgb(33, 107, 127);
+}

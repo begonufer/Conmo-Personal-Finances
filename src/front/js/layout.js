@@ -5,23 +5,17 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 import injectContext from "./store/appContext";
 
-// import { Login } from "./pages/login.jsx";
-// import { Signup } from "./pages/signup.jsx";
-// import { Income } from "./pages/income.jsx";
-// import { FixedExpense } from "./pages/fixedexpenses.jsx";
-// import { VariableExpense } from "./pages/variableexpense.jsx";
-// import { User } from "./pages/user.jsx";
-// import { Cartera } from "./pages/cartera.jsx";
-// import { Totalincomes } from "./pages/totalincomes.jsx";
-// import { Totalexpenses } from "./pages/totalexpenses.jsx";
-// import { Addincome } from "./pages/addincome.jsx";
-// import { Addfixedexpense } from "./pages/addfixedexpense.jsx";
-// import { Addvariableexpense } from "./pages/addvariableexpense.jsx";
-// import { AddExpense } from "./pages/addexpense.jsx";
-// import { Principal } from "./pages/principal.jsx";
-// import { Expenses } from "./pages/expenses.jsx";
-// import { LandingPage } from "./pages/landingpage.jsx";
-// import { Sidebar } from "./component/sidebar.jsx";
+import { LandingPage } from "./pages/landingpage.jsx";
+import { Login } from "./pages/login.jsx";
+import { Signup } from "./pages/signup.jsx";
+import { MyConmo } from "./pages/myconmo.jsx";
+import { Incomes } from "./pages/incomes.jsx";
+import { Expenses } from "./pages/expenses.jsx";
+import { FixedExpenses } from "./pages/fixedexpenses.jsx";
+import { VariableExpenses } from "./pages/variableexpenses.jsx";
+import { Saves } from "./pages/saves.jsx";
+import { Settings } from "./pages/settings.jsx";
+import { Navbar } from "./component/navbar.jsx";
 
 
 //create your first component
@@ -38,29 +32,22 @@ const Layout = () => {
         <div className="h-100 d-inline">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <div className="main-body justify-content-center align-items-center">
-                        <Sidebar />
+                <div className="main-body justify-content-center align-items-center">
+                        <Navbar />
                         <Routes>
-                            {/* <Route element={<LandingPage />} path="/" />
+                            <Route element={<LandingPage />} path="/" />
                             <Route element={<Login />} path="/login" />
                             <Route element={<Signup />} path="/signup" />
-                            <Route element={<Principal />} path="/principal" />
+                            <Route element={<MyConmo />} path="/myconmo" />
 
-                            <Route element={<Income />} path="/income" />
-                            <Route element={<Totalincomes />} path="/totalincomes" />
-                            <Route element={<Addincome />} path="/addincome" />
-
+                            <Route element={<Incomes />} path="/incomes" />
                             <Route element={<Expenses />} path="/expenses" />
-                            <Route element={<Totalexpenses />} path="/totalexpenses" />
-                            <Route element={<FixedExpense />} path="/fixedexpense" />
-                            <Route element={<VariableExpense />} path="/variableexpense" />
-                            <Route element={<Addfixedexpense />} path="/addfixedexpense" />
-                            <Route element={<Addvariableexpense />} path="/addvariableexpense" />
-                            <Route element={<AddExpense />} path="/addexpense" />
+                            <Route element={<FixedExpenses />} path="/fixedexpenses" />
+                            <Route element={<VariableExpenses />} path="/variableexpenses" />
+                            <Route element={<Saves />} path="/saves" />
+                            <Route element={<Settings />} path="/settings" />
 
-                            <Route element={<User />} path="/user" />
-                            <Route element={<Cartera />} path="/cartera" />
-                            <Route element={<h1>Not found!</h1>} /> */}
+                            <Route element={<h1>Not found!</h1>} />
                         </Routes>
                     </div>
                 </ScrollToTop>

@@ -1,0 +1,103 @@
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.group-floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#all-buttons-up {
+	display: none;
+}
+
+.main-button {
+	position: relative;
+}
+
+.sub-buttons > .boton /* es la transicion de cierre */ {
+	position: absolute;
+	bottom: 10px;
+	right: 5px;
+	transition: bottom .5s ease;
+	z-index: 0;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ .boton a {
+	box-shadow: 5px 5px 10px #33333387;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+    bottom: 150%;
+    transition: bottom .5s ease;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+	bottom: 265%;
+	transition: bottom .6s ease;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+	bottom: 380%;
+	transition: bottom .6s ease;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ .main-button span {
+	transform: rotate(-45deg);
+	transition: transform .35s ease;
+}
+
+.sub-buttons .all-buttons-up-toggle ~ .main-button span {
+	transition: transform .35s ease;
+	opacity: 1;
+}
+
+.sub-buttons > .main-button > a {
+	box-shadow: 0px 5px 10px #333333;
+}
+
+.sub-buttons /* este modifica los botones desplegables */ > li a {
+	font-size: 30px;
+    color: white;
+	background: rgb(40, 124, 147);
+	width: 70px;
+	height: 70px;
+	display: block;
+	border-radius: 100%;
+	position: relative;
+	text-align: center;
+} 
+
+.sub-buttons > .main-button a {
+    font-size: 40px;
+    color: white;
+    background: rgb(40, 124, 147);
+    width: 80px;
+    height: 80px;
+    display: block;
+    border-radius: 100%;
+    position: relative;
+    text-align: center;
+    z-index: 19;
+}
+
+.sub-buttons > li > a span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	height: 40px;
+	width: 40px;
+	opacity: 0;
+	z-index: 12;
+}
+
+a {
+	outline: none !important;
+}

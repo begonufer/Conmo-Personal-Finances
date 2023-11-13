@@ -1,0 +1,196 @@
+#inputEmail {
+	font-size: 1.3em;
+    outline: none;
+	background-color: rgb(40, 124, 147);
+	color: white;
+}
+
+#inputEmail::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+
+#inputPassword {
+	font-size: 1.3em;
+	outline: none;
+	background-color: rgb(40, 124, 147);
+	color: white;
+}
+
+#inputPassword::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+
+input {
+	font-size: 1.3em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: white;
+}
+
+input::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+ 
+select option{
+	font-size: 1.3em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: white;
+}
+
+select option::placeholder {
+	font-size: 1.3em;
+	color:rgb(40, 124, 147);
+}
+
+#inputDate {
+	font-size: 1.5em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+#inputDate::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+#inputQuantity {
+	font-size: 1.5em;
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+#inputQuantity::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+#inputCategory {
+	font-size: 1.5em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: rgb(40, 124, 147);
+	text-align: center;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+#inputCategory::placeholder {
+	color: rgb(40, 124, 147);
+	font-size: 1em;
+	text-align: center;
+}
+
+#inputCategory option::placeholder {
+	font-size: 1em;
+	color:rgb(40, 124, 147);	
+	background-color: rgba(40, 124, 147, 0);
+}
+
+#inputCategory option{
+	font-size: 1em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color:rgb(40, 124, 147);	
+}
+
+#inputPercentage {
+	font-size: 1.5em;
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+#inputPercentage::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+a {
+	outline: none !important;
+}
+
+#add-title {
+	font-size: 300%;
+	background: rgb(40, 124, 147);
+}
+
+.btn-add-form {
+	background: rgb(40, 124, 147);
+}
+
+.modal-content {
+	border-radius: 2rem;
+}
+
+#inputSave {
+	font-size: 1em;
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border: none;
+	size: 4px;
+}
+
+#inputSave::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+#titleSave {
+	font-size: 1.2em;
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+#titleSave::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+#totalSave {
+	font-size: 1em;
+	color: rgb(40, 124, 147);
+	text-align: center;
+	border-bottom-color: none;
+	border-color: rgb(40, 124, 147);
+	border-left: none;
+	border-right: none;
+}
+
+#totalSave::placeholder {
+	color: rgb(40, 124, 147);
+	text-align: center;
+}
+
+#saves-title {
+	font-size: 200%;
+	color: rgb(40, 124, 147);
+	border-bottom-color: rgb(40, 124, 147);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}

@@ -1,3 +1,111 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: rgba(40, 124, 147, 0.162);
+    /* background: #8bc34a; este es el color verde */
+}
+
+tr {
+/*	color: brown;*/
+	background-color: rgb(184, 213, 222);
+}
+
+#resumen {
+	background-color: rgb(184, 213, 222);
+	font-weight: bold;
+}
+
+#resumen h2{
+	font-size:300%;
+}
+
+#resumen .table{
+	background-color: rgb(151, 192, 206);
+} */
+
+#table-title {
+	background-color: rgba(49, 133, 156, 0.596);
+}
+
+#table-incomes {
+	background-color: rgb(207, 193, 44);
+}
+
+#table-saves {
+	background-color: rgb(147, 40, 90);
+}
+
+#table-expenses {
+	background-color: brown;
+}
+
+#table-fixed {
+	background-color: rgb(40, 124, 147);
+}
+
+#table-ocassional {
+	background-color: rgb(138, 181, 63);
+}
+
+#table-of-percentages {
+	font-size: small;
+}
+
+
+/* #fondo    aqui estan todos los colores de los piecharts {
+	background-color:  rgb(207, 193, 44),
+	rgb(147, 40, 129),
+
+	rgb(145, 79, 134),
+	rgb(109, 57, 110),
+	rgb(161, 6, 112),
+	rgb(147, 40, 90),
+
+	rgb(40, 124, 147),
+
+	rgb(29, 180, 122),
+	rgb(29, 174, 159),
+	rgb(12, 95, 118),
+	rgb(75, 130, 139),
+
+	rgb(138, 181, 63),
+
+	rgb(188, 207, 44),
+	rgb(96, 146, 12),
+	rgb(141, 180, 95),
+
+
+
+
+	rgb(147, 40, 90),
+
+	rgb(147, 60, 100),
+	rgb(147, 70, 110),
+	rgb(147, 80, 120),
+	rgb(147, 90, 130),
+
+	rgb(40, 124, 147),
+
+	rgb(40, 130, 150),
+	rgb(40, 140, 160),
+	rgb(40, 150, 170),
+	rgb(40, 160, 180),
+
+	rgb(138, 181, 63),
+	
+	rgb(138, 190, 70),
+	rgb(138, 200, 80),
+	rgb(138, 210, 90),
+} */
+
+#fondoizq {
+	background-color: rgb(40, 124, 147, 0.564);
+} */
+
+.conmo /*Da formato al logo*/ {
+    font-family: 'Righteous', cursive;
+    color:white;
+    padding: 10px;
+}

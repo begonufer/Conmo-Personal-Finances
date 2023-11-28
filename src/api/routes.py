@@ -7,9 +7,9 @@ from api.models.db import db
 from api.models.user import User
 from api.models.income import Income
 from api.models.incomecategory import IncomeCategory
-from api.models.fixedexpense import FixedExpense
+from api.models.fixed import Fixed
 from api.models.fixedcategory import FixedCategory
-from api.models.ocassionalexpense import OcassionalExpense
+from api.models.ocassional import Ocassional
 from api.models.ocassionalcategory import OcassionalCategory
 from api.models.save import Save
 
@@ -86,7 +86,7 @@ def is_logged():
 @api.route('/incomecategories', methods=['GET'])
 @jwt_required()
 def get_incomecategories():
-    return jsonify([incomecategory.serialize() for income_category in IncomeCategory.query.all()])
+    return jsonify([income_category.serialize() for income_category in IncomeCategory.query.all()])
 
 
 #Añade un ingreso
@@ -96,15 +96,14 @@ def get_incomecategories():
 def add_income():
     income = Income()
     income.user_id = get_jwt_identity()
-    income.value = request.json.get("value",None)
-    income.category_id = request.json.get("incomecategory_id",None)
-    category = IncomeCategory.query.filter_by(id=income.category_id).first()
-    income.category = category
+    income.value = request.json.get("value",None)    
+    income.incomecategory_id = request.json.get("incomecategory_id",None)
+    incomecategory = IncomeCategory.query.filter_by(id=income.incomecategory_id).first()
+    income.incomecategory = incomecategory
     income.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
     db.session.add(income)
     db.session.commit()
     return jsonify(income.serialize()),200
-
 
 #Obtiene los ingresos
 
@@ -112,8 +111,9 @@ def add_income():
 @jwt_required()
 def get_incomes():
     user_id = get_jwt_identity() 
-    incomes = Income.query.filter_by(user_id=user_id).all()
+    incomes = Income.query.filter_by(user_id=user_id).order_by(Income.dateTime).all()
     return jsonify([income.serialize() for income in incomes])
+
 
 
 # #Actualiza los datos de un ingreso
@@ -135,11 +135,11 @@ def get_incomes():
 # def add_fixed_categories():
 
 
-#Obtiene las categorías de los gastos fijos
+#Esta ruta obtiene las categorías de fijos
 
 @api.route('/fixedcategories', methods=['GET'])
 @jwt_required()
-def get_fixed_categories():
+def get_fixedcategories():
     return jsonify([fixed_category.serialize() for fixed_category in FixedCategory.query.all()])
 
 # #Elimina categorías de gastos fijos
@@ -147,34 +147,30 @@ def get_fixed_categories():
 # @api.route('/fixedcategories/id', methods=['DELETE'])
 # @jwt_required()
 # def delete_fixed_categories():
+#Añade un gasto fijo the good -->
 
-
-#Añade un gasto fijo
-
-@api.route('/fixed/expense', methods=['POST'])
+@api.route('/fixed', methods=['POST'])
 @jwt_required()
-def add_fixed_expense():
-    fixed_expense = FixedExpense()
-    fixed_expense.user_id = get_jwt_identity()
-    fixed_expense.value = request.json.get("value", None)
-    fixed_expense.category_id = request.json.get("category_id", None)
-    category = FixedExpense.query.filter_by(id=fixed_expense.category_id).first()
-    fixed_expense.category = category
-    fixed_expense.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
-    db.session.add(fixed_expense)
+def add_fixed():
+    fixed = Fixed()
+    fixed.user_id = get_jwt_identity()
+    fixed.value = request.json.get("value",None)    
+    fixed.fixedcategory_id = request.json.get("fixedcategory_id",None)
+    fixedcategory = FixedCategory.query.filter_by(id=fixed.fixedcategory_id).first()
+    fixed.fixedcategory = fixedcategory
+    fixed.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
+    db.session.add(fixed)
     db.session.commit()
-    return jsonify(fixed_expense.serialize()),200
-
+    return jsonify(fixed.serialize()),200
 
 #Obtiene los gastos fijos
 
-@api.route('/fixed/expense', methods=['GET'])
+@api.route('/fixed', methods=['GET'])
 @jwt_required()
-def get_fixed_expenses():
+def get_fixes():
     user_id = get_jwt_identity()
-    fixed_expenses = FixedExpense.query.filter_by(user_id = user_id).all()
-    return jsonify([fixed_expense.serialize() for fixed_expense in fixed_expenses])
-
+    fixes = Fixed.query.filter_by(user_id=user_id).all()
+    return jsonify([fixed.serialize() for fixed in fixes])
 
 # #Actualiza los datos de un gasto fijo
 
@@ -194,13 +190,13 @@ def get_fixed_expenses():
 # @jwt_required()
 # def add_ocassional_categories():
 
-
-#Obtiene las categorías de los gastos ocasionales
+#Esta ruta obtiene las categorías de gastos ocasionales
 
 @api.route('/ocassionalcategories', methods=['GET'])
 @jwt_required()
-def get_ocassional_categories():
+def get_ocassionalcategories():
     return jsonify([ocassional_category.serialize() for ocassional_category in OcassionalCategory.query.all()])
+
 
 # #Elimina categorías de gastos ocasionales
 
@@ -208,33 +204,31 @@ def get_ocassional_categories():
 # @jwt_required()
 # def delete_ocassional_categories():
 
-
 #Añade un gasto ocasional
 
-@api.route('/ocassional/expense', methods=['POST'])
+@api.route('/ocassional', methods=['POST'])
 @jwt_required()
-def add_ocassional_expense():
-    ocassional_expense = OcassionalExpense()
-    ocassional_expense.user_id = get_jwt_identity()
-    ocassional_expense.value = request.json.get("value", None)
-    ocassional_expense.category_id = request.json.get("category_id", None)
-    category = OcassionalExpense.query.filter_by(id=ocassional_expense.category_id).first()
-    ocassional_expense.category = category
-    ocassional_expense.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
-    db.session.add(ocassional_expense)
+def add_ocassional():
+    ocassional = Ocassional()
+    ocassional.user_id = get_jwt_identity()
+    ocassional.value = request.json.get("value",None)    
+    ocassional.ocassionalcategory_id = request.json.get("ocassionalcategory_id",None)
+    ocassionalcategory = OcassionalCategory.query.filter_by(id=ocassional.ocassionalcategory_id).first()
+    ocassional.ocassionalcategory = ocassionalcategory
+    ocassional.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
+    db.session.add(ocassional)
     db.session.commit()
-    return jsonify(ocassional_expense.serialize()),200
+    return jsonify(ocassional.serialize()),200
 
 
 #Obtiene los gastos ocasionales
 
-@api.route('/ocassional/expense', methods=['GET'])
+@api.route('/ocassional', methods=['GET'])
 @jwt_required()
-def get_ocassional_expenses():
-    user_id = get_jwt_identity()
-    ocassional_expenses = OcassionalExpense.query.filter_by(user_id = user_id).all()
-    return jsonify([ocassional_expense.serialize() for ocassional_expense in ocassional_expenses])
-
+def get_ocassionals():
+    user_id = get_jwt_identity() 
+    ocassionals = Ocassional.query.filter_by(user_id=user_id).all()
+    return jsonify([ocassional.serialize() for ocassional in ocassionals])
 
 # #Actualiza los datos de un gasto ocasional
 
@@ -246,6 +240,8 @@ def get_ocassional_expenses():
 
 # @api.route('/ocassional/expense/id', methods= ['DELETE'])
 # def delete_ocassional_expense():
+
+
 
 
 # #Añade un ahorro
@@ -261,6 +257,32 @@ def get_ocassional_expenses():
 
 
 
+
+#Añade un ahorro  comprobar funcionamiento
+
+@api.route('/save', methods= ['POST'])
+@jwt_required()
+def add_saves():
+    save = Save()
+    save.user_id = get_jwt_identity()
+    save.value = request.json.get("value",None)    
+    save.category_id = request.json.get("ocassionalcategory_id",None)
+    category = OcassionalCategory.query.filter_by(id=ocassional.ocassionalcategory_id).first()
+    save.category = category
+    save.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
+    db.session.add(save)
+    db.session.commit()
+    return jsonify(save.serialize()),200
+
+
+#Obtiene los gastos ocasionales
+
+@api.route('/save', methods= ['GET'])
+@jwt_required()
+def get_saves():
+    user_id = get_jwt_identity() 
+    saves = Save.query.filter_by(user_id=user_id).all()
+    return jsonify([save.serialize() for save in saves])
 
 
 

@@ -28,25 +28,49 @@ const Layout = () => {
 
     if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
+    const userIsLogged = () => {
+        fetch(process.env.BACKEND_URL+`api/logged`, { 
+            method: "GET",
+            headers: { "Content-Type": "application/json",
+            'Authorization':'Bearer'+' '+ localStorage.getItem('token')},
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            if (data.Logged) {
+                actions.setLogged(true)
+            }else {
+                actions.setLogged(false)
+            }
+        })
+    }
+
+    useEffect(()=>{
+        if(localStorage.getItem('token')) {
+            userIsLogged()
+        }
+    },[])
+
     return (
         <div className="h-100 d-inline">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                 <div className="main-body justify-content-center align-items-center">
-                        <Navbar />
+                    {store.logged ? <Navbar /> : ''}
                         <Routes>
+                            {store.logged ?
+                                <>
+                                    <Route element={<MyConmo />} path="/myconmo" />
+                                    <Route element={<Incomes />} path="/incomes" />
+                                    <Route element={<Expenses />} path="/expenses" />
+                                    <Route element={<FixedExpenses />} path="/fixedexpenses" />
+                                    <Route element={<VariableExpenses />} path="/variableexpenses" />
+                                    <Route element={<Saves />} path="/saves" />
+                                    <Route element={<Settings />} path="/settings" />
+                                </>
+                            : true}
                             <Route element={<LandingPage />} path="/" />
                             <Route element={<Login />} path="/login" />
                             <Route element={<Signup />} path="/signup" />
-                            <Route element={<MyConmo />} path="/myconmo" />
-
-                            <Route element={<Incomes />} path="/incomes" />
-                            <Route element={<Expenses />} path="/expenses" />
-                            <Route element={<FixedExpenses />} path="/fixedexpenses" />
-                            <Route element={<VariableExpenses />} path="/variableexpenses" />
-                            <Route element={<Saves />} path="/saves" />
-                            <Route element={<Settings />} path="/settings" />
-
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>
                     </div>

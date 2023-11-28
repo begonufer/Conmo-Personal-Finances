@@ -262,19 +262,19 @@ export const AnualSaves = () => {
                                         <p className="col text-center">Total €</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                 </div>
                             </div>

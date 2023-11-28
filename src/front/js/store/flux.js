@@ -18,12 +18,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logged: false,
 			incomes: [],
 			incomecategories: null,
-			ocassionalexpenses: [],
+			ocassionals: [],
 			ocassionalcategories: null,
-			fixedexpenses: [],
+			fixes: [],
 			fixedcategories: null,
 			saves: [],
-			token: ""
+			token: "",
 		},
 		actions: {
 
@@ -75,7 +75,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setIncome: async (dateTime,incomecategory_id,value) => {
 				const store = getStore();
-				console.log(store)
 				const response = await fetch (process.env.BACKEND_URL + "api/income", {
 					method: "POST",
 					headers: {
@@ -116,10 +115,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...getStore(), incomes });
             },
 
-			setFixedExpense: async (dateTime,fixedcategory_id,value) => {
+			setFixed: async (dateTime,fixedcategory_id,value) => {
 				const store = getStore();
-				console.log(store)
-				const response = await fetch (process.env.BACKEND_URL + "api/fixedexpense", {
+				const response = await fetch (process.env.BACKEND_URL + "api/fixed", {
 					method: "POST",
 					headers: {
 						"Content-Type":"application/json",
@@ -131,8 +129,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						dateTime,
 					})
 				})
-				const fixedexpense = await response.json()
-				setStore({...store, fixedexpense})
+				const fixes = await response.json()
+				setStore({...store, fixes})
 			},
 
 			getFixedCategories: async() => {
@@ -147,22 +145,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({...getStore(), fixedcategories });
 			},
 
-			getFixedExpenses: async() => {
-                const response = await fetch (process.env.BACKEND_URL + "api/fixedexpense", {
+			getFixes: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/fixed", {
                     method: 'GET',
                     headers: {
                         "Content-Type":"application/json",
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                     },
                 })
-                const fixedexpenses = await response.json();
-                setStore({ ...getStore(), fixedexpenses });
+                const fixes = await response.json();
+                setStore({ ...getStore(), fixes });
             },
 
-			setOcassionalExpense: async (dateTime,ocassionalcategory_id,value) => {
+			setOcassional: async (dateTime,ocassionalcategory_id,value) => {
 				const store = getStore();
-				console.log(store)
-				const response = await fetch (process.env.BACKEND_URL + "api/ocassionalexpense", {
+				const response = await fetch (process.env.BACKEND_URL + "api/ocassional", {
 					method: "POST",
 					headers: {
 						"Content-Type":"application/json",
@@ -174,8 +171,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						dateTime,
 					})
 				})
-				const ocassionalexpense = await response.json()
-				setStore({...store, ocassionalexpense})
+				const ocassional = await response.json()
+				setStore({...store, ocassional})
 			},
 
 			getOcassionalCategories: async() => {
@@ -190,17 +187,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({...getStore(), ocassionalcategories });
 			},
 
-			getOcassionalExpenses: async() => {
-                const response = await fetch (process.env.BACKEND_URL + "api/ocassionalexpense", {
+			getOcassionals: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/ocassional", {
                     method: 'GET',
                     headers: {
                         "Content-Type":"application/json",
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                     },
                 })
-                const ocassionalexpenses = await response.json();
-                setStore({ ...getStore(), ocassionalexpenses });
+                const ocassionals = await response.json();
+                setStore({ ...getStore(), ocassionals });
             },
+
+			setSave: async (dateTime,ocassionalcategory_id,value) => {
+				const store = getStore();
+				const response = await fetch (process.env.BACKEND_URL + "api/save", {
+					method: "POST",
+					headers: {
+						"Content-Type":"application/json",
+						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					},
+					body: JSON.stringify({
+						value,
+						ocassionalcategory_id,
+						dateTime,
+					})
+				})
+				const save = await response.json()
+				setStore({...store, save})
+			},
+
+			getSaves: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/save", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                const saves = await response.json();
+                setStore({ ...getStore(), saves });
+            },
+
+
+
+
+
 
 			
 			// Use getActions to call a function within a fuction
@@ -211,7 +243,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch(process.env.BACKEND_URL + "api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves

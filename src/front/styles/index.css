@@ -7,7 +7,7 @@ body {
     /* background: #8bc34a; este es el color verde */
 }
 
-tr {
+#resumen tr {
 /*	color: brown;*/
 	background-color: rgb(184, 213, 222);
 }
@@ -29,12 +29,51 @@ tr {
 	background-color: rgba(49, 133, 156, 0.596);
 }
 
+.amarilloclaro {
+	background-color:  rgb(237, 209, 29);
+}
+
 #table-incomes {
 	background-color: rgb(207, 193, 44);
 }
 
-#table-saves {
+.incomes-bg {
+	background-color: rgb(207, 193, 44);
+	font-weight: bold;
+	border-radius: 50px;
+	font-size:1.5em;
+}
+
+.fixed-bg {
 	background-color: rgb(147, 40, 90);
+	font-weight: bold;
+	border-radius: 50px;
+	font-size:1.5em;
+}
+
+.ocassional-bg {
+	background-color: rgb(138, 181, 63);
+	font-weight: bold;
+	border-radius: 50px;
+	font-size:1.5em;
+}
+
+.half-width {
+	width: 70%;
+  }
+
+.table {
+	width:90%;
+}
+
+.table tbody .line {
+	height: 50px; /* Ajusta este valor según tus preferencias para la altura de las filas */
+	/* border-bottom: 3px solid rgb(237, 209, 29); */
+	font-size: 1.3em;
+  }
+
+#table-saves {
+	background-color: rgb(40, 124, 147);
 }
 
 #table-expenses {
@@ -42,7 +81,7 @@ tr {
 }
 
 #table-fixed {
-	background-color: rgb(40, 124, 147);
+	background-color: rgb(147, 40, 90);
 }
 
 #table-ocassional {
@@ -102,10 +141,29 @@ tr {
 
 #fondoizq {
 	background-color: rgb(40, 124, 147, 0.564);
-} */
+}
 
 .conmo /*Da formato al logo*/ {
     font-family: 'Righteous', cursive;
     color:white;
     padding: 10px;
+}
+
+.icon {
+	cursor: pointer;
+	font-size: 20%;
+}
+  
+.texto-desplegable {
+	margin-top: 10px;
+	padding: 10px;
+}
+
+.table-title {
+	background-color: rgb(207, 193, 44);
+}
+
+.year-selector {
+	border: none;
+	font-size: 0.8em;
 }

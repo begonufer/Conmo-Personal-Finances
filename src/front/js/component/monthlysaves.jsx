@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext, Component } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,8 +11,11 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-
 import { Bar, Pie, Line } from "react-chartjs-2";
+import { Context } from "../store/appContext";
+import { format } from "date-fns";
+import es from "date-fns/locale/es";
+import peggyConmo from "../../img/peggy-conmo.png";
 
 ChartJS.register(
     ArcElement,
@@ -232,15 +234,82 @@ export const pieData = {
     };
 
 export const MonthlySaves = () => {
+    
+    const { store, actions } = useContext(Context);
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const nameCurrentMonth = months[currentMonthIndex];
+
+    const calculatePreviousMonthIndex = (currentIndex) => (currentIndex - 1 + 12) % 12;
+    const previousMonthIndex = calculatePreviousMonthIndex(currentMonthIndex);
+    const namePreviousMonth = months[previousMonthIndex];
+    const currentYear = new Date().getFullYear();
+
+    const [previousMonth, setPreviousMonth] = useState(namePreviousMonth);
+
+    const [selectedMonth, setSelectedMonth] = useState(nameCurrentMonth);
+
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const handleToggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const [selectedMonthIndex, setSelectedMonthIndex] = useState(currentMonthIndex);
+  
+    const handleMonthSelect = (month, monthIndex) => {
+        setSelectedMonth(month);
+        setSelectedMonthIndex(monthIndex);
+        const updatedPreviousMonthIndex = calculatePreviousMonthIndex(monthIndex);
+        setPreviousMonth(months[updatedPreviousMonthIndex]);
+        setIsOpen(false);
+    }
+    
     return (
         <>
-            <div id="login" className="w-100 h-100">
+            <div className="w-100 h-100">
+                <div className="custom-dropdown">
+                    <div className="dropdown-header" onClick={handleToggleDropdown}>
+                        <h1 className="drop-title">
+                            {selectedMonth} <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
+                            <input
+                                type="number"
+                                min="2000" 
+                                max={currentYear}
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
+                                className="year-selector mx-4 text-black"
+                            />
+                        </h1>
+                    </div>
+
+                    {isOpen && (
+                        <div className="dropdown-content">
+                            {months.map((month, index) => (
+                                <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => handleMonthSelect(month, index)}
+                                    >
+                                    {month}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <h1 className="text-center pt-3">Octubre</h1>
                 <div className="row pb-5">
                     <div className="col mx-5 text-center">
                         <h2 className="mt-5">Descripción detallada de la sección.</h2>
-                        <p>Daremos también trucos para interpretar cada una de las gráficas y aprovecharlas de la mejor manera posible.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos quo totam quidem quos sunt, reprehenderit perspiciatis debitis illum voluptatum, quaerat unde. Pariatur, neque? Odio magnam doloremque, repudiandae fuga hic ex.</p>
+                        <p>Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis odio enim rerum incidunt dicta tenetur, voluptatem sed nostrum. Autem ratione, asperiores totam blanditiis repudiandae eaque excepturi cumque atque voluptate mollitia.</p>
                         <div className="row mt-5">
                             <div className="col" id="resumen">
@@ -256,19 +325,19 @@ export const MonthlySaves = () => {
                                         <p className="col text-center">Total €</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría ingreso</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría ingreso</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                 </div>
                             </div>

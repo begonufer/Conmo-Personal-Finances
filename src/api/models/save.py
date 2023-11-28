@@ -17,7 +17,7 @@ class Save (db.Model):
         return {
             "user": self.user.serialize(),
             "value": self.value,
-            "category": self.ocassional_category.serialize(),
+            "category": self.category.serialize(),
             "dateTime": self.dateTime,
             "id": self.id,
         }

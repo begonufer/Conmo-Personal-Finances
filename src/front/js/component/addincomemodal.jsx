@@ -4,9 +4,32 @@ import { Link } from "react-router-dom";
 import "../../styles/forms.css";
 
 export const AddIncomeModal = () => {
+    const { store, actions } = useContext(Context);
+    useEffect(() => {
+      actions.getIncomeCategories();
+    }, []);
+
+    const [value, setValue] = useState("");
+    const [incomecategory_id, setIncomecategory_id] = useState("");
+    const [dateTime, setDateTime] = useState("");
+    const updateValue = (valueInputValue) => {
+      setValue(valueInputValue);
+    };
+    const updateIncomeCategory = (categoryInputValue) => {
+      setIncomecategory_id(categoryInputValue);
+    };
+    const updateDateTime = (dateTimeInputValue) => {
+      setDateTime(dateTimeInputValue);
+    };
+  
+    const addincome = async () => {
+      await actions.setIncome(dateTime, incomecategory_id, value);
+      console.log(store.incomes)
+    };
+
     return (
         <>
-            <div className="modal fade" id="incomeModal" tabindex="-1" aria-labelledby="incomeModalLabel" aria-hidden="true">
+            <div className="modal fade" id="incomeModal" tabIndex="-1" aria-labelledby="incomeModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-body p-0 m-0">
@@ -20,16 +43,21 @@ export const AddIncomeModal = () => {
                             </div>
                             <div className="justify-content-center align-items-center text-center mt-2 pt-4 pb-5 mb-5">
                                 <div className="row mt-5 mx-0 px-0 justify-content-center text-center">
-                                    <input type="date" className="col-3 rounded-0 border-1 " id="inputDate" placeholder="Fecha"/>
+                                    <input type="date" className="col-3 rounded-0 border-1 " id="inputDate" placeholder="Fecha" onChange={(e) => { updateDateTime(e.target.value); }} />
                                     <div className="col-6">
-                                        <select id="inputCategory" className="w-100 rounded-0">
+                                        <select id="inputCategory" className="w-100 rounded-0" onChange={(e) => {updateIncomeCategory(e.target.value);}}>
                                             <option>Selecciona una categoría</option>
-                                            <option>Categoría 1</option>
-                                            <option>Categoría 2</option>
+                                            {store.incomecategories?.map((incomecategory) => {
+                                                return (
+                                                    <option key={incomecategory.id} value={incomecategory.id}>
+                                                        {incomecategory.name}
+                                                    </option>
+                                                );
+                                            })}
                                             <option>Nueva categoría</option>
                                         </select>
                                     </div>
-                                    <input type="text" className="col-2 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="€"/>
+                                    <input type="text" className="col-2 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="€" onChange={(e) => {updateValue(e.target.value);}}/>
                                 </div>
                             </div>
                             <div className="justify-content-center text-center">
@@ -67,7 +95,7 @@ export const AddIncomeModal = () => {
                                 </div>
                             </div>
                             <div className="row mx-0 px-0 mt-5 pt-3 justify-content-center align-bottom ">
-                                <button className="btn-add-form col-3 btn btn-lg m-3 mb-4 py-3 fs-3 rounded-pill text-white">
+                                <button className="btn-add-form col-3 btn btn-lg m-3 mb-4 py-3 fs-3 rounded-pill text-white" onClick={() => addincome()} data-bs-dismiss="modal">
                                     Añadir
                                 </button>
                             </div>

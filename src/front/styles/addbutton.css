@@ -27,7 +27,7 @@ ul {
 	z-index: 0;
 }
 
-.sub-buttons .all-buttons-up-toggle:checked ~ .boton a {
+.sub-buttons .all-buttons-up-toggle:checked ~ .boton button {
 	box-shadow: 5px 5px 10px #33333387;
 }
 
@@ -56,11 +56,11 @@ ul {
 	opacity: 1;
 }
 
-.sub-buttons > .main-button > a {
+.sub-buttons > .main-button > button {
 	box-shadow: 0px 5px 10px #333333;
 }
 
-.sub-buttons /* este modifica los botones desplegables */ > li a {
+.sub-buttons /* este modifica los botones desplegables */ > li button {
 	font-size: 30px;
     color: white;
 	background: rgb(40, 124, 147);
@@ -72,7 +72,7 @@ ul {
 	text-align: center;
 } 
 
-.sub-buttons > .main-button a {
+.sub-buttons > .main-button button {
     font-size: 40px;
     color: white;
     background: rgb(40, 124, 147);
@@ -85,7 +85,7 @@ ul {
     z-index: 19;
 }
 
-.sub-buttons > li > a span {
+.sub-buttons > li > button span {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -98,6 +98,7 @@ ul {
 	z-index: 12;
 }
 
-a {
+button {
 	outline: none !important;
+	border: none;
 }

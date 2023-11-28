@@ -11,26 +11,26 @@ export const AddButton = () => {
                 <ul className="sub-buttons">
                     <input type="checkbox" id="all-buttons-up" className="all-buttons-up-toggle" name="all-buttons-up-toggle" />
                     <li className="boton" id="boton3">
-                        <a href="javascript:void(0)" title="Añadir ingreso" type="button" data-bs-toggle="modal" data-bs-target="#incomeModal">
+                        <button href="#" title="Añadir ingreso" type="button" data-bs-toggle="modal" data-bs-target="#incomeModal">
                             <i className="fa-solid fa-landmark"></i>
-                        </a>
+                        </button>
                     </li>
                     <li className="boton" id="boton2">
-                        <a href="javascript:void(0)" title="Añadir gasto fijo" type="button" data-bs-toggle="modal" data-bs-target="#fixedModal">
+                        <button href="#" title="Añadir gasto fijo" type="button" data-bs-toggle="modal" data-bs-target="#fixedModal">
                             <i className="fa-solid fa-circle-dollar-to-slot"> </i>
-                        </a>
+                        </button>
                     </li>
                     <li className="boton boton-first" id="boton1">
-                        <a href="javascript:void(0)" title="Añadir gasto variable" type="button" data-bs-toggle="modal" data-bs-target="#variableModal">
-                            <i className="fa-solid fa-cash-register"></i>
-                        </a>
+                        <button href="#" title="Añadir gasto variable" type="button" data-bs-toggle="modal" data-bs-target="#variableModal">
+                            <i className="fa-solid fa-chevron-down"></i>
+                        </button>
                     </li>
                     <li className="main-button">
-                        <a href="javascript:void(0)">
-                            <label className="all-buttons-up-toggle-lbl" for="all-buttons-up">
+                        <button href="#">
+                            <label className="all-buttons-up-toggle-lbl" htmlFor="all-buttons-up">
                                 <span className="fa fa-plus"></span>
                             </label>
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>

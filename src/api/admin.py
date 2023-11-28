@@ -4,9 +4,9 @@ from flask_admin import Admin
 from api.models.user import User
 from api.models.income import Income
 from api.models.incomecategory import IncomeCategory
-from api.models.fixedexpense import FixedExpense
+from api.models.fixed import Fixed
 from api.models.fixedcategory import FixedCategory
-from api.models.ocassionalexpense import OcassionalExpense
+from api.models.ocassional import Ocassional
 from api.models.ocassionalcategory import OcassionalCategory
 from api.models.save import Save
 from api.models.db import db
@@ -22,9 +22,9 @@ def setup_admin(app):
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Income, db.session))
     admin.add_view(ModelView(IncomeCategory, db.session))
-    admin.add_view(ModelView(FixedExpense, db.session))
+    admin.add_view(ModelView(Fixed, db.session))
     admin.add_view(ModelView(FixedCategory, db.session))
-    admin.add_view(ModelView(OcassionalExpense, db.session))
+    admin.add_view(ModelView(Ocassional, db.session))
     admin.add_view(ModelView(OcassionalCategory, db.session))
     admin.add_view(ModelView(Save, db.session))
 

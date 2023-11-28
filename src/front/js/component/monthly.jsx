@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext, Component } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,8 +11,18 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-
 import { Bar, Pie, Line } from "react-chartjs-2";
+import { Context } from "../store/appContext";
+import { format } from "date-fns";
+import es from "date-fns/locale/es";
+import peggyConmo from "../../img/peggy-conmo.png";
+
+import { MonthlyIncomePie } from "../component/graphics/incomemonthlypie.jsx";
+import { MonthlyIncomeBar } from "../component/graphics/incomemonthlybar.jsx";
+import { MonthlyIncomeLine } from "../component/graphics/incomemonthlyline.jsx";
+import { SpanningTable } from "../component/graphics/incomemonthlytable.jsx";
+import { MonthlyIncomeTable } from "../component/graphics/incomemonthlytable.jsx";
+
 
 ChartJS.register(
     ArcElement,
@@ -24,7 +33,7 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
 );
 
 const labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"]
@@ -231,11 +240,40 @@ export const pieData = {
         ],
     };
 
-export const Monthly = () => {
+export const Monthly = (props) => {
+   
     return (
         <>
-            <div id="login" className="w-100 h-100">
-                <h1 className="text-center pt-3">Octubre</h1>
+            <div className="w-100 h-100">
+                <div className="custom-dropdown">
+                    <div className="dropdown-header" onClick={props.handleToggleDropdown}>
+                        <h1 className="drop-title">
+                            {props.selectedMonth} <span className={`dropdown-arrow ${props.isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
+                            <input
+                                type="number"
+                                min="2000" 
+                                max={props.currentYear}
+                                value={props.selectedYear}
+                                onChange={(e) => props.setSelectedYear(parseInt(e.target.value, 10))}
+                                className="year-selector mx-4 text-black"
+                            />
+                        </h1>
+                    </div>
+
+                    {props.isOpen && (
+                        <div className="dropdown-content">
+                            {props.months.map((month, index) => (
+                                <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => props.handleMonthSelect(month, index)}
+                                    >
+                                    {month}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <div className="row pb-5">
                     <div className="col mx-5 text-center">
                         <div className="row mt-5">
@@ -246,7 +284,7 @@ export const Monthly = () => {
                     </div>
                     <div className="col-3 mx-5 text-center">
                         <h2 className="mt-5">Descripción detallada de la sección.</h2>
-                        <p>Daremos también trucos para interpretar cada una de las gráficas y aprovecharlas de la mejor manera posible.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis quam consectetur aperiam harum magni eligendi sunt, doloremque maiores quo obcaecati et nam velit libero quod quos error! Aut, enim obcaecati?.</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis odio enim rerum incidunt dicta tenetur, voluptatem sed nostrum. Autem ratione, asperiores totam blanditiis repudiandae eaque excepturi cumque atque voluptate mollitia.</p>
                     </div>

@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext, Component } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,8 +11,11 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-
 import { Bar, Pie, Line } from "react-chartjs-2";
+import { Context } from "../store/appContext";
+import { format } from "date-fns";
+import es from "date-fns/locale/es";
+import peggyConmo from "../../img/peggy-conmo.png";
 
 ChartJS.register(
     ArcElement,
@@ -210,9 +212,76 @@ export const pieData = {
     };
 
 export const MonthlyExpenses = () => {
+    
+    const { store, actions } = useContext(Context);
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const nameCurrentMonth = months[currentMonthIndex];
+
+    const calculatePreviousMonthIndex = (currentIndex) => (currentIndex - 1 + 12) % 12;
+    const previousMonthIndex = calculatePreviousMonthIndex(currentMonthIndex);
+    const namePreviousMonth = months[previousMonthIndex];
+    const currentYear = new Date().getFullYear();
+
+    const [previousMonth, setPreviousMonth] = useState(namePreviousMonth);
+
+    const [selectedMonth, setSelectedMonth] = useState(nameCurrentMonth);
+
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const handleToggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const [selectedMonthIndex, setSelectedMonthIndex] = useState(currentMonthIndex);
+  
+    const handleMonthSelect = (month, monthIndex) => {
+        setSelectedMonth(month);
+        setSelectedMonthIndex(monthIndex);
+        const updatedPreviousMonthIndex = calculatePreviousMonthIndex(monthIndex);
+        setPreviousMonth(months[updatedPreviousMonthIndex]);
+        setIsOpen(false);
+    }
+    
     return (
         <>
-            <div id="login" className="w-100 h-100">
+            <div className="w-100 h-100">
+                <div className="custom-dropdown">
+                    <div className="dropdown-header" onClick={handleToggleDropdown}>
+                        <h1 className="drop-title">
+                            {selectedMonth} <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
+                            <input
+                                type="number"
+                                min="2000" 
+                                max={currentYear}
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
+                                className="year-selector mx-4 text-black"
+                            />
+                        </h1>
+                    </div>
+
+                    {isOpen && (
+                        <div className="dropdown-content">
+                            {months.map((month, index) => (
+                                <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => handleMonthSelect(month, index)}
+                                    >
+                                    {month}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <h1 className="text-center pt-3">Octubre</h1>
                 <div className="row pb-5">
                     <div className="col mx-5 text-center">
@@ -277,24 +346,24 @@ export const MonthlyExpenses = () => {
                                         <p className="col text-center">€</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos fijos</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos fijos</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos fijos</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos fijos</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos fijos</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos fijos</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div id="table-title" className="row text-center text-white p-2">
-                                        <td className="col text-center">LIBRE</td>
-                                        <td className="col text-center">%</td>
-                                        <td className="col text-center">€</td>                            
+                                        <p className="col text-center">LIBRE</p>
+                                        <p className="col text-center">%</p>
+                                        <p className="col text-center">€</p>                            
                                     </div>
                                 </div>
                                 <div className="col ">
@@ -306,19 +375,19 @@ export const MonthlyExpenses = () => {
                                         <p className="col text-center">€</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos variables</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos variables</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos variables</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos variables</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col-6 text-center">Categoría gastos variables</td>
-                                        <td className="col-3 text-center">%</td>
-                                        <td className="col-3 text-center">€</td>                            
+                                        <p className="col-6 text-center">Categoría gastos variables</p>
+                                        <p className="col-3 text-center">%</p>
+                                        <p className="col-3 text-center">€</p>                            
                                     </div>
                                 </div>
                             </div>

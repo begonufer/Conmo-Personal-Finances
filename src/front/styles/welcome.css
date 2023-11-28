@@ -16,7 +16,7 @@
     padding: 10px;
 }
 
-h1 {
+.header {
     font-size: 5em;
 }
 
@@ -73,4 +73,86 @@ a:hover {
 }
 .available {
     background-color: rgb(33, 107, 127);
+}
+
+.custom-dropdown {
+    position: relative;
+    display: flex; /* Utilizamos flexbox para centrar horizontalmente */
+    justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+	background-color: rgb(184, 213, 222);
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 10px;
+    border-radius: 50px;
+}
+  
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.drop-title {
+    color: #000000;
+    padding-left: 8px;
+}
+  
+.dropdown-arrow {
+    font-size: 0.5em;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    color: #000000; 
+}
+  
+.open {
+    transform: rotate(180deg);
+}
+  
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgb(221, 232, 236);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: 100%;
+    padding: 10px 0px;
+}
+  
+.dropdown-item {
+    padding: 8px 50px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+  
+.dropdown-item:hover {
+    background-color: rgb(194, 221, 231);
+}
+  
+.custom-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#principalCarousel {
+    position: relative;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    top: 45px;
+    transform: translateY(-50%);
+    width: 5%; /* Ajusta el ancho de la zona de selección de las flechas */
+    height: 2%;
+    margin-right: 30%;
+    margin-left: 30%;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    border-radius: 50%; /* Ajusta la forma del área de selección */
+    padding: 10px; /* Ajusta el relleno del área de selección */
+}
+
+.description-text {
+    margin-left: 30%;
+    margin-right: 30%;
+    padding-bottom: 20px;
 }

@@ -1,8 +1,13 @@
-import React from "react";
+import React , { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 import "../../styles/welcome.css";
 
 export const Navbar = () => {
+    const { actions } = useContext(Context);
+    const logout = () => {
+        actions.clearUser();
+    }
 	return (
         <>
             <nav className="navbar navbar-light fixed-top">
@@ -15,7 +20,7 @@ export const Navbar = () => {
                             <i className="fa-solid fa-bars"></i>
                         </button>
                     </div>
-                    <div className="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div className="offcanvas offcanvas-end p-3" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">
                             <Link to="/myconmo" className="navbar-brand align-middle align-items-center text-decoration-none">
                                 <span className="text-white fs-1">Mi</span><span className="conmo text-center fs-1">CONMO</span>
@@ -56,24 +61,24 @@ export const Navbar = () => {
                                 </div>
                                 <ul className="dropdown-menu available p-4 fs-5 text-white" aria-labelledby="savesDetails">
                                     <li className="row available text-center p-0 m-0">
-                                        <td className="col text-center">adsgkjslafg</td>
-                                        <td className="col text-center">783€</td>
+                                        <p className="col text-center">adsgkjslafg</p>
+                                        <p className="col text-center">783€</p>
                                     </li>
                                     <li className="row available mt-1 text-center p-0 m-0">
-                                        <td className="col text-center">Categoria</td>
-                                        <td className="col text-center">231€</td>
+                                        <p className="col text-center">Categoria</p>
+                                        <p className="col text-center">231€</p>
                                     </li>
                                     <li className="row available mt-1 text-center p-0 m-0">
-                                        <td className="col text-center">Categoria</td>
-                                        <td className="col text-center">400€</td>
+                                        <p className="col text-center">Categoria</p>
+                                        <p className="col text-center">400€</p>
                                     </li>
                                     <li className="row available mt-1 text-center p-0 m-0">
-                                        <td className="col text-center">DSAGKHSALFGSAK</td>
-                                        <td className="col text-center">610€</td>
+                                        <p className="col text-center">DSAGKHSALFGSAK</p>
+                                        <p className="col text-center">610€</p>
                                     </li>
                                     <li className="row available mt-1 text-center p-0 m-0">
-                                        <td className="col text-center">Categoria</td>
-                                        <td className="col text-center">285€</td>
+                                        <p className="col text-center">Categoria</p>
+                                        <p className="col text-center">285€</p>
                                     </li>
                                 </ul>
                             </div>
@@ -81,7 +86,7 @@ export const Navbar = () => {
                                 <Link to="/settings" className="pb-5 px-3 fs-4 p-1 text-decoration-none">
                                     <i className="fa-solid fa-gear"></i> <span className="ms-1 d-none d-sm-inline">Configuración</span>
                                 </Link>
-                                <Link to="/login" className="pb-5 px-3 fs-4 p-1 mb-3 text-decoration-none" onClick={() => logout()}>
+                                <Link to="/" className="pb-5 px-3 fs-4 p-1 mb-3 text-decoration-none" onClick={() => logout()}>
                                     <i className="fa-solid fa-right-from-bracket"></i> <span className="ms-1 d-none d-sm-inline">Sign out</span>
                                 </Link>
                             </div>

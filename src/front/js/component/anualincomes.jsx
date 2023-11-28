@@ -238,19 +238,19 @@ export const AnualIncomes = () => {
                                         <p className="col text-center">Total €</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría ingreso</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría ingreso</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría ingreso</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría ingreso</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría ingreso</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría ingreso</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                 </div>
                             </div>

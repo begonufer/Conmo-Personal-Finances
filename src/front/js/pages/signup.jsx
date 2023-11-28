@@ -31,7 +31,7 @@ export const Signup =()=>{
         setLoading(true);
         await actions.setNewUser(name,surname,email,password);
         await actions.setUser(email, password);
-        navigate('/income');
+        navigate('/myconmo');
         setLoading(false);
     }
     return (
@@ -60,9 +60,7 @@ export const Signup =()=>{
                                     <input type="password" id="inputPasswordConfirm" className="w-100 my-3 border-0 border-bottom border-color-light rounded-0" aria-describedby="passwordHelpBlock" placeholder="Confirma contraseña"/>
                                 </div>
                                 <div className="ml-auto">
-                                    <Link to="/signup">
-                                        <button id="button-confirm"className="btn btn-lg mt-5 mb-3 text-white fs-4" onClick={signup}>Aceptar</button>
-                                    </Link>
+                                    <button id="button-confirm" className="btn btn-lg mt-5 mb-3 text-white fs-4" onClick={signup}>Aceptar</button>
                                 </div>
                                 <span className="text-white">¿Ya tienes cuenta? <a href="/login"> Entrar </a> </span>
                             </div>

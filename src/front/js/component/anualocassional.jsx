@@ -238,24 +238,24 @@ export const AnualOcassional = () => {
                                         <p className="col text-center">%</p>
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría gastos variables</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría gastos variables</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría gastos variables</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría gastos variables</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                     <div className="row text-center p-2">
-                                        <td className="col text-center">Categoría gastos variables</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">Categoría gastos variables</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                     <div id="table-title" className="row text-center text-white p-2">
-                                        <td className="col text-center">RESTANTE</td>
-                                        <td className="col text-center">Media €</td>
-                                        <td className="col text-center">%</td>                            
+                                        <p className="col text-center">RESTANTE</p>
+                                        <p className="col text-center">Media €</p>
+                                        <p className="col text-center">%</p>                            
                                     </div>
                                 </div>
                             </div>

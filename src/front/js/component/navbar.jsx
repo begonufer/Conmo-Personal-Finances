@@ -1,13 +1,102 @@
-import React , { useContext } from "react";
+import React , { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/welcome.css";
 
 export const Navbar = () => {
-    const { actions } = useContext(Context);
+
+    const { store, actions } = useContext(Context);
+
     const logout = () => {
         actions.clearUser();
     }
+    
+    const calculatePercentage = (amount, total) => {
+        if (total === 0) {
+            return 0;
+        }
+        return ((amount / total) * 100).toFixed(0);
+    }; //usar esta función como función general
+
+    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
+        return data.filter((item) => {
+            const date = new Date(item.dateTime);
+            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
+        });
+    }; //usar esta función como función general
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const nameCurrentMonth = months[currentMonthIndex];
+    const currentYear = new Date().getFullYear();
+
+    const filterAllDataBeforeMonth = (data, month, year) => {
+        return data.filter(item => {
+            const itemDate = new Date(item.dateTime);
+            const itemMonth = itemDate.getMonth();
+            const itemYear = itemDate.getFullYear();
+            return (itemYear < year || (itemYear === year && itemMonth <= month));
+        });
+    };
+
+    const allPreviousMonthSave = filterAllDataBeforeMonth(store.saves, currentMonthIndex, currentYear).reduce((total, save) => total + save.value, 0);
+  
+
+    const [saveCategoryTotals, setSaveCategoryTotals] = useState({});
+    const [savesBalance, setSavesBalance] = useState({});
+
+    const dataFilteredByCategory = (filteredSave) => {
+
+        const saveTotals = {};
+       
+        filteredSave.forEach(({ value, category }) => {
+            const categoryName = category.name;
+            saveTotals[categoryName] = (saveTotals[categoryName] || 0) + value;
+        });
+
+        setSaveCategoryTotals(saveTotals);
+    }
+
+    useEffect(() => {
+        const transformData = async () => {
+            await actions.getSaves();
+
+            const filteredSave = filterDataByMonthYear(store.saves, currentMonthIndex, currentYear);
+
+            const filterAllDataBeforeMonth = (data, currentMonthIndex, currentYear) => {
+                return data.filter(item => {
+                    const itemDate = new Date(item.dateTime);
+                    const itemMonth = itemDate.getMonth();
+                    const itemYear = itemDate.getFullYear();
+            
+                    // Filtrar por el año y el mes, incluyendo el mes seleccionado
+                    return (itemYear < currentYear || (itemYear === currentYear && itemMonth <= currentMonthIndex));
+                });
+            };
+            
+            const allPreviousMonthSaves = filterAllDataBeforeMonth(store.saves, currentMonthIndex, currentYear);
+        
+            const saveBalance = allPreviousMonthSaves.reduce((acc, { value, category }) => {
+                const categoryName = category.name;
+                acc[categoryName] = (acc[categoryName] || 0) + value;
+                return acc;
+            }, {});
+            
+            setSavesBalance(saveBalance);
+            
+            dataFilteredByCategory(filteredSave);
+        };
+        transformData();
+    }, []);
+
+    const totalSaveMonthAmount = filterDataByMonthYear(store.saves, currentMonthIndex, currentYear).reduce((total, save) => total + save.value, 0);
+    const savesBalanceTotal = Object.values(savesBalance).reduce((total, categoryTotal) => total + categoryTotal, 0);
+
 	return (
         <>
             <nav className="navbar navbar-light fixed-top">
@@ -57,29 +146,15 @@ export const Navbar = () => {
                                     aria-expanded="false"
                                 >
                                     <h4 className="col">Reservado</h4>
-                                    <h4 className="col"><strong>5437€</strong></h4>
+                                    <h4 className="col"><strong>{savesBalanceTotal} €</strong></h4>
                                 </div>
                                 <ul className="dropdown-menu available p-4 fs-5 text-white" aria-labelledby="savesDetails">
-                                    <li className="row available text-center p-0 m-0">
-                                        <p className="col text-center">adsgkjslafg</p>
-                                        <p className="col text-center">783€</p>
-                                    </li>
-                                    <li className="row available mt-1 text-center p-0 m-0">
-                                        <p className="col text-center">Categoria</p>
-                                        <p className="col text-center">231€</p>
-                                    </li>
-                                    <li className="row available mt-1 text-center p-0 m-0">
-                                        <p className="col text-center">Categoria</p>
-                                        <p className="col text-center">400€</p>
-                                    </li>
-                                    <li className="row available mt-1 text-center p-0 m-0">
-                                        <p className="col text-center">DSAGKHSALFGSAK</p>
-                                        <p className="col text-center">610€</p>
-                                    </li>
-                                    <li className="row available mt-1 text-center p-0 m-0">
-                                        <p className="col text-center">Categoria</p>
-                                        <p className="col text-center">285€</p>
-                                    </li>
+                                    {Object.entries(saveCategoryTotals).map(([category, total]) => (
+                                        <li className="row available text-center p-0 m-0" key={category}>
+                                            <p className="col text-center">{category}</p>
+                                            <p className="col text-center">{total} €</p>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                             <div className="d-flex flex-column position-absolute bottom-0 ">

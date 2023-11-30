@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { Anual } from "../component/anual.jsx";
 import { Monthly } from "../component/monthly.jsx";
 import { Resume } from "../component/resume.jsx";
+import { ResumeAnual } from "../component/resumeanual.jsx";
 import { AddButton } from "../component/addbutton.jsx";
 import { MovementsList } from "../component/movementslist.jsx";
 import { Collapse } from 'react-bootstrap';
@@ -125,7 +126,10 @@ export const MyConmo = () => {
                     </button>
                 </div>
             </div>
-            <Resume selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} previousMonthIndex={previousMonthIndex} previousMonthAmount={previousMonthAmount} />
+            <div className="row gap-5 m-5" id="table-of-percentages">
+                <Resume selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} previousMonthIndex={previousMonthIndex} previousMonthAmount={previousMonthAmount} />
+                <ResumeAnual selectedYear={selectedYear} />
+            </div>
             <MovementsList />
             <AddButton />
         </>

@@ -22,7 +22,7 @@ export const AddButton = () => {
                     </li>
                     <li className="boton boton-first" id="boton1">
                         <button href="#" title="Añadir gasto variable" type="button" data-bs-toggle="modal" data-bs-target="#variableModal">
-                            <i className="fa-solid fa-chevron-down"></i>
+                            <i className="fa-solid fa-cash-register"></i>
                         </button>
                     </li>
                     <li className="main-button">

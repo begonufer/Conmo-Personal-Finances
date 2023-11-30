@@ -114,8 +114,7 @@ export const Resume = (props) => {
 
     return (
         <>
-            <div className="row gap-5 m-5" id="table-of-percentages">
-                <div className="col"  id="resumen">
+            <div className="col-5"  id="resumen">
                     <div className="row">
                         <h1 className="text-center py-3">{props.selectedMonth.toUpperCase()}</h1>
                     </div>
@@ -155,7 +154,7 @@ export const Resume = (props) => {
                                 </div>
                                 <div className="col-4 ">
                                     <div className="text-center">
-                                        <h4 className="text-white p-2" id="table-saves">BALANCE RESERVADO</h4>
+                                        <h4 className="text-white p-2" id="table-saves">BALANCE</h4>
                                     </div>
                                     <div className="row text-center p-2">
                                         <p className="col text-center">{savesBalanceTotal} €</p>                          
@@ -220,7 +219,7 @@ export const Resume = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+
         </>
     );
 };

@@ -118,7 +118,7 @@ export const MonthlyIncomes = () => {
                 </div> */}
                 <div className="row pt-3">
                     <div className="col">
-                    <img src={peggyConmo} className="w-100 h-100 mx-5" alt="Conmo" />
+                    <img src={peggyConmo} className="w-100" alt="Conmo" />
                     </div>
                     <div className="col-7 mx-5 mt-5 text-center">
                         <MonthlyIncomeTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />

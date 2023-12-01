@@ -29,6 +29,7 @@ ChartJS.register(
 );
 
 export const MonthlyIncomePie = (props) => {
+  
   const { store, actions } = useContext(Context);
   const [categoryTotals, setCategoryTotals] = useState({});
 

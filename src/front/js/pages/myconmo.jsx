@@ -110,6 +110,10 @@ export const MyConmo = () => {
                                 setSelectedYear={setSelectedYear}
                                 months={months}
                                 handleMonthSelect={handleMonthSelect}
+                                selectedMonthIndex={selectedMonthIndex}
+                                previousMonth={previousMonth}
+                                previousMonthIndex={previousMonthIndex}
+                                previousMonthAmount={previousMonthAmount} 
                             />
                         </div>
                         <div className="carousel-item">

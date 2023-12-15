@@ -3,7 +3,9 @@
 }
 
 .navbar {
-	background: rgb(40, 124, 147);
+    background-color: rgb(27, 100, 113);
+    /* background: rgb(40, 124, 147); */
+    /* background-color: rgb(33, 107, 127); */
 }
 
 #offcanvasNavbar {
@@ -25,7 +27,8 @@
 } */
 
 #left-background {
-	background-color: rgb(40, 124, 147, 0.564);
+	/* background-color: rgb(40, 124, 147, 0.564); */
+    background-color: rgb(7, 128, 139);
 }
 
 #right-background {
@@ -79,7 +82,7 @@ a:hover {
     position: relative;
     display: flex; /* Utilizamos flexbox para centrar horizontalmente */
     justify-content: center; /* Alineamos los elementos verticalmente en el centro */
-	background-color: rgb(184, 213, 222);
+    background-color: rgb(7, 128, 139);
     margin-left: 30%;
     margin-right: 30%;
     margin-top: 10px;
@@ -93,7 +96,7 @@ a:hover {
 }
 
 .drop-title {
-    color: #000000;
+    color: #ffffff;
     padding-left: 8px;
 }
   
@@ -101,7 +104,7 @@ a:hover {
     font-size: 0.5em;
     margin-left: 5px;
     transition: transform 0.3s ease;
-    color: #000000; 
+    color: white;
 }
   
 .open {
@@ -137,13 +140,22 @@ a:hover {
     position: relative;
 }
 
-.carousel-control-prev, .carousel-control-next {
-    top: 45px;
+#pieCarousel .carousel-control-prev {
+    top: 40px;
     transform: translateY(-50%);
-    width: 5%; /* Ajusta el ancho de la zona de selección de las flechas */
+    width: 5%;
     height: 2%;
-    margin-right: 30%;
-    margin-left: 30%;
+    margin-right: 38%;
+    margin-left: 38%;
+}
+
+#pieCarousel .carousel-control-next {
+    top: 40px;
+    transform: translateY(-50%);
+    width: 5%;
+    height: 2%;
+    margin-right: 38%;
+    margin-left: 38%;
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon {
@@ -155,4 +167,8 @@ a:hover {
     margin-left: 30%;
     margin-right: 30%;
     padding-bottom: 20px;
+}
+
+#tableCarousel .carousel-control-prev, .carousel-control-next {
+    width: 5%;
 }

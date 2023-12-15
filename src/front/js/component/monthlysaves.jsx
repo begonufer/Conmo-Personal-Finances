@@ -17,6 +17,13 @@ import { format } from "date-fns";
 import es from "date-fns/locale/es";
 import peggyConmo from "../../img/peggy-conmo.png";
 
+import { MonthlySavesPie } from "../component/graphics/savesmonthlypie.jsx";
+import { AnualSavesPie } from "../component/graphics/savesanualpie.jsx";
+import { MonthlySaveBar } from "../component/graphics/savesmonthlybar.jsx";
+import { AnualSaveBar } from "../component/graphics/savesanualbar.jsx";
+import { MonthlySavesTable } from "../component/graphics/savesmonthlytable.jsx";
+
+
 ChartJS.register(
     ArcElement,
     CategoryScale,
@@ -275,9 +282,9 @@ export const MonthlySaves = () => {
     return (
         <>
             <div className="w-100 h-100">
-                <div className="custom-dropdown">
+                <div className="custom-dropdown my-4">
                     <div className="dropdown-header" onClick={handleToggleDropdown}>
-                        <h1 className="drop-title">
+                        <h1 className="drop-title pt-1">
                             {selectedMonth} <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
                             <input
                                 type="number"
@@ -285,7 +292,7 @@ export const MonthlySaves = () => {
                                 max={currentYear}
                                 value={selectedYear}
                                 onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
-                                className="year-selector mx-4 text-black"
+                                className="year-selector mx-4"
                             />
                         </h1>
                     </div>
@@ -304,64 +311,27 @@ export const MonthlySaves = () => {
                         </div>
                     )}
                 </div>
-                <h1 className="text-center pt-3">Octubre</h1>
-                <div className="row pb-5">
-                    <div className="col mx-5 text-center">
-                        <h2 className="mt-5">Descripción detallada de la sección.</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos quo totam quidem quos sunt, reprehenderit perspiciatis debitis illum voluptatum, quaerat unde. Pariatur, neque? Odio magnam doloremque, repudiandae fuga hic ex.</p>
-                        <p>Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis odio enim rerum incidunt dicta tenetur, voluptatem sed nostrum. Autem ratione, asperiores totam blanditiis repudiandae eaque excepturi cumque atque voluptate mollitia.</p>
-                        <div className="row mt-5">
-                            <div className="col" id="resumen">
-                                <div className="row">
-                                    <h1 className="text-center py-3">OCTUBRE</h1>
-                                </div>
-                                <div className="row pb-2">
-                                    <div className="text-center">
-                                        <h4 className="text-white p-2" id="table-incomes">INGRESOS</h4>
-                                    </div>
-                                    <div className="row text-center p-2">
-                                        <p className="col text-center">Restante mes anterior</p>
-                                        <p className="col text-center">Total €</p>
-                                    </div>
-                                    <div className="row text-center p-2">
-                                        <p className="col-6 text-center">Categoría ingreso</p>
-                                        <p className="col-3 text-center">%</p>
-                                        <p className="col-3 text-center">€</p>                            
-                                    </div>
-                                    <div className="row text-center p-2">
-                                        <p className="col-6 text-center">Categoría ingreso</p>
-                                        <p className="col-3 text-center">%</p>
-                                        <p className="col-3 text-center">€</p>                            
-                                    </div>
-                                    <div className="row text-center p-2">
-                                        <p className="col-6 text-center">Categoría ingreso</p>
-                                        <p className="col-3 text-center">%</p>
-                                        <p className="col-3 text-center">€</p>                            
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div className="row pt-3">
+                    <div className="col">
+                    <img src={peggyConmo} className="w-100" alt="Conmo" />
                     </div>
-                    <div className="col-4 mx-5 text-center">
-                        <div className="row mt-5">
-                            <h3>Ingresos</h3>
-                            <p>Dónde se ocupa cada parte de los ingresos.</p>
-                            <Pie data={pieDataDetalle} />
-                        </div>
+                    <div className="col-7 mx-5 mt-5 text-center">
+                        <MonthlySavesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
                     </div>
                 </div>
+                <div className="row mt-5 pb-5">
+                    <div className="col-4 mx-5 text-center">
+                        <h3>Mes</h3>
+                        <MonthlySavesPie selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                    <MonthlySaveBar selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                </div>
                 <div className="row justify-content-center align-items-center py-5 mx-5">
-                    <div className="col text-center">
-                        <h3>Gastos</h3>
-                        <p>Comparación diaria de gasto vs ingreso.</p>
-                        <Bar options={options3} data={data} />
+                    <div className="col-4 mx-5 text-center">
+                        <h3>Año</h3>
+                        <AnualSavesPie selectedYear={selectedYear}/> 
                     </div>
-                    <div className="col text-center">
-                        <h3>Linear</h3>
-                        <p>Evolución diaria acumulada de cada tipo de gasto o ahorro.</p>
-                        <Line options={options2} data={acumulateMonthData} />  
-                    </div>
+                    <AnualSaveBar selectedYear={selectedYear}/> 
                 </div>
             </div>
         </>

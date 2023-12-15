@@ -28,14 +28,14 @@ ChartJS.register(
     Legend,
 );
 
-export const MyConmoPieCategories = (props) => {
+export const MyConmoAnualPieCategories = (props) => {
   
     const { store, actions } = useContext(Context);
 
-    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
+    const filterDataByYear = (data, selectedYear) => {
         return data.filter((item) => {
             const date = new Date(item.dateTime);
-            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
+            return date.getFullYear() === selectedYear;
         });
     };
 
@@ -47,9 +47,9 @@ export const MyConmoPieCategories = (props) => {
             await actions.getFixes();
             await actions.getOcassionals();
 
-            const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
-            const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
-            const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
+            const filteredSave = filterDataByYear(store.saves, props.selectedYear);
+            const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
+            const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
 
             const categoryColorTotals = {};
 
@@ -75,7 +75,7 @@ export const MyConmoPieCategories = (props) => {
         };
 
         transformData();
-    }, [props.selectedMonthIndex, props.selectedYear]);
+    }, [props.selectedYear]);
 
     const data = {
         labels: Object.keys(categoryTotals),
@@ -97,15 +97,15 @@ export const MyConmoPieCategories = (props) => {
     };
 
     return (
-        <div className="col mx-5 text-center">
-            <div className="row mt-5">
-                <p>La parte de los ingresos que ocupa cada categoría de gasto/reserva.</p>
+        <div className="col mx-3 text-center">
+            <div className="row mt-2">
+                <h4 className="mb-4">Categorías</h4>
                 {Object.keys(categoryTotals).length > 0 ? (
                     <>
                         <Pie data={data} options={options} />
                     </>
                 ) : (
-                    <p>No hay datos en este mes.</p>
+                <p>No hay datos en este mes.</p>
                 )}
             </div>
         </div>

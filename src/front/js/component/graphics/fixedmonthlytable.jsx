@@ -52,28 +52,28 @@ export const MonthlyFixedTable = (props) => {
 
     return (
         <>
-            <div className="row">
-                <div className="col mx-3">
-                    <p className="fixed-bg text-white p-3">{calculatePercentage(selectedMonthAmount, incomeMonthAmount)} %</p>
+            <div className="row mx-1 gap-2">
+                <div className="col">
+                    <div className="fixed-bg text-white p-3">{selectedMonthAmount} €</div>
                 </div>
-                <div className="col mx-3">
-                    <p className="fixed-bg text-white p-3">{selectedMonthAmount} €</p>
+                <div className="col">
+                    <div className="fixed-bg text-white p-3">{calculatePercentage(selectedMonthAmount, incomeMonthAmount)} %</div>
                 </div>
             </div>
-            <div className="text-center">
-                <table className="table table-borderless align-middle">
-                    <tbody>
-                        {Object.entries(categoryTotals).map(([category, total]) => (
-                            <tr className="line" key={category}>
-                                <th scope="row" className="half-width">{category}</th>
-                                <td>{calculatePercentage(total, incomeMonthAmount)} %</td>
-                                <td>{total} €</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="m-3 my-4">
+                {Object.entries(categoryTotals).map(([category, total]) => (
+                    <div key={category} className="row fs-4 lh-lg">
+                        <div className="col-6 fw-bold ">{category}</div>
+                        <div className="col">{calculatePercentage(total, incomeMonthAmount)} %</div>
+                        <div className="col">{total} €</div>
+                    </div>
+                ))}
             </div>
-            <p className="fixed-bg text-white p-3 mx-3">Libre <i className="fas fa-arrow-right"></i>{calculatePercentage(restAmount, incomeMonthAmount)} %<i className="fas fa-arrow-right"></i> {restAmount} €</p>
+            {/* <p className="fixed-bg text-white p-3 mx-3">Libre <i className="fas fa-arrow-right"></i>{calculatePercentage(restAmount, incomeMonthAmount)} %<i className="fas fa-arrow-right"></i> {restAmount} €</p> */}
+            <div className="row fixed-bg text-white mx-1 mt-2">
+                <div className="col p-3 fw-bold">Libre</div>
+                <div className="col p-3 fixed-part-right fw-normal">{restAmount} €</div>
+            </div>
         </>
     );
 };

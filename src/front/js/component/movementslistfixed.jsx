@@ -1,58 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { format } from "date-fns";
 
 export const MovementsListFixed = () => {
 
     const { store, actions } = useContext(Context);
+
     const [fixes, setFixes] = useState([]);
+  
     useEffect(() => {
-        async function transformData() {
-            await actions.getFixes();
-            const data = store.fixes.map((fixed) => ({ ...fixed, dateTime: format(new Date(fixed.dateTime), 'dd/MM/yyyy' )}))
-            setFixes(data);
-        }
-        transformData();
-    }, [])
+      async function transformData() {
+        await actions.getFixes();
+
+        const fixesData = store.fixes.map((fixed) => ({ ...fixed, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
+
+        const sortedData = fixesData.sort((a, b) => b.dateTime - a.dateTime);
+
+        setFixes(sortedData);
+      } 
+      transformData();
+    }, []);
 
     return (
         <>
-            <div id="resumen" className="container p-4 mb-5">
-                <div className="row">
-                    <h2 className="text-center pt-3">Resumen</h2>
-                    <p className="text-center pb-5">Listado de todos las operaciones realizadas en orden cronológico</p>
-                </div>
-                <div className="wrap flex-column px-5 mx-5">
-                    <div className="table row justify-content-center align-items-center">
-                        <table className="table text-center p-4">
-                            <thead>
-                                <tr id="table-title">
-                                    <th className="col text-white text-center">Fecha</th>
-                                    <th className="col text-white text-center">Categoria</th>
-                                    <th className="col text-white text-center">Importe</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {fixes.map(({value, fixedcategory, dateTime}, index) => (  
-                                    <tr key={index}>
-                                        <td scope="col">{dateTime}</td>
-                                        <td scope="col">{fixedcategory.name}</td>
-                                        <td scope="col">{value}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+            <div className="mb-5">
+                <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
+                <div className="container text-center p-5">
+                    <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
+                        <div className="col">Fecha</div>
+                        <div className="col">Categoría</div>
+                        <div className="col">Importe</div>
                     </div>
+                    {fixes.map((movement) => (  
+                        <div key={movement.id} className="row movements-list lh-lg">
+                            <div className="col">{movement.dateTime.toLocaleDateString()}</div>
+                            <div className="col">{movement.category}</div>
+                            <div className="col text-danger">{`- ${movement.value} €`}</div>
+                        </div>
+                    ))}
                 </div>
-                <Link to="/expenses"> {/*Atención a esta función y/o botón*/}
-                    <button
-                        id="button-confirm"
-                        className="btn btn-lg w-100 text-white fs-4 mt-5"
-                    >
-                        Descargar en pdf
-                    </button>
-                </Link>
             </div>
         </>
     )

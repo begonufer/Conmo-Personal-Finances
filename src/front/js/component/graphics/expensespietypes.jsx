@@ -28,7 +28,7 @@ ChartJS.register(
     Legend,
 );
 
-export const MyConmoPieTypes = (props) => {
+export const ExpensesPieTypes = (props) => {
 
     const { store, actions } = useContext(Context);
 
@@ -51,20 +51,16 @@ export const MyConmoPieTypes = (props) => {
 
         const transformData = async () => {
 
-            await actions.getSaves();
             await actions.getFixes();
             await actions.getOcassionals();
 
-            const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
             const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
             const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
 
-            const saveTotals = calculateTotal(filteredSave);
             const fixedTotals = calculateTotal(filteredFixed);
             const ocassionalTotals = calculateTotal(filteredOcassional);
 
             setTypesTotals({
-                "Reservado": saveTotals,
                 "Gastos fijos": fixedTotals,
                 "Gastos variables": ocassionalTotals,
             });
@@ -78,7 +74,6 @@ export const MyConmoPieTypes = (props) => {
             {
             data: Object.values(typesTotals),
             backgroundColor: [
-                "rgb(40, 124, 147)",
                 "rgb(147, 40, 90)",
                 "rgb(138, 181, 63)",
             ],
@@ -96,17 +91,14 @@ export const MyConmoPieTypes = (props) => {
     };
 
     return (
-        <div className="col mx-5 text-center">
-            <div className="row mt-5">
-                <p>La parte de los ingresos que ocupa cada tipo de gasto/reserva.</p>
-                {Object.keys(typesTotals).length > 0 ? (
-                    <>
-                        <Pie data={data} options={options} />
-                    </>
-                    ) : (
-                <p>No hay datos en este mes.</p>
-                )}
-            </div>
-        </div>
+        <>
+            {Object.keys(typesTotals).length > 0 ? (
+                <>
+                    <Pie data={data} options={options} />
+                </>
+                ) : (
+            <p>No hay datos en este mes.</p>
+            )}
+        </>
     );
 };

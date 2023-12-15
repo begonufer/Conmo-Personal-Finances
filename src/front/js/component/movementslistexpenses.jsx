@@ -1,26 +1,41 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { format } from "date-fns";
 
-export const MovementsListOcassional = () => {
+export const MovementsListExpenses = () => {
 
     const { store, actions } = useContext(Context);
 
-    const [ocassionals, setOcassionals] = useState([]);
+    const [allMovements, setAllMovements] = useState([]);
   
     useEffect(() => {
       async function transformData() {
+        await actions.getFixes();
         await actions.getOcassionals();
+  
+        const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
+  
+        const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
 
-        const ocassionalsData = store.ocassionals.map((ocassional) => ({ ...ocassional, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
+        const allData = [...fixesData, ...ocassionalData];
 
-        const sortedData = ocassionalsData.sort((a, b) => b.dateTime - a.dateTime);
+            const sortedData = allData.sort((a, b) => b.dateTime - a.dateTime);
 
-        setOcassionals(sortedData);
-      } 
+            setAllMovements(sortedData);
+      }
+  
       transformData();
     }, []);
+
+    function getTableRowClass(type) {
+        switch (type) {
+            case 'Gasto fijo':
+                return 'col fixed-movements';
+            case 'Gasto ocasional':
+                return 'col ocassional-movements';
+            default:
+                return 'col';
+        }
+    }
 
     return (
         <>
@@ -29,12 +44,14 @@ export const MovementsListOcassional = () => {
                 <div className="container text-center p-5">
                     <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
                         <div className="col">Fecha</div>
+                        <div className="col">Tipo</div>
                         <div className="col">Categoría</div>
                         <div className="col">Importe</div>
                     </div>
-                    {ocassionals.map((movement) => (  
+                    {allMovements.map((movement) => (  
                         <div key={movement.id} className="row movements-list lh-lg">
                             <div className="col">{movement.dateTime.toLocaleDateString()}</div>
+                            <div className={getTableRowClass(movement.type)}>{movement.type}</div>
                             <div className="col">{movement.category}</div>
                             <div className="col text-danger">{`- ${movement.value} €`}</div>
                         </div>

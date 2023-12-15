@@ -30,70 +30,66 @@ ChartJS.register(
 
 export const MonthlyIncomePie = (props) => {
   
-  const { store, actions } = useContext(Context);
-  const [categoryTotals, setCategoryTotals] = useState({});
+    const { store, actions } = useContext(Context);
+    const [categoryTotals, setCategoryTotals] = useState({});
 
-  useEffect(() => {
-    const transformData = async () => {
-      await actions.getIncomes();
+    useEffect(() => {
+        const transformData = async () => {
+        await actions.getIncomes();
 
-      const filteredIncome = store.incomes.filter((data) => {
-        const date = new Date(data.dateTime);
-        return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
-      });
+        const filteredIncome = store.incomes.filter((data) => {
+            const date = new Date(data.dateTime);
+            return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
+        });
 
-      const totals = {};
-      filteredIncome.forEach(({ value, incomecategory }) => {
-        const categoryName = incomecategory.name;
-        totals[categoryName] = (totals[categoryName] || 0) + value;
-      });
-      setCategoryTotals(totals);
+        const totals = {};
+        filteredIncome.forEach(({ value, incomecategory }) => {
+            const categoryName = incomecategory.name;
+            totals[categoryName] = (totals[categoryName] || 0) + value;
+        });
+        setCategoryTotals(totals);
+        };
+
+        transformData();
+    }, [props.selectedMonthIndex, props.selectedYear]);
+
+    const data = {
+        labels: Object.keys(categoryTotals),
+        datasets: [
+            {
+                data: Object.values(categoryTotals),
+                backgroundColor: [
+                    "rgb(255, 217, 0)",
+                    "rgb(191, 159, 0)",
+                    "rgb(151, 140, 22)",
+                    "rgb(207, 193, 44)",
+                    "rgb(215, 211, 20)",
+                    "rgb(255, 242, 94)",
+                ],
+                borderWidth: 0,
+            },
+        ],
     };
 
-    transformData();
-  }, [props.selectedMonthIndex, props.selectedYear]);
+    const options = {
+        plugins: {
+            legend: {
+                display: false,
+            }
+        },
+    };
 
-  const data = {
-    labels: Object.keys(categoryTotals),
-    datasets: [
-      {
-        data: Object.values(categoryTotals),
-        backgroundColor: [
-          "rgb(207, 193, 44)",
-          "rgb(188, 207, 44)",
-          "rgb(138, 181, 63)",
-          "rgb(40, 124, 147)",
-          "rgb(29, 174, 159)",
-          "rgb(29, 180, 122)",
-        ],
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options = {
-    legend: {
-      display: false,
-    },
-    labels: {
-      display: false,
-    },
-  };
-
-  return (
-    <>
-      <div className="row mt-2">
-        <h3>Ingresos</h3>
-        {Object.keys(categoryTotals).length > 0 ? (
-          <>
-            <Pie data={data} options={options} />
-          </>
-        ) : (
-          <p>No hay ingresos para este mes.</p>
-        )}
-      </div>
-    </>
-  );
+    return (
+        <>
+            {Object.keys(categoryTotals).length > 0 ? (
+                <>
+                    <Pie data={data} options={options} />
+                </>
+                ) : (
+                <p>No hay ingresos para este mes.</p>
+            )}
+        </>
+    );
 };
 
 

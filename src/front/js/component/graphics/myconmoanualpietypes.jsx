@@ -28,18 +28,18 @@ ChartJS.register(
     Legend,
 );
 
-export const MyConmoPieTypes = (props) => {
+export const MyConmoAnualPieTypes = (props) => {
 
     const { store, actions } = useContext(Context);
 
     const [typesTotals, setTypesTotals] = useState({});
 
-    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
+    const filterDataByYear = (data, selectedYear) => {
         return data.filter((item) => {
             const date = new Date(item.dateTime);
-            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
+            return date.getFullYear() === selectedYear;
         });
-    }; //usar esta función como función general
+    };
 
     const calculateTotal = (filteredData) => {
         return filteredData.reduce((total, item) => {
@@ -55,9 +55,9 @@ export const MyConmoPieTypes = (props) => {
             await actions.getFixes();
             await actions.getOcassionals();
 
-            const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
-            const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
-            const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
+            const filteredSave = filterDataByYear(store.saves, props.selectedYear);
+            const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
+            const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
 
             const saveTotals = calculateTotal(filteredSave);
             const fixedTotals = calculateTotal(filteredFixed);
@@ -70,7 +70,7 @@ export const MyConmoPieTypes = (props) => {
             });
         };
         transformData();
-    }, [props.selectedMonthIndex, props.selectedYear]);
+    }, [props.selectedYear]);
     
     const data = {
         labels:  Object.keys(typesTotals),
@@ -96,9 +96,9 @@ export const MyConmoPieTypes = (props) => {
     };
 
     return (
-        <div className="col mx-5 text-center">
-            <div className="row mt-5">
-                <p>La parte de los ingresos que ocupa cada tipo de gasto/reserva.</p>
+        <div className="col mx-3 text-center">
+            <div className="row mt-2">
+                <h4 className="mb-4">Tipos</h4>
                 {Object.keys(typesTotals).length > 0 ? (
                     <>
                         <Pie data={data} options={options} />

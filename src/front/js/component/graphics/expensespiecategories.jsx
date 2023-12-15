@@ -28,7 +28,7 @@ ChartJS.register(
     Legend,
 );
 
-export const MyConmoPieCategories = (props) => {
+export const ExpensesPieCategories = (props) => {
   
     const { store, actions } = useContext(Context);
 
@@ -43,11 +43,9 @@ export const MyConmoPieCategories = (props) => {
     
     useEffect(() => {
         const transformData = async () => {
-            await actions.getSaves();
             await actions.getFixes();
             await actions.getOcassionals();
 
-            const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
             const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
             const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
 
@@ -63,11 +61,17 @@ export const MyConmoPieCategories = (props) => {
                 });
             };
 
-            const saveColors = ["rgb(40, 130, 150)", "rgb(40, 140, 160)", "rgb(40, 150, 170)", "rgb(40, 160, 180)"];
-            const fixedColors = ["rgb(147, 70, 110)", "rgb(147, 80, 120)", "rgb(147, 90, 130)"];
-            const ocassionalColors = ["rgb(138, 190, 70)", "rgb(138, 200, 80)", "rgb(138, 210, 90)"];
+            const fixedColors = ["rgb(203, 64, 122)", "rgb(183, 73, 124)", "rgb(147, 40, 90)", "rgb(122, 15, 65)", "rgb(156, 13, 80)", "rgb(189, 0, 91)", "rgb(202, 49, 98)",];
+            const ocassionalColors = [
+                "rgb(175, 200, 62)",
+                "rgb(137, 178, 15)",
+                "rgb(96, 135, 28)",
+                "rgb(81, 110, 32)",
+                "rgb(111, 174, 0)",
+                "rgb(140, 188, 30)",
+                "rgb(177, 217, 0)",
+            ];
 
-            buildCategoryColorTotals(filteredSave, 'category', saveColors);
             buildCategoryColorTotals(filteredFixed, 'fixedcategory', fixedColors);
             buildCategoryColorTotals(filteredOcassional, 'ocassionalcategory', ocassionalColors);
 
@@ -97,17 +101,14 @@ export const MyConmoPieCategories = (props) => {
     };
 
     return (
-        <div className="col mx-5 text-center">
-            <div className="row mt-5">
-                <p>La parte de los ingresos que ocupa cada categoría de gasto/reserva.</p>
-                {Object.keys(categoryTotals).length > 0 ? (
-                    <>
-                        <Pie data={data} options={options} />
-                    </>
-                ) : (
-                    <p>No hay datos en este mes.</p>
-                )}
-            </div>
-        </div>
+        <>
+            {Object.keys(categoryTotals).length > 0 ? (
+                <>
+                    <Pie data={data} options={options} />
+                </>
+            ) : (
+                <p>No hay datos en este mes.</p>
+            )}
+        </>
     );
 };

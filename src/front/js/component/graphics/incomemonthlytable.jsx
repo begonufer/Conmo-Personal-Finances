@@ -47,28 +47,33 @@ export const MonthlyIncomeTable = (props) => {
 
     return (
         <>
-            <div className="row">
-                <div className="col mx-3">
-                    <p className="incomes-bg p-3">Sobrante de {props.previousMonth} <i className="fas fa-arrow-right"></i> {previousMonthAmount} €</p>
+            <div className="row mx-1 gap-2">
+                <div className="col">
+                    <div className="row incomes-bg">
+                        <div className="col p-3 fw-bold">Restos</div>
+                        <div className="col p-3 incomes-part-right fw-normal"> {previousMonthAmount} €</div>
+                    </div>
                 </div>
-                <div className="col mx-3">
-                    <p className="incomes-bg p-3">{props.selectedMonth} <i className="fas fa-arrow-right"></i> {selectedMonthAmount} €</p>
+                <div className="col">
+                    <div className="row incomes-bg">
+                        <div className="col p-3 fw-bold">{props.selectedMonth}</div>
+                        <div className="col p-3 incomes-part-right fw-normal"> {selectedMonthAmount} €</div>
+                    </div>
                 </div>
             </div>
-            <div className="text-center">
-                <table className="table table-borderless align-middle">
-                    <tbody>
-                        {Object.entries(categoryTotals).map(([category, total]) => (
-                            <tr className="line" key={category}>
-                                <th scope="row" className="half-width">{category}</th>
-                                <td>{calculatePercentage(total, selectedMonthAmount)} %</td>
-                                <td>{total} €</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="m-3 my-4">
+                {Object.entries(categoryTotals).map(([category, total]) => (
+                    <div key={category} className="row fs-4 lh-lg">
+                        <div className="col-6 fw-bold ">{category}</div>
+                        <div className="col">{calculatePercentage(total, selectedMonthAmount)} %</div>
+                        <div className="col">{total} €</div>
+                    </div>
+                ))}
             </div>
-            <p className="incomes-bg p-3 mx-3">Total <i className="fas fa-arrow-right"></i> {totalAmount} €</p>
+            <div className="row incomes-bg mx-1 mt-2">
+                <div className="col p-3 fw-bold">Total</div>
+                <div className="col p-3 incomes-part-right fw-normal"> {totalAmount} €</div>
+            </div>
         </>
     );
 };

@@ -14,6 +14,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+			months:  [
+				'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+				'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+			],
 			user: {},
 			logged: false,
 			incomes: [],
@@ -228,6 +232,36 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const saves = await response.json();
                 setStore({ ...getStore(), saves });
             },
+
+			// setSaveUsage: async (dateTime,ocassionalcategory_id,value) => {
+			// 	const store = getStore();
+			// 	const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {
+			// 		method: "POST",
+			// 		headers: {
+			// 			"Content-Type":"application/json",
+			// 			"Authorization": `Bearer ${localStorage.getItem('token')}`
+			// 		},
+			// 		body: JSON.stringify({
+			// 			value,
+			// 			ocassionalcategory_id,
+			// 			dateTime,
+			// 		})
+			// 	})
+			// 	const saveusage = await response.json()
+			// 	setStore({...store, saveusage})
+			// },
+
+			// getSavesUsage: async() => {
+            //     const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {
+            //         method: 'GET',
+            //         headers: {
+            //             "Content-Type":"application/json",
+            //             "Authorization": `Bearer ${localStorage.getItem('token')}`
+            //         },
+            //     })
+            //     const saves_usage = await response.json();
+            //     setStore({ ...getStore(), saves_usage });
+            // },
 
 
 

@@ -1,12 +1,57 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { AnualFixed } from "../component/anualfixed.jsx";
-import { MonthlyFixed } from "../component/monthlyfixed.jsx";
 import { MovementsListFixed } from "../component/movementslistfixed.jsx";
 import { AddButton } from "../component/addbutton.jsx";
 import { Collapse } from 'react-bootstrap';
+import peggyConmo from "../../img/peggy-conmo.png";
+import { MonthlyFixedTable } from "../component/graphics/fixedmonthlytable.jsx";
+import { AnualFixedTable } from "../component/graphics/fixedanualtable.jsx";
+import { MonthlyFixedPie } from "../component/graphics/fixedmonthlypie.jsx";
+import { MonthlyFixedBar } from "../component/graphics/fixedmonthlybar.jsx";
+import { AnualFixedPie } from "../component/graphics/fixedanualpie.jsx";
+import { AnualFixedBar } from "../component/graphics/fixedanualbar.jsx";
 
 export const FixedExpenses = () => {
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const nameCurrentMonth = months[currentMonthIndex];
+
+    const calculatePreviousMonthIndex = (currentIndex) => (currentIndex - 1 + 12) % 12;
+    const previousMonthIndex = calculatePreviousMonthIndex(currentMonthIndex);
+    const namePreviousMonth = months[previousMonthIndex];
+    const currentYear = new Date().getFullYear();
+
+    const [previousMonth, setPreviousMonth] = useState(namePreviousMonth);
+
+    const [selectedMonth, setSelectedMonth] = useState(nameCurrentMonth);
+
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const handleToggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const [selectedMonthIndex, setSelectedMonthIndex] = useState(currentMonthIndex);
+  
+    const handleMonthSelect = (month, monthIndex) => {
+        setSelectedMonth(month);
+        setSelectedMonthIndex(monthIndex);
+        const updatedPreviousMonthIndex = calculatePreviousMonthIndex(monthIndex);
+        setPreviousMonth(months[updatedPreviousMonthIndex]);
+        setIsOpen(false);
+    }
+    
+    const [isNext, setIsNext] = useState(true);
+
+    const handleButtonClick = () => {
+      setIsNext((prevIsNext) => !prevIsNext);
+    };
 
     const [open, setOpen] = useState(false);
 
@@ -33,26 +78,82 @@ export const FixedExpenses = () => {
                 </div>
             </div>
             <div className="d-block w-100 h-100 align-items-center">
-                <div id="principalCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <MonthlyFixed />
+                <div className="custom-dropdown my-4">
+                    <div className="dropdown-header" onClick={handleToggleDropdown}>
+                        <h1 className="drop-title pt-1">
+                            {selectedMonth} <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
+                            <input
+                                type="number"
+                                min="2000" 
+                                max={currentYear}
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
+                                className="year-selector mx-4"
+                            />
+                        </h1>
+                    </div>
+                    {isOpen && (
+                        <div className="dropdown-content">
+                            {months.map((month, index) => (
+                                <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => handleMonthSelect(month, index)}
+                                    >
+                                    {month}
+                                </div>
+                            ))}
                         </div>
-                        <div className="carousel-item">
-                            <AnualFixed />
+                    )}
+                </div>
+                <div className="row justify-content-center align-items-center m-5">
+                    <div className="col-4 text-center align-self-center">
+                        <img src={peggyConmo} className="w-100" alt="Conmo" />
+                    </div>
+                    <div className="col">
+                        <div id="tableCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+                            <div className="carousel-inner">
+                                <div className="carousel-item active pe-5 text-center">
+                                    <MonthlyFixedTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
+                                </div>
+                                <div className="carousel-item pe-5 text-center">
+                                    <AnualFixedTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
+                                </div>
+                            </div>
+                            <button
+                                className="carousel-control-next d-block text-dark align-items-center"
+                                type="button"
+                                data-bs-target="#tableCarousel"
+                                data-bs-slide={isNext ? 'next' : 'prev'}
+                                id="table-carousel-button"
+                                onClick={handleButtonClick}
+                            >
+                                <span className="fs-5">{isNext ? 'Año' : 'Mes'}</span>
+                                <span className={`carousel-control-${isNext ? 'next' : 'prev'}-icon`} aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#principalCarousel" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Anterior</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#principalCarousel" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Siguiente</span>
-                    </button>
                 </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
+                    <div className="col-4 text-center my-3">
+                        <MonthlyFixedPie selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <MonthlyFixedBar selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/>
+                    </div>
+                </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Anual</h2>
+                    <div className="col-4 text-center my-3">
+                        <AnualFixedPie selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <AnualFixedBar selectedYear={selectedYear}/>
+                    </div>
+                </div>
+                <MovementsListFixed />
             </div>
-            <MovementsListFixed />
             <AddButton />
         </>
     );

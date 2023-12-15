@@ -1,36 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { format } from "date-fns";
 
-export const MovementsList = () => {
+export const MovementsListSaves = () => {
 
     const { store, actions } = useContext(Context);
 
     const [allMovements, setAllMovements] = useState([]);
     const [incomes, setIncomes] = useState([]);
     const [saves, setSaves] = useState([]);
-    const [fixes, setFixes] = useState([]);
-    const [ocassionals, setOcassionals] = useState([]);
   
     useEffect(() => {
       async function transformData() {
         await actions.getIncomes();
         await actions.getSaves();
-        await actions.getFixes();
-        await actions.getOcassionals();
   
-        const incomesData = store.incomes.map((income) => ({ ...income, type: 'Ingreso', balance: income.value, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
+        const incomesData = store.incomes.map((income) => ({ ...income, type: 'Ingreso', balance: -income.value, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
         setIncomes(incomesData);
   
-        const savesData = store.saves.map((save) => ({ ...save, type: 'Reservado', balance: -save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
+        const savesData = store.saves.map((save) => ({ ...save, type: 'Reservado', balance: save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
         setSaves(savesData);
-  
-        const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', balance: -fixed.value, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
-        setFixes(fixesData);
-  
-        const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', balance: -ocassional.value, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
-        setOcassionals(ocassionalData);
 
-        const allData = [...incomesData, ...savesData, ...fixesData, ...ocassionalData];
+        const allData = [...incomesData, ...savesData];
 
             const sortedData = allData.sort((a, b) => a.dateTime - b.dateTime);
 
@@ -52,10 +44,6 @@ export const MovementsList = () => {
         switch (type) {
             case 'Ingreso':
                 return 'col income-movements';
-            case 'Gasto fijo':
-                return 'col fixed-movements';
-            case 'Gasto ocasional':
-                return 'col ocassional-movements';
             case 'Reservado':
                 return 'col saves-movements';
             default:
@@ -65,8 +53,8 @@ export const MovementsList = () => {
 
     return (
         <>
-            <div className="container p-4 mb-5">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Listado de movimientos</h2>
+            <div className="mb-5">
+                <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
                 <div className="container text-center p-5">
                     <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
                         <div className="col">Fecha</div>
@@ -80,7 +68,7 @@ export const MovementsList = () => {
                             <div className="col">{movement.dateTime.toLocaleDateString()}</div>
                             <div className={getTableRowClass(movement.type)}>{movement.type}</div>
                             <div className="col">{movement.category}</div>
-                            <div className={movement.type === 'Ingreso' ? 'col text-success' : 'col text-danger'}>{movement.type === 'Ingreso' ? `${movement.value} €` : `- ${movement.value} €`}</div>
+                            <div className={movement.type === 'Ingreso' ? 'col text-danger' : 'col text-success'}>{movement.type === 'Ingreso' ? `- ${movement.value} €` : `${movement.value} €`}</div>
                             <div className="col">{movement.balance} €</div>
                         </div>
                     ))}

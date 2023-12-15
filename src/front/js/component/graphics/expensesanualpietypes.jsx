@@ -28,18 +28,18 @@ ChartJS.register(
     Legend,
 );
 
-export const MyConmoPieTypes = (props) => {
+export const ExpensesAnualPieTypes = (props) => {
 
     const { store, actions } = useContext(Context);
 
     const [typesTotals, setTypesTotals] = useState({});
 
-    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
+    const filterDataByYear = (data, selectedYear) => {
         return data.filter((item) => {
             const date = new Date(item.dateTime);
-            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
+            return date.getFullYear() === selectedYear;
         });
-    }; //usar esta función como función general
+    };
 
     const calculateTotal = (filteredData) => {
         return filteredData.reduce((total, item) => {
@@ -51,26 +51,22 @@ export const MyConmoPieTypes = (props) => {
 
         const transformData = async () => {
 
-            await actions.getSaves();
             await actions.getFixes();
             await actions.getOcassionals();
 
-            const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
-            const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
-            const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
+            const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
+            const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
 
-            const saveTotals = calculateTotal(filteredSave);
             const fixedTotals = calculateTotal(filteredFixed);
             const ocassionalTotals = calculateTotal(filteredOcassional);
 
             setTypesTotals({
-                "Reservado": saveTotals,
                 "Gastos fijos": fixedTotals,
                 "Gastos variables": ocassionalTotals,
             });
         };
         transformData();
-    }, [props.selectedMonthIndex, props.selectedYear]);
+    }, [props.selectedYear]);
     
     const data = {
         labels:  Object.keys(typesTotals),
@@ -78,7 +74,6 @@ export const MyConmoPieTypes = (props) => {
             {
             data: Object.values(typesTotals),
             backgroundColor: [
-                "rgb(40, 124, 147)",
                 "rgb(147, 40, 90)",
                 "rgb(138, 181, 63)",
             ],
@@ -96,17 +91,14 @@ export const MyConmoPieTypes = (props) => {
     };
 
     return (
-        <div className="col mx-5 text-center">
-            <div className="row mt-5">
-                <p>La parte de los ingresos que ocupa cada tipo de gasto/reserva.</p>
-                {Object.keys(typesTotals).length > 0 ? (
-                    <>
-                        <Pie data={data} options={options} />
-                    </>
-                    ) : (
-                <p>No hay datos en este mes.</p>
-                )}
-            </div>
-        </div>
+        <>
+            {Object.keys(typesTotals).length > 0 ? (
+                <>
+                    <Pie data={data} options={options} />
+                </>
+                ) : (
+            <p>No hay datos en este mes.</p>
+            )}
+        </>
     );
 };

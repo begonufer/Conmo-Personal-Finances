@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { AnualSaves } from "../component/anualsaves.jsx";
 import { MonthlySaves } from "../component/monthlysaves.jsx";
-import { MovementsList } from "../component/movementslist.jsx";
+import { MovementsListSaves } from "../component/movementslistsaves.jsx";
 import { AddButton } from "../component/addbutton.jsx";
 import { Collapse } from 'react-bootstrap';
 
@@ -266,7 +266,7 @@ export const Saves = () => {
                     </button>
                 </div>
             </div>
-            <MovementsList />
+            <MovementsListSaves />
             <AddButton />
         </>
     );

@@ -44,11 +44,76 @@ body {
 	font-size:1.5em;
 }
 
+.incomes-part-right {
+	background-color: rgb(231, 204, 35);
+	font-weight: bold;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+.income-light-bg {
+	background-color: rgb(220, 214, 149);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.income-content-bg {
+	background-color: rgb(255, 251, 204);
+	font-size:1.2em;
+}
+
+.saves-light-bg {
+	background-color: rgb(127, 177, 190);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.saves-content-bg {
+	background-color: rgb(218, 247, 255);
+	font-size:1.2em;
+}
+
 .fixed-bg {
 	background-color: rgb(147, 40, 90);
 	font-weight: bold;
 	border-radius: 50px;
 	font-size:1.5em;
+}
+
+.fixed-light-bg {
+	background-color: rgb(181, 113, 145);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.fixed-content-bg {
+	background-color: rgb(228, 184, 205);
+	font-size:1.2em;
+}
+
+.fixed-part-right {
+	background-color: rgb(192, 22, 101);
+	font-weight: bold;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+.fixed-bold-bg {
+	background-color: rgb(147, 40, 90);
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+
+.shadow-right {
+	box-shadow: 3px 0px 10px 0px rgba(43, 43, 43, 0.171);
+}
+
+.fixed-medium {
+	background-color: rgb(183, 73, 124);
+}
+
+.fixed-light {
+	background-color: rgb(203, 64, 129);
 }
 
 .ocassional-bg {
@@ -58,13 +123,62 @@ body {
 	font-size:1.5em;
 }
 
+.ocassional-light-bg {
+	background-color: rgb(164, 203, 97);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.ocassional-content-bg {
+	background-color: rgb(233, 255, 177);
+	font-size:1.2em;
+}
+
+.ocassional-part-right {
+	background-color: rgb(175, 200, 62);
+	font-weight: bold;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+.ocassional-bold-bg {
+	background-color: rgb(138, 181, 63);
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+
+.expense-light-bg {
+	background-color: rgb(195, 111, 111);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.expense-content-bg {
+	background-color: rgb(237, 191, 191);
+	font-size:1.2em;
+}
+
+.expense-pill {
+	margin: 30px 300px;
+	justify-self: center;
+}
+
+.expense-part-bottom {
+	background-color: rgb(195, 111, 111);
+	font-weight: bold;
+	font-size:1.1em;
+	border-radius: 5px;
+}
+
+.expense-part-top {
+	background-color: brown;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
 .half-width {
 	width: 70%;
   }
-
-.table {
-	width:90%;
-}
 
 .table tbody .line {
 	height: 50px; /* Ajusta este valor según tus preferencias para la altura de las filas */
@@ -92,6 +206,35 @@ body {
 	font-size: small;
 }
 
+
+.uno{
+	background-color: rgb(177, 217, 0);
+	color: rgb(138, 181, 63);
+}
+.dos{
+	background-color:  rgb(140, 188, 30);
+	color: rgb(138, 181, 63);
+}
+.tres{
+	background-color: rgb(111, 174, 0);
+	color: rgb(138, 181, 63);
+}
+.cuatro{
+	background-color: rgb(81, 110, 32);
+	color: rgb(138, 181, 63);
+}
+.cinco {
+	background-color: rgb(96, 135, 28);
+	color: rgb(138, 181, 63);
+}
+.seis{
+	background-color: rgb(137, 178, 15);
+	color: rgb(138, 181, 63);
+}
+.siete{
+	background-color:  rgb(175, 200, 62);
+	color: rgb(138, 181, 63);
+}
 
 /* #fondo    aqui estan todos los colores de los piecharts {
 	background-color:  rgb(207, 193, 44),
@@ -166,4 +309,39 @@ body {
 .year-selector {
 	border: none;
 	font-size: 0.8em;
+}
+
+.movements-list {
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.income-movements {
+	color: rgb(207, 193, 44);
+}
+
+.saves-movements {
+	color: rgb(40, 124, 147);
+}
+
+.fixed-movements {
+	color: rgb(147, 40, 90);
+}
+
+.ocassional-movements {
+	color: rgb(138, 181, 63);
+}
+
+.movements-head {
+	background-color: rgb(27, 100, 113);
+}
+
+.movements-list:hover {
+    background-color: rgb(207, 222, 227);
+}
+
+.seleccionarcolores {
+	background-color: rgb(94, 0, 42);
+	background-color: rgb(62, 1, 49);
+	background-color: rgb(142, 137, 134);
 }

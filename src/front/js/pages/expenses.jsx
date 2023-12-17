@@ -77,10 +77,11 @@ export const Expenses = () => {
 
     const allPreviousMonthIncome = filterAllDataBeforeMonth(store.incomes, previousMonthIndex, selectedYear).reduce((total, income) => total + income.value, 0);
     const allPreviousMonthSave = filterAllDataBeforeMonth(store.saves, previousMonthIndex, selectedYear).reduce((total, save) => total + save.value, 0);
+    const allPreviousMonthUsage = filterAllDataBeforeMonth(store.usages, previousMonthIndex, selectedYear).reduce((total, usage) => total + usage.value, 0);
     const allPreviousMonthFixed = filterAllDataBeforeMonth(store.fixes, previousMonthIndex, selectedYear).reduce((total, fixed) => total + fixed.value, 0);
     const allPreviousMonthOcassional = filterAllDataBeforeMonth(store.ocassionals, previousMonthIndex, selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
     
-    const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
+    const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthUsage - allPreviousMonthFixed - allPreviousMonthOcassional;
 
     const barOptions = {
         plugins: {
@@ -151,6 +152,7 @@ export const Expenses = () => {
     };
     const [incomeBarData, setIncomeBarData] = useState([]);
     const [saveBarData, setSaveBarData] = useState([]);
+    const [usageBarData, setUsageBarData] = useState([]);
     const [fixedBarData, setFixedBarData] = useState([]);
     const [ocassionalBarData, setOcassionalBarData] = useState([]);
     
@@ -159,6 +161,7 @@ export const Expenses = () => {
     const buildBarDataChart = async () => {
         await actions.getIncomes();
         await actions.getSaves();
+        await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
     
@@ -175,6 +178,11 @@ export const Expenses = () => {
             return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
         });
 
+        const filteredUsage = store.usages.filter((data) => {
+            const date = new Date(data.dateTime);
+            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
+        });
+
         const filteredFixed = store.fixes.filter((data) => {
             const date = new Date(data.dateTime);
             return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
@@ -187,6 +195,7 @@ export const Expenses = () => {
     
         const incomeChartDataMap = new Map();
         const saveChartDataMap = new Map();
+        const usageChartDataMap = new Map();
         const fixedChartDataMap = new Map();
         const ocassionalChartDataMap = new Map();
     
@@ -212,6 +221,17 @@ export const Expenses = () => {
             });
         });
 
+        filteredUsage.forEach((usage) => {
+            const usageDay = new Date(usage.dateTime).getDate();
+            const existingData = usageChartDataMap.get(usageDay) || { value: 0, category: 'Sin reservas' };
+            
+            usageChartDataMap.set(usageDay, {
+                day: usageDay,
+                value: existingData.value + usage.value,
+                category: usage.category.name,
+            });
+        });
+
         filteredFixed.forEach((fixed) => {
             const fixedDay = new Date(fixed.dateTime).getDate();
             const existingData = fixedChartDataMap.get(fixedDay) || { value: 0, category: 'Sin gastos fijos' };
@@ -225,7 +245,7 @@ export const Expenses = () => {
 
         filteredOcassional.forEach((ocassional) => {
             const ocassionalDay = new Date(ocassional.dateTime).getDate();
-            const existingData = ocassionalChartDataMap.get(ocassionalDay) || { value: 0, category: 'Sin gastos variables' };
+            const existingData = ocassionalChartDataMap.get(ocassionalDay) || { value: 0, category: 'Sin gastos ocasionales' };
             
             ocassionalChartDataMap.set(ocassionalDay, {
                 day: ocassionalDay,
@@ -236,11 +256,13 @@ export const Expenses = () => {
         
         const incomeDataArray = daysArray.map((day) => incomeChartDataMap.get(day) || { day, value: 0, category: 'Sin ingresos' });
         const saveDataArray = daysArray.map((day) => saveChartDataMap.get(day) || { day, value: 0, category: 'Sin reservas' });
+        const usageDataArray = daysArray.map((day) => usageChartDataMap.get(day) || { day, value: 0, category: 'Sin gastos de reservas' });
         const fixedDataArray = daysArray.map((day) => fixedChartDataMap.get(day) || { day, value: 0, category: 'Sin gastos fijos' });
-        const ocassionalDataArray = daysArray.map((day) => ocassionalChartDataMap.get(day) || { day, value: 0, category: 'Sin gastos variables' });
+        const ocassionalDataArray = daysArray.map((day) => ocassionalChartDataMap.get(day) || { day, value: 0, category: 'Sin gastos ocasionales' });
 
         setIncomeBarData(incomeDataArray);
         setSaveBarData(saveDataArray);
+        setUsageBarData(usageDataArray);
         setFixedBarData(fixedDataArray);
         setOcassionalBarData(ocassionalDataArray);
 
@@ -250,10 +272,11 @@ export const Expenses = () => {
             const netDataArray = daysArray.map((day) => {
                 const incomeValue = incomeChartDataMap.get(day)?.value || 0;
                 const saveValue = saveChartDataMap.get(day)?.value || 0;
+                const usageValue = usageChartDataMap.get(day)?.value || 0;
                 const fixedValue = fixedChartDataMap.get(day)?.value || 0;
                 const ocassionalValue = ocassionalChartDataMap.get(day)?.value || 0;
         
-                const netValue = incomeValue - saveValue - fixedValue - ocassionalValue;
+                const netValue = incomeValue - saveValue - usageValue - fixedValue - ocassionalValue;
                 accumulatedNetValue += netValue;
         
                 return {
@@ -272,12 +295,17 @@ export const Expenses = () => {
         labels: fixedBarData.map((data) => `${data.day}`),
         datasets: [
             {
+                label: "Uso de reservado",
+                data: usageBarData.map((data) => data.value),
+                backgroundColor: ["rgb(34, 147, 199)"],
+            },
+            {
                 label: "Gastos fijos",
                 data: fixedBarData.map((data) => data.value),
                 backgroundColor: ["rgb(147, 40, 90)"],
             },
             {
-                label: "Gastos variables",
+                label: "Gastos ocasionales",
                 data: ocassionalBarData.map((data) => data.value),
                 backgroundColor: ["rgb(138, 181, 63)"],
             },
@@ -288,10 +316,10 @@ export const Expenses = () => {
         labels: incomeBarData.map((data) => `${data.day}`),
         datasets: [
             {
-                label: "Reservado",
-                data: saveBarData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
-                borderColor: ["rgb(40, 124, 147)"],
+                label: "Uso de reservado",
+                data: usageBarData.map((data) => data.value),
+                backgroundColor: ["rgb(34, 147, 199)"],
+                borderColor: ["rgb(34, 147, 199)"],
                 tension: 0.2,
                 pointRadius: 1,
             },
@@ -304,7 +332,7 @@ export const Expenses = () => {
                 pointRadius: 1,
             },
             {
-                label: "Gastos variables",
+                label: "Gastos ocasionales",
                 data: ocassionalBarData.map((data) => data.value),
                 backgroundColor: ["rgb(138, 181, 63)"],
                 borderColor: ["rgb(138, 181, 63)"],
@@ -316,6 +344,7 @@ export const Expenses = () => {
 
     const [incomeBarAnualData, setIncomeBarAnualData] = useState([]);
     const [saveBarAnualData, setSaveBarAnualData] = useState([]);
+    const [usageBarAnualData, setUsageBarAnualData] = useState([]);
     const [fixedBarAnualData, setFixedBarAnualData] = useState([]);
     const [ocassionalBarAnualData, setOcassionalBarAnualData] = useState([]);
     const [chartAnualData, setChartAnualData] = useState([]);
@@ -323,6 +352,7 @@ export const Expenses = () => {
     const buildBarAnualDataChart = async () => {
         await actions.getIncomes();
         await actions.getSaves();
+        await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
     
@@ -332,6 +362,11 @@ export const Expenses = () => {
         });
     
         const filteredSave = store.saves.filter((data) => {
+            const date = new Date(data.dateTime);
+            return date.getFullYear() === selectedYear;
+        });
+        
+        const filteredUsage = store.usages.filter((data) => {
             const date = new Date(data.dateTime);
             return date.getFullYear() === selectedYear;
         });
@@ -350,6 +385,7 @@ export const Expenses = () => {
     
         const incomeChartDataMap = new Map();
         const saveChartDataMap = new Map();
+        const usageChartDataMap = new Map();
         const fixedChartDataMap = new Map();
         const ocassionalChartDataMap = new Map();
     
@@ -373,6 +409,17 @@ export const Expenses = () => {
                 value: existingData.value + save.value,
                 category: save.category.name,
             });
+        });    
+
+        filteredUsage.forEach((usage) => {
+            const usageMonth = new Date(usage.dateTime).getMonth() + 1;
+            const existingData = usageChartDataMap.get(usageMonth) || { value: 0, category: 'Sin reservas' };
+    
+            usageChartDataMap.set(usageMonth, {
+                month: usageMonth,
+                value: existingData.value + usage.value,
+                category: usage.category.name,
+            });
         });
     
         filteredFixed.forEach((fixed) => {
@@ -388,7 +435,7 @@ export const Expenses = () => {
     
         filteredOcassional.forEach((ocassional) => {
             const ocassionalMonth = new Date(ocassional.dateTime).getMonth() + 1;
-            const existingData = ocassionalChartDataMap.get(ocassionalMonth) || { value: 0, category: 'Sin gastos variables' };
+            const existingData = ocassionalChartDataMap.get(ocassionalMonth) || { value: 0, category: 'Sin gastos ocasionales' };
     
             ocassionalChartDataMap.set(ocassionalMonth, {
                 month: ocassionalMonth,
@@ -399,11 +446,13 @@ export const Expenses = () => {
     
         const incomeDataArray = monthsArray.map((month) => incomeChartDataMap.get(month) || { month, value: 0, category: 'Sin ingresos' });
         const saveDataArray = monthsArray.map((month) => saveChartDataMap.get(month) || { month, value: 0, category: 'Sin reservas' });
+        const usageDataArray = monthsArray.map((month) => usageChartDataMap.get(month) || { month, value: 0, category: 'Sin gastos de reservas' });
         const fixedDataArray = monthsArray.map((month) => fixedChartDataMap.get(month) || { month, value: 0, category: 'Sin gastos fijos' });
-        const ocassionalDataArray = monthsArray.map((month) => ocassionalChartDataMap.get(month) || { month, value: 0, category: 'Sin gastos variables' });
+        const ocassionalDataArray = monthsArray.map((month) => ocassionalChartDataMap.get(month) || { month, value: 0, category: 'Sin gastos ocasionales' });
     
         setIncomeBarAnualData(incomeDataArray);
         setSaveBarAnualData(saveDataArray);
+        setUsageBarAnualData(usageDataArray);
         setFixedBarAnualData(fixedDataArray);
         setOcassionalBarAnualData(ocassionalDataArray);
     
@@ -415,10 +464,11 @@ export const Expenses = () => {
             const netDataArray = monthsArray.map((month) => {
                 const incomeValue = incomeChartDataMap.get(month)?.value || 0;
                 const saveValue = saveChartDataMap.get(month)?.value || 0;
+                const usageValue = usageChartDataMap.get(month)?.value || 0;
                 const fixedValue = fixedChartDataMap.get(month)?.value || 0;
                 const ocassionalValue = ocassionalChartDataMap.get(month)?.value || 0;
         
-                const netValue = incomeValue - saveValue - fixedValue - ocassionalValue;
+                const netValue = incomeValue - saveValue - usageValue - fixedValue - ocassionalValue;
                 accumulatedNetValue += netValue;
         
                 return {
@@ -437,12 +487,17 @@ export const Expenses = () => {
         labels: chartAnualData.map((data) => `${data.month}`),
         datasets: [
             {
+                label: "Uso de reservado",
+                data: usageBarAnualData.map((data) => data.value),
+                backgroundColor: ["rgb(34, 147, 199)"],
+            },
+            {
                 label: "Gastos fijos",
                 data: fixedBarAnualData.map((data) => data.value),
                 backgroundColor: ["rgb(147, 40, 90)"],
             },
             {
-                label: "Gastos variables",
+                label: "Gastos ocasionales",
                 data: ocassionalBarAnualData.map((data) => data.value),
                 backgroundColor: ["rgb(138, 181, 63)"],
             },
@@ -453,10 +508,10 @@ export const Expenses = () => {
         labels: chartAnualData.map((data) => `${data.month}`),
         datasets: [
             {
-                label: "Reservado",
-                data: saveBarAnualData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
-                borderColor: ["rgb(40, 124, 147)"],
+                label: "Uso de reservado",
+                data: usageBarAnualData.map((data) => data.value),
+                backgroundColor: ["rgb(34, 147, 199)"],
+                borderColor: ["rgb(34, 147, 199)"],
                 tension: 0.2,
                 pointRadius: 1,
             },
@@ -469,7 +524,7 @@ export const Expenses = () => {
                 pointRadius: 1,
             },
             {
-                label: "Gastos variables",
+                label: "Gastos ocasionales",
                 data: ocassionalBarAnualData.map((data) => data.value),
                 backgroundColor: ["rgb(138, 181, 63)"],
                 borderColor: ["rgb(138, 181, 63)"],
@@ -591,7 +646,7 @@ export const Expenses = () => {
                 <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-5 mx-5 gap-5">
                     <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
                     <div className="col text-center">
-                        {Object.keys(incomeBarData||saveBarData||fixedBarData||ocassionalBarData).length > 0 ? (
+                        {Object.keys(incomeBarData||usageBarData||fixedBarData||ocassionalBarData).length > 0 ? (
                             <>
                                 <Bar options={barOptions} data={dataBar} />
                             </>
@@ -600,12 +655,12 @@ export const Expenses = () => {
                         )}
                     </div>
                     <div className="col text-center">
-                        {Object.keys(incomeBarAnualData||saveBarAnualData||fixedBarAnualData||ocassionalBarAnualData).length > 0 ? (
+                        {Object.keys(incomeBarAnualData||usageBarAnualData||fixedBarAnualData||ocassionalBarAnualData).length > 0 ? (
                             <>
                                 <Bar options={barOptions} data={dataAnualBar} />
                             </>
                             ) : (
-                            <p>No hay datos en este mes.</p>
+                            <p>No hay datos en este año.</p>
                         )}
                     </div>
                 </div>

@@ -1,10 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext, Component } from "react";
 import { Link } from "react-router-dom";
+
+import { MonthlySavesPie } from "../component/graphics/savesmonthlypie.jsx";
+import { AnualSavesPie } from "../component/graphics/savesanualpie.jsx";
+import { MonthlyUsagePie } from "../component/graphics/usagemonthlypie.jsx";
+import { AnualUsagePie } from "../component/graphics/usageanualpie.jsx";
+
+
+import { MonthlySaveBar } from "../component/graphics/savesmonthlybar.jsx";
+import { AnualSaveBar } from "../component/graphics/savesanualbar.jsx";
+
+import { MonthlySaveLine } from "../component/graphics/savesmonthlyline.jsx";
+import { AnualSaveLine } from "../component/graphics/savesanualline.jsx";
+
+
+import { MonthlySavesTable } from "../component/graphics/savesmonthlytable.jsx";
+import { AnualSavesTable } from "../component/graphics/savesanualtable.jsx";
+
 import { AnualSaves } from "../component/anualsaves.jsx";
 import { MonthlySaves } from "../component/monthlysaves.jsx";
 import { MovementsListSaves } from "../component/movementslistsaves.jsx";
 import { AddButton } from "../component/addbutton.jsx";
 import { Collapse } from 'react-bootstrap';
+
+import { Bar, Pie, Line } from "react-chartjs-2";
+import { Context } from "../store/appContext";
+import { format } from "date-fns";
+import es from "date-fns/locale/es";
+import peggyConmo from "../../img/peggy-conmo.png";
 
 import {
     Chart as ChartJS,
@@ -19,8 +42,6 @@ import {
     Legend,
 } from "chart.js";
 
-import { Bar, Pie, Line } from "react-chartjs-2";
-
 ChartJS.register(
     ArcElement,
     CategoryScale,
@@ -32,6 +53,7 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+
 
 const labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
@@ -221,6 +243,49 @@ export const pieData = {
 
 export const Saves = () => {
 
+    const { store, actions } = useContext(Context);
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const nameCurrentMonth = months[currentMonthIndex];
+
+    const calculatePreviousMonthIndex = (currentIndex) => (currentIndex - 1 + 12) % 12;
+    const previousMonthIndex = calculatePreviousMonthIndex(currentMonthIndex);
+    const namePreviousMonth = months[previousMonthIndex];
+    const currentYear = new Date().getFullYear();
+
+    const [previousMonth, setPreviousMonth] = useState(namePreviousMonth);
+
+    const [selectedMonth, setSelectedMonth] = useState(nameCurrentMonth);
+
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const handleToggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const [selectedMonthIndex, setSelectedMonthIndex] = useState(currentMonthIndex);
+  
+    const handleMonthSelect = (month, monthIndex) => {
+        setSelectedMonth(month);
+        setSelectedMonthIndex(monthIndex);
+        const updatedPreviousMonthIndex = calculatePreviousMonthIndex(monthIndex);
+        setPreviousMonth(months[updatedPreviousMonthIndex]);
+        setIsOpen(false);
+    }
+
+    const [isNext, setIsNext] = useState(true);
+
+    const handleButtonClick = () => {
+      setIsNext((prevIsNext) => !prevIsNext);
+    };
+
     const [open, setOpen] = useState(false);
 
     const handleToggle = () => {
@@ -237,7 +302,6 @@ export const Saves = () => {
                     <Collapse in={open}>
                         <div className="texto-desplegable">
                             <h2 className="mt-2">Descripción detallada de la sección.</h2>
-
                             <div className="description-text">
                                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit maxime sunt praesentium dolores recusandae vitae ab unde quam neque, doloribus ducimus tenetur ad magnam ratione culpa voluptatum rem accusamus quas.</p>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
@@ -247,26 +311,97 @@ export const Saves = () => {
                 </div>
             </div>
             <div className="d-block w-100 h-100 align-items-center">
-                <div id="principalCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <MonthlySaves />
+                <div className="custom-dropdown my-4">
+                    <div className="dropdown-header" onClick={handleToggleDropdown}>
+                        <h1 className="drop-title pt-1">
+                            {selectedMonth} <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}><i className="fas fa-chevron-down"></i></span> 
+                            <input
+                                type="number"
+                                min="2000" 
+                                max={currentYear}
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
+                                className="year-selector mx-4"
+                            />
+                        </h1>
+                    </div>
+                    {isOpen && (
+                        <div className="dropdown-content">
+                            {months.map((month, index) => (
+                                <div
+                                    key={index}
+                                    className="dropdown-item"
+                                    onClick={() => handleMonthSelect(month, index)}
+                                    >
+                                    {month}
+                                </div>
+                            ))}
                         </div>
-                        <div className="carousel-item">
-                            <AnualSaves />
+                    )}
+                </div>
+                <div className="row justify-content-center align-items-center m-5">
+                    <div className="col">
+                        <div id="tableCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+                            <div className="carousel-inner">
+                                <div className="carousel-item active pe-5 text-center">
+                                    <MonthlySavesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
+                                </div>
+                                <div className="carousel-item pe-5 text-center">
+                                    <AnualSavesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
+                                </div>
+                            </div>
+                            <button
+                                className="carousel-control-next d-block text-dark align-items-center"
+                                type="button"
+                                data-bs-target="#tableCarousel"
+                                data-bs-slide={isNext ? 'next' : 'prev'}
+                                id="table-carousel-button"
+                                onClick={handleButtonClick}
+                            >
+                                <span className="fs-5">{isNext ? 'Año' : 'Mes'}</span>
+                                <span className={`carousel-control-${isNext ? 'next' : 'prev'}-icon`} aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#principalCarousel" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Anterior</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#principalCarousel" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Siguiente</span>
-                    </button>
                 </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
+                    <div className="col-4 text-center my-3 p-4">
+                        <h3>Reservado</h3>
+                        <MonthlySavesPie selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <MonthlySaveBar selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <div className="col-4 text-center my-3 p-4">
+                        <h3>Usado</h3>
+                        <MonthlyUsagePie selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <MonthlySaveLine selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/> 
+                    </div>
+                </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Anual</h2>
+                    <div className="col-4 text-center my-3 p-4">
+                        <AnualSavesPie selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <AnualSaveBar selectedYear={selectedYear}/> 
+                    </div>
+                </div>
+                <div className="row justify-content-center pb-5 mx-5">
+                    <div className="col-4 text-center my-3 p-4">
+                        <AnualUsagePie selectedYear={selectedYear}/> 
+                    </div>
+                    <div className="col-7 ms-5 align-self-center my-3">
+                        <AnualSaveLine selectedYear={selectedYear} />
+                    </div>
+                </div>
+                <MovementsListSaves />
             </div>
-            <MovementsListSaves />
             <AddButton />
         </>
     );

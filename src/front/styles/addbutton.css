@@ -63,7 +63,7 @@ ul {
 .sub-buttons /* este modifica los botones desplegables */ > li button {
 	font-size: 30px;
     color: white;
-	background: rgb(40, 124, 147);
+	background:  rgb(27, 100, 113);
 	width: 70px;
 	height: 70px;
 	display: block;
@@ -75,7 +75,7 @@ ul {
 .sub-buttons > .main-button button {
     font-size: 40px;
     color: white;
-    background: rgb(40, 124, 147);
+    background:  rgb(27, 100, 113);
     width: 80px;
     height: 80px;
     display: block;

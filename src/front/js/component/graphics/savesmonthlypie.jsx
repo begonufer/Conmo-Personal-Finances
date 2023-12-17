@@ -61,10 +61,13 @@ export const MonthlySavesPie = (props) => {
         {
             data: Object.values(categoryTotals),
             backgroundColor: [
-                "rgb(40, 130, 150)",
-                "rgb(40, 140, 160)",
-                "rgb(40, 150, 170)",
-                "rgb(40, 160, 180)"
+                "rgb(62, 229, 237)",
+                "rgb(13, 180, 186)",
+                "rgb(7, 128, 139)",
+                "rgb(27, 100, 113)",
+                "rgb(27, 113, 113)",
+                "rgb(6, 151, 156)",
+                "rgb(64, 170, 184)",
             ],
             borderWidth: 0,
         },

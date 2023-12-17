@@ -296,7 +296,6 @@ export const MonthlySaves = () => {
                             />
                         </h1>
                     </div>
-
                     {isOpen && (
                         <div className="dropdown-content">
                             {months.map((month, index) => (
@@ -311,6 +310,8 @@ export const MonthlySaves = () => {
                         </div>
                     )}
                 </div>
+
+
                 <div className="row pt-3">
                     <div className="col">
                     <img src={peggyConmo} className="w-100" alt="Conmo" />
@@ -319,6 +320,9 @@ export const MonthlySaves = () => {
                         <MonthlySavesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} />
                     </div>
                 </div>
+
+
+                
                 <div className="row mt-5 pb-5">
                     <div className="col-4 mx-5 text-center">
                         <h3>Mes</h3>

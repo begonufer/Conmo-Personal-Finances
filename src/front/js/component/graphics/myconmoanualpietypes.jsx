@@ -78,8 +78,8 @@ export const MyConmoAnualPieTypes = (props) => {
             {
             data: Object.values(typesTotals),
             backgroundColor: [
-                "rgb(40, 124, 147)",
-                "rgb(147, 40, 90)",
+                "rgb(27, 100, 113)",
+                "rgb(156, 13, 80)",
                 "rgb(138, 181, 63)",
             ],
             borderWidth: 0,

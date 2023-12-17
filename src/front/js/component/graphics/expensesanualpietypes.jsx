@@ -51,16 +51,20 @@ export const ExpensesAnualPieTypes = (props) => {
 
         const transformData = async () => {
 
+            await actions.getUsage();
             await actions.getFixes();
             await actions.getOcassionals();
 
+            const filteredUsage = filterDataByYear(store.usages, props.selectedYear);
             const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
             const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
 
+            const usageTotals = calculateTotal(filteredUsage);
             const fixedTotals = calculateTotal(filteredFixed);
             const ocassionalTotals = calculateTotal(filteredOcassional);
 
             setTypesTotals({
+                "Uso de reservado": usageTotals,
                 "Gastos fijos": fixedTotals,
                 "Gastos variables": ocassionalTotals,
             });
@@ -74,6 +78,7 @@ export const ExpensesAnualPieTypes = (props) => {
             {
             data: Object.values(typesTotals),
             backgroundColor: [
+                "rgb(34, 147, 199)",
                 "rgb(147, 40, 90)",
                 "rgb(138, 181, 63)",
             ],

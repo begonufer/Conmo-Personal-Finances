@@ -27,6 +27,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			fixes: [],
 			fixedcategories: null,
 			saves: [],
+			usages: [],
 			token: "",
 		},
 		actions: {
@@ -231,6 +232,18 @@ const getState = ({ getStore, getActions, setStore }) => {
                 })
                 const saves = await response.json();
                 setStore({ ...getStore(), saves });
+            },
+
+			getUsage: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/usage", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                const usages = await response.json();
+                setStore({ ...getStore(), usages });
             },
 
 			// setSaveUsage: async (dateTime,ocassionalcategory_id,value) => {

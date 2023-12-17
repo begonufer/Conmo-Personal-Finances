@@ -24,12 +24,14 @@ export const Resume = (props) => {
     const [fixedCategoryTotals, setFixedCategoryTotals] = useState({});
     const [ocassionalCategoryTotals, setOcassionalCategoryTotals] = useState({});
     const [saveCategoryTotals, setSaveCategoryTotals] = useState({});
+    const [usageCategoryTotals, setUsageCategoryTotals] = useState({});
     const [savesBalance, setSavesBalance] = useState({});
 
-    const dataFilteredByCategory = (filteredIncome, filteredSave, filteredFixed, filteredOcassional) => {
+    const dataFilteredByCategory = (filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional) => {
 
         const incomeTotals = {};
         const saveTotals = {};
+        const usageTotals = {};
         const fixedTotals = {};
         const ocassionalTotals = {};
 
@@ -40,6 +42,10 @@ export const Resume = (props) => {
         filteredSave.forEach(({ value, category }) => {
             const categoryName = category.name;
             saveTotals[categoryName] = (saveTotals[categoryName] || 0) + value;
+        });
+        filteredUsage.forEach(({ value, category }) => {
+            const categoryName = category.name;
+            usageTotals[categoryName] = (usageTotals[categoryName] || 0) + value;
         });
         filteredFixed.forEach(({ value, fixedcategory }) => {
             const categoryName = fixedcategory.name;
@@ -52,6 +58,7 @@ export const Resume = (props) => {
 
         setIncomeCategoryTotals(incomeTotals);
         setSaveCategoryTotals(saveTotals);
+        setUsageCategoryTotals(usageTotals);
         setFixedCategoryTotals(fixedTotals);
         setOcassionalCategoryTotals(ocassionalTotals);
     }
@@ -60,11 +67,13 @@ export const Resume = (props) => {
         const transformData = async () => {
             await actions.getIncomes();
             await actions.getSaves();
+            await actions.getUsage();
             await actions.getFixes();
             await actions.getOcassionals();
 
             const filteredIncome = filterDataByMonthYear(store.incomes, props.selectedMonthIndex, props.selectedYear);
             const filteredSave = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
+            const filteredUsage = filterDataByMonthYear(store.usages, props.selectedMonthIndex, props.selectedYear);
             const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
             const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
 
@@ -88,13 +97,14 @@ export const Resume = (props) => {
             
             setSavesBalance(saveBalance);
             
-            dataFilteredByCategory(filteredIncome, filteredSave, filteredFixed, filteredOcassional);
+            dataFilteredByCategory(filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional);
         };
         transformData();
     }, [props.selectedMonthIndex, props.selectedYear, props.previousMonthIndex]);
 
     const totalIncomeMonthAmount = filterDataByMonthYear(store.incomes, props.selectedMonthIndex, props.selectedYear).reduce((total, income) => total + income.value, 0);
     const totalSaveMonthAmount = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear).reduce((total, save) => total + save.value, 0);
+    const totalUsageMonthAmount = filterDataByMonthYear(store.usages, props.selectedMonthIndex, props.selectedYear).reduce((total, usage) => total + usage.value, 0);
     const totalFixedMonthAmount = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
     const totalOcassionalMonthAmount = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
  
@@ -145,7 +155,7 @@ export const Resume = (props) => {
                 </div>
                 <div>
                     <div className="row">
-                        <div className="col-8 wrap flex-column justify-content-center align-items-center  pb-2 mb-5 rounded-1">
+                        <div className="col wrap flex-column justify-content-center align-items-center  pb-2 mb-5 rounded-1">
                             <h4 className="text-white fs-2 p-3 mb-0 rounded-1 text-center py-3" id="table-saves">RESERVADO</h4>
                             <div className="saves-light-bg text-center justify-content-center align-items-center p-3">
                                 <div className="row">
@@ -176,7 +186,7 @@ export const Resume = (props) => {
                                 </div>
                             ))}
                         </div>
-                        <div className="col-4 wrap flex-column justify-content-center align-items-center  pb-2 mb-5 rounded-1">
+                        {/* <div className="col-4 wrap flex-column justify-content-center align-items-center  pb-2 mb-5 rounded-1">
                             <h4 className="text-white fs-2 p-3 mb-0 rounded-1 text-center py-3" id="table-saves">BALANCE</h4>                        
                             <div className="saves-light-bg text-center justify-content-center align-items-center p-3">
                                 <div className="row">
@@ -193,14 +203,14 @@ export const Resume = (props) => {
                                     <div className="col">Total</div>
                                 </div>
                             </div>
-                            {Object.entries(saveCategoryTotals).map(([category, total]) => (
+                            {Object.entries(usageCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center saves-content-bg p-3" key={category}>
                                     <div className="row">
                                         <div className="col">{total} €</div>                         
                                     </div>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>                    
                 </div>
                 <div className="wrap flex-column mb-5 justify-content-center align-items-center pb-2 rounded-1">

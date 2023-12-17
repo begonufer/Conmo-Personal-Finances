@@ -8,6 +8,7 @@ export const MovementsList = () => {
     const [allMovements, setAllMovements] = useState([]);
     const [incomes, setIncomes] = useState([]);
     const [saves, setSaves] = useState([]);
+    const [usage, setUsage] = useState([]);
     const [fixes, setFixes] = useState([]);
     const [ocassionals, setOcassionals] = useState([]);
   
@@ -15,6 +16,7 @@ export const MovementsList = () => {
       async function transformData() {
         await actions.getIncomes();
         await actions.getSaves();
+        await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
   
@@ -22,7 +24,10 @@ export const MovementsList = () => {
         setIncomes(incomesData);
   
         const savesData = store.saves.map((save) => ({ ...save, type: 'Reservado', balance: -save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
-        setSaves(savesData);
+        setSaves(savesData);  
+
+        const usageData = store.usages.map((usage) => ({ ...usage, type: 'Uso reservado', balance: usage.balance ?? 0, dateTime: new Date(usage.dateTime), category: usage.category.name }));
+        setUsage(usageData);
   
         const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', balance: -fixed.value, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
         setFixes(fixesData);
@@ -30,7 +35,7 @@ export const MovementsList = () => {
         const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', balance: -ocassional.value, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
         setOcassionals(ocassionalData);
 
-        const allData = [...incomesData, ...savesData, ...fixesData, ...ocassionalData];
+        const allData = [...incomesData, ...savesData, ...usageData, ...fixesData, ...ocassionalData];
 
             const sortedData = allData.sort((a, b) => a.dateTime - b.dateTime);
 
@@ -58,6 +63,8 @@ export const MovementsList = () => {
                 return 'col ocassional-movements';
             case 'Reservado':
                 return 'col saves-movements';
+            case 'Uso reservado':
+                return 'col usage-movements';
             default:
                 return 'col';
         }

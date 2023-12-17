@@ -29,12 +29,14 @@ export const AnualExpensesTable = (props) => {
     const [fixedCategoryTotals, setFixedCategoryTotals] = useState({});
     const [ocassionalCategoryTotals, setOcassionalCategoryTotals] = useState({});
     const [saveCategoryTotals, setSaveCategoryTotals] = useState({});
+    const [usageCategoryTotals, setUsageCategoryTotals] = useState({});
     const [savesBalance, setSavesBalance] = useState({});
 
-    const dataFilteredByCategory = (filteredIncome, filteredSave, filteredFixed, filteredOcassional) => {
+    const dataFilteredByCategory = (filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional) => {
 
         const incomeTotals = {};
         const saveTotals = {};
+        const usageTotals = {};
         const fixedTotals = {};
         const ocassionalTotals = {};
 
@@ -45,6 +47,10 @@ export const AnualExpensesTable = (props) => {
         filteredSave.forEach(({ value, category }) => {
             const categoryName = category.name;
             saveTotals[categoryName] = (saveTotals[categoryName] || 0) + value;
+        });
+        filteredUsage.forEach(({ value, category }) => {
+            const categoryName = category.name;
+            usageTotals[categoryName] = (usageTotals[categoryName] || 0) + value;
         });
         filteredFixed.forEach(({ value, fixedcategory }) => {
             const categoryName = fixedcategory.name;
@@ -57,6 +63,7 @@ export const AnualExpensesTable = (props) => {
 
         setIncomeCategoryTotals(incomeTotals);
         setSaveCategoryTotals(saveTotals);
+        setUsageCategoryTotals(usageTotals);
         setFixedCategoryTotals(fixedTotals);
         setOcassionalCategoryTotals(ocassionalTotals);
     }
@@ -65,28 +72,31 @@ export const AnualExpensesTable = (props) => {
         const transformData = async () => {
             await actions.getIncomes();
             await actions.getSaves();
+            await actions.getUsage();
             await actions.getFixes();
             await actions.getOcassionals();
 
             const filteredIncome = filterDataByYear(store.incomes, props.selectedYear);
             const filteredSave = filterDataByYear(store.saves, props.selectedYear);
+            const filteredUsage = filterDataByYear(store.usages, props.selectedYear);
             const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
             const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
             
-            dataFilteredByCategory(filteredIncome, filteredSave, filteredFixed, filteredOcassional);
+            dataFilteredByCategory(filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional);
         };
         transformData();
     }, [props.selectedYear]);
 
     const totalIncomeAmount = filterDataByYear(store.incomes, props.selectedYear).reduce((total, income) => total + income.value, 0);
     const totalSaveAmount = filterDataByYear(store.saves, props.selectedYear).reduce((total, save) => total + save.value, 0);
+    const totalUsageAmount = filterDataByYear(store.usages, props.selectedYear).reduce((total, save) => total + save.value, 0);
     const totalFixedAmount = filterDataByYear(store.fixes, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
     const totalOcassionalAmount = filterDataByYear(store.ocassionals, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
 
     const balance = totalIncomeAmount;
     const balanceBeforeSaves = balance - totalSaveAmount;
     const balanceBeforeFixed = balanceBeforeSaves - totalFixedAmount;
-    const totalExpenses = totalFixedAmount + totalOcassionalAmount;
+    const totalExpenses = totalFixedAmount + totalOcassionalAmount + totalUsageAmount;
     const calculateResult = balance - totalSaveAmount - totalExpenses;
 
     return (
@@ -95,7 +105,7 @@ export const AnualExpensesTable = (props) => {
                 <div className="wrap flex-column justify-content-center align-items-center rounded-1">
                     <div className="row expense-pill text-white fw-normal expense-part-bottom fs-4">
                         <h4 className="expense-part-top p-3 text-white fs-2 p-3 mb-0">Total gastos</h4>
-                        <div className="col p-3 fw-normal">{totalExpenses} €</div>
+                        <div className="col p-3 fw-normal">{(totalExpenses).toFixed(2)} €</div>
                         <div className="col p-3 fw-normal">{calculatePercentage(totalExpenses, totalIncomeAmount)} %</div>
                         <div className="col p-3 fw-normal">{calculateAverage(totalExpenses)} €</div>
                     </div>
@@ -189,22 +199,22 @@ export const AnualExpensesTable = (props) => {
                         </div>
 
                         <div className="col wrap flex-column justify-content-center align-items-center ps-0 rounded-1">
-                            <h4 className="text-white fs-2 p-3 mb-0 rounded-1 text-center py-3" id="table-saves">USO RESERVADO</h4>
-                            <div className="saves-light-bg text-center justify-content-center align-items-center p-3">
+                            <h4 className="text-white fs-2 p-3 mb-0 table-usage rounded-1 text-center py-3">USO RESERVADO</h4>
+                            <div className="usage-light-bg text-center justify-content-center align-items-center p-3">
                                 <div className="row">
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
                                 </div>
                             </div>
-                            <div className="text-center justify-content-center align-items-center saves-content-bg p-3">
+                            <div className="text-center justify-content-center align-items-center usage-content-bg p-3">
                                 <div className="row">
-                                    <div className="col">{totalSaveAmount} €</div>
-                                    <div className="col">{calculatePercentage(totalSaveAmount, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(totalSaveAmount)} €</div>
+                                    <div className="col">{totalUsageAmount} €</div>
+                                    <div className="col">{calculatePercentage(totalUsageAmount, totalIncomeAmount)} %</div>
+                                    <div className="col">{calculateAverage(totalUsageAmount)} €</div>
                                 </div>
                             </div>
-                            <div className="saves-light-bg text-center justify-content-center align-items-center p-3">
+                            <div className="usage-light-bg text-center justify-content-center align-items-center p-3">
                                 <div className="row">
                                     <div className="col">Categoría</div>
                                     <div className="col">Total</div>
@@ -212,8 +222,8 @@ export const AnualExpensesTable = (props) => {
                                     <div className="col">Media</div>
                                 </div>
                             </div>
-                            {Object.entries(saveCategoryTotals).map(([category, total]) => (
-                                <div className="text-center justify-content-center align-items-center saves-content-bg p-3" key={category}>
+                            {Object.entries(usageCategoryTotals).map(([category, total]) => (
+                                <div className="text-center justify-content-center align-items-center usage-content-bg p-3" key={category}>
                                     <div className="row">
                                         <div className="col">{category}</div>
                                         <div className="col">{total} €</div>

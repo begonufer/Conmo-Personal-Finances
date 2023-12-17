@@ -43,9 +43,11 @@ export const ExpensesAnualPieCategories = (props) => {
     
     useEffect(() => {
         const transformData = async () => {
+            await actions.getUsage();
             await actions.getFixes();
             await actions.getOcassionals();
 
+            const filteredUsage = filterDataByYear(store.usages, props.selectedYear);
             const filteredFixed = filterDataByYear(store.fixes, props.selectedYear);
             const filteredOcassional = filterDataByYear(store.ocassionals, props.selectedYear);
 
@@ -61,6 +63,15 @@ export const ExpensesAnualPieCategories = (props) => {
                 });
             };
 
+            const usageColors = [
+                "rgb(108, 181, 223)",
+                "rgb(34, 147, 199)",
+                "rgb(3, 104, 144)",
+                "rgb(23, 87, 123)",
+                "rgb(29, 126, 167)",
+                "rgb(8, 168, 212)",
+                "rgb(72, 183, 224)",
+            ];
             const fixedColors = [
                 "rgb(203, 64, 122)",
                 "rgb(183, 73, 124)",
@@ -80,6 +91,7 @@ export const ExpensesAnualPieCategories = (props) => {
                 "rgb(177, 217, 0)",
             ];
 
+            buildCategoryColorTotals(filteredUsage, 'category', usageColors);
             buildCategoryColorTotals(filteredFixed, 'fixedcategory', fixedColors);
             buildCategoryColorTotals(filteredOcassional, 'ocassionalcategory', ocassionalColors);
 

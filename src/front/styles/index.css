@@ -63,14 +63,51 @@ body {
 }
 
 .saves-light-bg {
-	background-color: rgb(127, 177, 190);
+	background-color: rgb(104, 186, 189);
 	font-weight: bold;
 	font-size:1.1em;
 }
 
 .saves-content-bg {
-	background-color: rgb(218, 247, 255);
+	background-color: rgb(187, 239, 241);
 	font-size:1.2em;
+}
+
+.saves-part-right {
+	background-color: rgb(7, 128, 139); 
+	font-weight: bold;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+.saves-bold-bg {
+	background-color: rgb(27, 100, 113);
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+
+.usage-light-bg {
+	background-color: rgb(72, 183, 224);
+	font-weight: bold;
+	font-size:1.1em;
+}
+
+.usage-content-bg {
+	background-color: rgb(175, 226, 255);
+	font-size:1.2em;
+}
+
+.usage-part-right {
+	background-color: rgb(108, 181, 223);
+	font-weight: bold;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+.usage-bold-bg {
+	background-color: rgb(43, 160, 214);
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
 }
 
 .fixed-bg {
@@ -187,7 +224,11 @@ body {
   }
 
 #table-saves {
-	background-color: rgb(40, 124, 147);
+	background-color: rgb(27, 100, 113);
+}
+
+.table-usage {
+	background-color: rgb(43, 160, 214);
 }
 
 #table-expenses {
@@ -206,35 +247,6 @@ body {
 	font-size: small;
 }
 
-
-.uno{
-	background-color: rgb(177, 217, 0);
-	color: rgb(138, 181, 63);
-}
-.dos{
-	background-color:  rgb(140, 188, 30);
-	color: rgb(138, 181, 63);
-}
-.tres{
-	background-color: rgb(111, 174, 0);
-	color: rgb(138, 181, 63);
-}
-.cuatro{
-	background-color: rgb(81, 110, 32);
-	color: rgb(138, 181, 63);
-}
-.cinco {
-	background-color: rgb(96, 135, 28);
-	color: rgb(138, 181, 63);
-}
-.seis{
-	background-color: rgb(137, 178, 15);
-	color: rgb(138, 181, 63);
-}
-.siete{
-	background-color:  rgb(175, 200, 62);
-	color: rgb(138, 181, 63);
-}
 
 /* #fondo    aqui estan todos los colores de los piecharts {
 	background-color:  rgb(207, 193, 44),
@@ -324,6 +336,10 @@ body {
 	color: rgb(40, 124, 147);
 }
 
+.usage-movements {
+	color:  rgb(43, 160, 214);
+}
+
 .fixed-movements {
 	color: rgb(147, 40, 90);
 }
@@ -344,4 +360,74 @@ body {
 	background-color: rgb(94, 0, 42);
 	background-color: rgb(62, 1, 49);
 	background-color: rgb(142, 137, 134);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.uno{
+	background-color: rgb(62, 229, 237);
+	color: rgb(27, 100, 113);
+}
+.dos {
+	background-color: rgb(13, 180, 186);
+	color: rgb(27, 100, 113);
+}
+.tres{
+	background-color: rgb(7, 128, 139);
+	color: rgb(7, 128, 139);
+}
+.cuatro{
+	background-color: rgb(27, 100, 113);
+	color: rgb(27, 100, 113);
+}
+.cinco{
+	background-color: rgb(27, 113, 113);
+	color: rgb(27, 100, 113);
+}
+.seis{
+	background-color: rgb(6, 151, 156);
+	color: rgb(27, 100, 113);
+}
+.siete{
+	background-color: rgb(64, 170, 184);
+	color: rgb(40, 124, 147);
+}
+
+
+.uno-cl {
+	background-color: rgb(108, 181, 223);
+	color: rgb(27, 100, 113);
+}
+.dos-cl {
+	background-color: rgb(34, 147, 199);
+	color: rgb(27, 100, 113);
+}
+.tres-cl {
+	background-color: rgb(3, 104, 144);
+	color: rgb(27, 100, 113);
+}
+.cuatro-cl {
+	background-color: rgb(23, 87, 123);
+	color: rgb(27, 100, 113);
+}
+.cinco-cl {
+	background-color: rgb(29, 126, 167);
+	color: rgb(27, 100, 113);
+}
+.seis-cl {
+	background-color: rgb(8, 168, 212);
+	color: rgb(40, 124, 147);
+}
+.siete-cl {
+	background-color: rgb(72, 183, 224);
+	color: rgb(7, 128, 139);
 }

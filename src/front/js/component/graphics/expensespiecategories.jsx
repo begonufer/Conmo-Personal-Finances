@@ -43,9 +43,11 @@ export const ExpensesPieCategories = (props) => {
     
     useEffect(() => {
         const transformData = async () => {
+            await actions.getUsage();
             await actions.getFixes();
             await actions.getOcassionals();
 
+            const filteredUsage = filterDataByMonthYear(store.usages, props.selectedMonthIndex, props.selectedYear);
             const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
             const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
 
@@ -60,8 +62,24 @@ export const ExpensesPieCategories = (props) => {
                     };
                 });
             };
-
-            const fixedColors = ["rgb(203, 64, 122)", "rgb(183, 73, 124)", "rgb(147, 40, 90)", "rgb(122, 15, 65)", "rgb(156, 13, 80)", "rgb(189, 0, 91)", "rgb(202, 49, 98)",];
+            const usageColors = [
+                "rgb(108, 181, 223)",
+                "rgb(34, 147, 199)",
+                "rgb(3, 104, 144)",
+                "rgb(23, 87, 123)",
+                "rgb(29, 126, 167)",
+                "rgb(8, 168, 212)",
+                "rgb(72, 183, 224)",
+            ];
+            const fixedColors = [
+                "rgb(203, 64, 122)",
+                "rgb(183, 73, 124)",
+                "rgb(147, 40, 90)",
+                "rgb(122, 15, 65)",
+                "rgb(156, 13, 80)",
+                "rgb(189, 0, 91)",
+                "rgb(202, 49, 98)",
+            ];
             const ocassionalColors = [
                 "rgb(175, 200, 62)",
                 "rgb(137, 178, 15)",
@@ -72,6 +90,7 @@ export const ExpensesPieCategories = (props) => {
                 "rgb(177, 217, 0)",
             ];
 
+            buildCategoryColorTotals(filteredUsage, 'category', usageColors);
             buildCategoryColorTotals(filteredFixed, 'fixedcategory', fixedColors);
             buildCategoryColorTotals(filteredOcassional, 'ocassionalcategory', ocassionalColors);
 

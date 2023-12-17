@@ -63,9 +63,33 @@ export const MyConmoAnualPieCategories = (props) => {
                 });
             };
 
-            const saveColors = ["rgb(40, 130, 150)", "rgb(40, 140, 160)", "rgb(40, 150, 170)", "rgb(40, 160, 180)"];
-            const fixedColors = ["rgb(147, 70, 110)", "rgb(147, 80, 120)", "rgb(147, 90, 130)"];
-            const ocassionalColors = ["rgb(138, 190, 70)", "rgb(138, 200, 80)", "rgb(138, 210, 90)"];
+            const saveColors = [
+                "rgb(62, 229, 237)",
+                "rgb(13, 180, 186)",
+                "rgb(7, 128, 139)",
+                "rgb(27, 100, 113)",
+                "rgb(27, 113, 113)",
+                "rgb(6, 151, 156)",
+                "rgb(64, 170, 184)",
+            ];
+            const fixedColors = [
+                "rgb(203, 64, 122)",
+                "rgb(183, 73, 124)",
+                "rgb(147, 40, 90)",
+                "rgb(122, 15, 65)",
+                "rgb(156, 13, 80)",
+                "rgb(189, 0, 91)",
+                "rgb(202, 49, 98)",
+            ];
+            const ocassionalColors = [
+                "rgb(175, 200, 62)",
+                "rgb(137, 178, 15)",
+                "rgb(96, 135, 28)",
+                "rgb(81, 110, 32)",
+                "rgb(111, 174, 0)",
+                "rgb(140, 188, 30)",
+                "rgb(177, 217, 0)",
+            ];
 
             buildCategoryColorTotals(filteredSave, 'category', saveColors);
             buildCategoryColorTotals(filteredFixed, 'fixedcategory', fixedColors);

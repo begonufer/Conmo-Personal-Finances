@@ -12,6 +12,7 @@ from api.models.fixedcategory import FixedCategory
 from api.models.ocassional import Ocassional
 from api.models.ocassionalcategory import OcassionalCategory
 from api.models.save import Save
+from api.models.usage import Usage
 
 api = Blueprint('api', __name__)
 
@@ -297,3 +298,10 @@ def get_saves():
 #     #     type.serialize()
 #     #     all_types_serialized.append(type)
 #     return jsonify([type.serialize() for type in Type.query.all()])
+
+@api.route('/usage', methods= ['GET'])
+@jwt_required()
+def get_usages():
+    user_id = get_jwt_identity() 
+    usages = Usage.query.filter_by(user_id=user_id).all()
+    return jsonify([usage.serialize() for usage in usages])

@@ -9,14 +9,17 @@ export const MovementsListExpenses = () => {
   
     useEffect(() => {
       async function transformData() {
+        await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
   
+        const usageData = store.usages.map((usage) => ({ ...usage, type: 'Uso de reservado', dateTime: new Date(usage.dateTime), category: usage.category.name }));
+
         const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
   
         const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
 
-        const allData = [...fixesData, ...ocassionalData];
+        const allData = [...usageData, ...fixesData, ...ocassionalData];
 
             const sortedData = allData.sort((a, b) => b.dateTime - a.dateTime);
 
@@ -28,6 +31,8 @@ export const MovementsListExpenses = () => {
 
     function getTableRowClass(type) {
         switch (type) {
+            case 'Uso de reservado':
+                return 'col usage-movements';
             case 'Gasto fijo':
                 return 'col fixed-movements';
             case 'Gasto ocasional':

@@ -177,9 +177,33 @@ export const MyConmo = () => {
         const filteredOcassional = filterDataByMonthYear(store.ocassionals, selectedMonthIndex, selectedYear);
     
         const incomesColors = ["rgb(207, 193, 44)", "rgb(188, 207, 44)", "rgb(138, 181, 63)", "rgb(40, 124, 147)", "rgb(29, 174, 159)", "rgb(29, 180, 122)"];
-        const savesColors = ["rgb(40, 130, 150)", "rgb(40, 140, 160)", "rgb(40, 150, 170)", "rgb(40, 160, 180)"];
-        const fixedColors = ["rgb(147, 70, 110)", "rgb(147, 80, 120)", "rgb(147, 90, 130)"];
-        const ocassionalColors = ["rgb(138, 190, 70)", "rgb(138, 200, 80)", "rgb(138, 210, 90)"];
+        const savesColors = [
+            "rgb(62, 229, 237)",
+            "rgb(13, 180, 186)",
+            "rgb(7, 128, 139)",
+            "rgb(27, 100, 113)",
+            "rgb(27, 113, 113)",
+            "rgb(6, 151, 156)",
+            "rgb(64, 170, 184)",
+        ];
+        const fixedColors = [
+            "rgb(203, 64, 122)",
+            "rgb(183, 73, 124)",
+            "rgb(147, 40, 90)",
+            "rgb(122, 15, 65)",
+            "rgb(156, 13, 80)",
+            "rgb(189, 0, 91)",
+            "rgb(202, 49, 98)",
+        ];
+        const ocassionalColors = [
+            "rgb(175, 200, 62)",
+            "rgb(137, 178, 15)",
+            "rgb(96, 135, 28)",
+            "rgb(81, 110, 32)",
+            "rgb(111, 174, 0)",
+            "rgb(140, 188, 30)",
+            "rgb(177, 217, 0)",
+        ];
     
         const incomesTotals = buildCategoryColorTotals(filteredIncomes, 'incomecategory', incomesColors, 'income');
         const saveTotals = buildCategoryColorTotals(filteredSave, 'category', savesColors, 'save');
@@ -227,8 +251,8 @@ export const MyConmo = () => {
             {
                 data: Object.values(summedValues),
                 backgroundColor:[
-                    "rgb(40, 124, 147)",
-                    "rgb(147, 40, 90)",
+                    "rgb(27, 100, 113)",
+                    "rgb(156, 13, 80)",
                     "rgb(138, 181, 63)",
                 ],
                 borderWidth: 0,
@@ -517,7 +541,7 @@ export const MyConmo = () => {
             {
                 label: "Reservado",
                 data: saveBarData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
+                backgroundColor: ["rgb(27, 100, 113)"],
             },
             {
                 label: "Gastos fijos",
@@ -546,8 +570,8 @@ export const MyConmo = () => {
             {
                 label: "Reservado",
                 data: saveBarData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
-                borderColor: ["rgb(40, 124, 147)"],
+                backgroundColor: ["rgb(27, 100, 113)"],
+                borderColor: ["rgb(27, 100, 113)"],
                 tension: 0.2,
                 pointRadius: 1,
             },
@@ -714,7 +738,7 @@ export const MyConmo = () => {
             {
                 label: "Reservado",
                 data: saveBarAnualData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
+                backgroundColor: ["rgb(27, 100, 113)"],
             },
             {
                 label: "Gastos fijos",
@@ -743,8 +767,8 @@ export const MyConmo = () => {
             {
                 label: "Reservado",
                 data: saveBarAnualData.map((data) => data.value),
-                backgroundColor: ["rgb(40, 124, 147)"],
-                borderColor: ["rgb(40, 124, 147)"],
+                backgroundColor: ["rgb(27, 100, 113)"],
+                borderColor: ["rgb(27, 100, 113)"],
                 tension: 0.2,
                 pointRadius: 1,
             },

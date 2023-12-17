@@ -29,7 +29,7 @@ ChartJS.register(
     Legend,
 );
 
-export const AnualSavesPie = (props) => {
+export const AnualUsagePie = (props) => {
     
     const { store, actions } = useContext(Context);
 
@@ -44,12 +44,12 @@ export const AnualSavesPie = (props) => {
 
     useEffect(() => {
         const transformData = async () => {
-        await actions.getSaves();
+        await actions.getUsage();
 
-        const filteredSaves = filterDataByYear(store.saves, props.selectedYear);
+        const filteredUsage = filterDataByYear(store.usages, props.selectedYear);
 
         const totals = {};
-        filteredSaves.forEach(({ value, category }) => {
+        filteredUsage.forEach(({ value, category }) => {
             const categoryName = category.name;
             totals[categoryName] = (totals[categoryName] || 0) + value;
         });
@@ -65,13 +65,13 @@ export const AnualSavesPie = (props) => {
             {
                 data: Object.values(categoryTotals),
                 backgroundColor: [
-                    "rgb(62, 229, 237)",
-                    "rgb(13, 180, 186)",
-                    "rgb(7, 128, 139)",
-                    "rgb(27, 100, 113)",
-                    "rgb(27, 113, 113)",
-                    "rgb(6, 151, 156)",
-                    "rgb(64, 170, 184)",
+                    "rgb(108, 181, 223)",
+                    "rgb(34, 147, 199)",
+                    "rgb(3, 104, 144)",
+                    "rgb(23, 87, 123)",
+                    "rgb(29, 126, 167)",
+                    "rgb(8, 168, 212)",
+                    "rgb(72, 183, 224)",
                 ],
                 borderWidth: 0,
             },
@@ -94,7 +94,7 @@ export const AnualSavesPie = (props) => {
                     <Pie data={data} options={options} />
                 </>
                 ) : (
-                <p>No hay reservas en este año.</p>
+                <p>No hay gastos en este año.</p>
                 )}
             </div>
         </>

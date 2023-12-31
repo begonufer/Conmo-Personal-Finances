@@ -1,24 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
+import { calculatePercentage, filterDataByMonthYear } from '../pages/utils.jsx';
 
 
 export const Resume = (props) => {
     
     const { store, actions } = useContext(Context);
-
-    const calculatePercentage = (amount, total) => {
-        if (total === 0) {
-            return 0;
-        }
-        return ((amount / total) * 100).toFixed(0);
-    };
-
-    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
-        return data.filter((item) => {
-            const date = new Date(item.dateTime);
-            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
-        });
-    };
 
     const [incomeCategoryTotals, setIncomeCategoryTotals] = useState({});
     const [fixedCategoryTotals, setFixedCategoryTotals] = useState({});
@@ -77,6 +64,8 @@ export const Resume = (props) => {
             const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
             const filteredOcassional = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear);
 
+            dataFilteredByCategory(filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional);
+
             const filterAllDataBeforeMonth = (data, selectedMonthIndex, selectedYear) => {
                 return data.filter(item => {
                     const itemDate = new Date(item.dateTime);
@@ -96,8 +85,6 @@ export const Resume = (props) => {
             }, {});
             
             setSavesBalance(saveBalance);
-            
-            dataFilteredByCategory(filteredIncome, filteredSave, filteredUsage, filteredFixed, filteredOcassional);
         };
         transformData();
     }, [props.selectedMonthIndex, props.selectedYear, props.previousMonthIndex]);

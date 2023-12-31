@@ -83,7 +83,8 @@ export const MovementsList = () => {
                         <div className="col">Balance</div>
                     </div>
                     {allMovements.map((movement) => (  
-                        <div key={movement.id} className="row movements-list lh-lg">
+                        <div key={movement.index} className="row movements-list lh-lg"> 
+                        {/* //cambiado temporalmente de movement.id a movement.index, pendiente de revisión// */}
                             <div className="col">{movement.dateTime.toLocaleDateString()}</div>
                             <div className={getTableRowClass(movement.type)}>{movement.type}</div>
                             <div className="col">{movement.category}</div>

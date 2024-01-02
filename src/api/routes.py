@@ -261,19 +261,42 @@ def get_ocassionals():
 
 #Añade un ahorro  comprobar funcionamiento
 
-@api.route('/save', methods= ['POST'])
+
+@api.route('/save', methods=['POST'])
 @jwt_required()
 def add_saves():
-    save = Save()
-    save.user_id = get_jwt_identity()
-    save.value = request.json.get("value",None)    
-    save.category_id = request.json.get("ocassionalcategory_id",None)
-    category = OcassionalCategory.query.filter_by(id=ocassional.ocassionalcategory_id).first()
-    save.category = category
-    save.dateTime = datetime.strptime(request.json.get("dateTime"), "%Y-%m-%d").date()
-    db.session.add(save)
-    db.session.commit()
-    return jsonify(save.serialize()),200
+    try:
+        user_id = get_jwt_identity()
+
+        value = request.json.get("value")
+        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
+        datetime_str = request.json.get("dateTime")
+        
+        # Verificar que los campos requeridos estén presentes
+        if value is None or ocassionalcategory_id is None or datetime_str is None:
+            return jsonify({"error": "Campos incompletos"}), 400
+
+        # Obtener la categoría ocassional
+        category = OcassionalCategory.query.get(ocassionalcategory_id)
+        if not category:
+            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
+
+        # Crear una instancia de Save
+        save = Save(
+            user_id=user_id,
+            value=value,
+            category=category,
+            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
+        )
+
+        # Agregar y confirmar la transacción en la base de datos
+        db.session.add(save)
+        db.session.commit()
+
+        return jsonify(save.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 #Obtiene los gastos ocasionales
@@ -305,3 +328,103 @@ def get_usages():
     user_id = get_jwt_identity() 
     usages = Usage.query.filter_by(user_id=user_id).all()
     return jsonify([usage.serialize() for usage in usages])
+
+
+
+@api.route('/usage', methods=['POST'])
+@jwt_required()
+def add_usages():
+    try:
+        user_id = get_jwt_identity()
+
+        value = request.json.get("value")
+        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
+        datetime_str = request.json.get("dateTime")
+        
+        # Verificar que los campos requeridos estén presentes
+        if value is None or ocassionalcategory_id is None or datetime_str is None:
+            return jsonify({"error": "Campos incompletos"}), 400
+
+        # Obtener la categoría ocassional
+        category = OcassionalCategory.query.get(ocassionalcategory_id)
+        if not category:
+            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
+
+        # Crear una instancia de Save
+        usage = Usage(
+            user_id=user_id,
+            value=value,
+            category=category,
+            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
+        )
+
+        # Agregar y confirmar la transacción en la base de datos
+        db.session.add(usage)
+        db.session.commit()
+
+        return jsonify(save.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+@api.route('/ocassionalcategory', methods=['POST'])
+@jwt_required()
+def add_ocassional_category():
+    try:
+        user_id = get_jwt_identity()
+        category_name = request.json.get("value", None)
+
+        if not category_name:
+            return jsonify({"error": "Nombre de categoría necesario"}), 400
+
+        new_category = OcassionalCategory(name=category_name, user_id=user_id)
+        db.session.add(new_category)
+        db.session.commit()
+
+        return jsonify(new_category.serialize()), 201
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": "Error al agregar la categoría ocasional"}), 500
+
+
+@api.route('/fixedcategory', methods=['POST'])
+@jwt_required()
+def add_fixed_category():
+    try:
+        user_id = get_jwt_identity()
+        category_name = request.json.get("value", None)
+
+        if not category_name:
+            return jsonify({"error": "Nombre de categoría necesario"}), 400
+
+        new_category = FixedCategory(name=category_name, user_id=user_id)
+        db.session.add(new_category)
+        db.session.commit()
+
+        return jsonify(new_category.serialize()), 201
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": "Error al agregar la categoría fijo"}), 500
+
+
+@api.route('/incomecategory', methods=['POST'])
+@jwt_required()
+def add_income_category():
+    try:
+        user_id = get_jwt_identity()
+        category_name = request.json.get("value", None)
+
+        if not category_name:
+            return jsonify({"error": "Nombre de categoría necesario"}), 400
+
+        new_category = IncomeCategory(name=category_name, user_id=user_id)
+        db.session.add(new_category)
+        db.session.commit()
+
+        return jsonify(new_category.serialize()), 201
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": "Error al agregar la categoría ingreso"}), 500
+

@@ -204,7 +204,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...getStore(), ocassionals });
             },
 
-			setSave: async (dateTime,ocassionalcategory_id,value) => {
+			setSaved: async (dateTime,ocassionalcategory_id,value) => {
 				const store = getStore();
 				const response = await fetch (process.env.BACKEND_URL + "api/save", {
 					method: "POST",
@@ -221,6 +221,79 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const save = await response.json()
 				setStore({...store, save})
 			},
+
+			setOcassionalCategory: async (value) => {
+				try {
+				   const response = await fetch(process.env.BACKEND_URL + "api/ocassionalcategory", {
+					  method: "POST",
+					  headers: {
+						 "Content-Type": "application/json",
+						 "Authorization": `Bearer ${localStorage.getItem('token')}`
+					  },
+					  body: JSON.stringify({ value })
+				   });
+			 
+				   if (!response.ok) {
+					  const errorText = await response.text();
+					  throw new Error(`Error al agregar la categoría ocasional. Estado: ${response.status}. Detalles: ${errorText}`);
+				   }
+			 
+				   const newCategory = await response.json();
+				   return newCategory;
+				} catch (error) {
+				   console.error("Error al agregar la categoría ocasional:", error);
+				   throw error;
+				}
+			},
+
+			setFixedCategory: async (value) => {
+				try {
+				   const response = await fetch(process.env.BACKEND_URL + "api/fixedcategory", {
+					  method: "POST",
+					  headers: {
+						 "Content-Type": "application/json",
+						 "Authorization": `Bearer ${localStorage.getItem('token')}`
+					  },
+					  body: JSON.stringify({ value })
+				   });
+			 
+				   if (!response.ok) {
+					  const errorText = await response.text();
+					  throw new Error(`Error al agregar la categoría fijo. Estado: ${response.status}. Detalles: ${errorText}`);
+				   }
+			 
+				   const newCategory = await response.json();
+				   return newCategory;
+				} catch (error) {
+				   console.error("Error al agregar la categoría fijo:", error);
+				   throw error;
+				}
+			},
+
+			setIncomeCategory: async (value) => {
+				try {
+				   const response = await fetch(process.env.BACKEND_URL + "api/incomecategory", {
+					  method: "POST",
+					  headers: {
+						 "Content-Type": "application/json",
+						 "Authorization": `Bearer ${localStorage.getItem('token')}`
+					  },
+					  body: JSON.stringify({ value })
+				   });
+			 
+				   if (!response.ok) {
+					  const errorText = await response.text();
+					  throw new Error(`Error al agregar la categoría ingreso. Estado: ${response.status}. Detalles: ${errorText}`);
+				   }
+			 
+				   const newCategory = await response.json();
+				   return newCategory;
+				} catch (error) {
+				   console.error("Error al agregar la categoría ingreso:", error);
+				   throw error;
+				}
+			},
+			 
 
 			getSaves: async() => {
                 const response = await fetch (process.env.BACKEND_URL + "api/save", {
@@ -246,6 +319,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...getStore(), usages });
             },
 
+
+
 			// setSaveUsage: async (dateTime,ocassionalcategory_id,value) => {
 			// 	const store = getStore();
 			// 	const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {
@@ -263,6 +338,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 	const saveusage = await response.json()
 			// 	setStore({...store, saveusage})
 			// },
+			setUsage: async (dateTime,ocassionalcategory_id,value) => {
+				const store = getStore();
+				const response = await fetch (process.env.BACKEND_URL + "api/usage", {
+					method: "POST",
+					headers: {
+						"Content-Type":"application/json",
+						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					},
+					body: JSON.stringify({
+						value,
+						ocassionalcategory_id,
+						dateTime,
+					})
+				})
+				const usage = await response.json()
+				setStore({...store, usage})
+			},
 
 			// getSavesUsage: async() => {
             //     const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {

@@ -1,6 +1,8 @@
 import React from "react";
 import "../../styles/addbutton.css";
 import { AddIncomeModal } from "../component/addincomemodal.jsx";
+import { AddSavedModal } from "../component/addsavedmodal.jsx";
+import { AddUsageModal } from "../component/addusagemodal.jsx";
 import { AddVariableModal } from "../component/addvariablemodal.jsx";
 import { AddFixedModal } from "../component/addfixedmodal.jsx";
 
@@ -10,9 +12,19 @@ export const AddButton = () => {
             <div className="group-floating-button">
                 <ul className="sub-buttons">
                     <input type="checkbox" id="all-buttons-up" className="all-buttons-up-toggle" name="all-buttons-up-toggle" />
-                    <li className="boton" id="boton3">
+                    <li className="boton" id="boton5">
                         <button href="#" title="Añadir ingreso" type="button" data-bs-toggle="modal" data-bs-target="#incomeModal">
                             <i className="fa-solid fa-landmark"></i>
+                        </button>
+                    </li>
+                    <li className="boton" id="boton4">
+                        <button href="#" title="Añadir reserva" type="button" data-bs-toggle="modal" data-bs-target="#savedModal">
+                            <i className="fa-solid fa-box"></i>
+                        </button>
+                    </li>
+                    <li className="boton" id="boton3">
+                        <button href="#" title="Añadir uso de reservado" type="button" data-bs-toggle="modal" data-bs-target="#usageModal">
+                            <i className="fa-solid fa-box-open"></i>
                         </button>
                     </li>
                     <li className="boton" id="boton2">
@@ -35,6 +47,8 @@ export const AddButton = () => {
                 </ul>
             </div>
             <AddIncomeModal />
+            <AddSavedModal />
+            <AddUsageModal />
             <AddVariableModal />
             <AddFixedModal />
         </>

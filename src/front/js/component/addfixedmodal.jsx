@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { AddFixedCategoryModal } from "../component/addfixedcategory.jsx";
 import { Link } from "react-router-dom";
 import "../../styles/forms.css";
 
@@ -54,12 +55,14 @@ export const AddFixedModal = () => {
                                                     </option>
                                                 );
                                             })}
-                                            <option>Nueva categoría</option>
                                         </select>
                                     </div>
                                     <input type="text" className="col-2 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="€" onChange={(e) => {updateValue(e.target.value);}}/>
                                     <input type="text" className="col-2 rounded-0 border-1" id="inputPercentage" placeholder="%"/>
                                 </div>
+                                <button className="mt-5" title="Añadir categoría" type="button" data-bs-toggle="modal" data-bs-target="#fixedCategoryModal">
+                                    Añadir una nueva categoría
+                                </button>
                             </div>
                             <div className="row mx-0 px-0 mt-5 pt-3 justify-content-center align-bottom ">
                                 <button className="btn-add-form col-3 btn btn-lg m-3 py-3 fs-3 rounded-pill text-white" onClick={() => addFixed()} data-bs-dismiss="modal">
@@ -70,6 +73,7 @@ export const AddFixedModal = () => {
                     </div>
                 </div>
             </div>
+            <AddFixedCategoryModal />
         </>
     );
 };

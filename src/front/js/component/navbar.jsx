@@ -5,18 +5,74 @@ import "../../styles/welcome.css";
 
 export const Navbar = () => {
 
+    
     const { store, actions } = useContext(Context);
 
-    const logout = () => {
-        actions.clearUser();
-    }
-    
     const calculatePercentage = (amount, total) => {
         if (total === 0) {
             return 0;
         }
         return ((amount / total) * 100).toFixed(0);
-    }; //usar esta función como función general
+    };
+
+    const calculateAverage = (monthlyValues) => {
+        return (monthlyValues / 12).toFixed(2); 
+    };
+
+    const [categoryTotals, setCategoryTotals] = useState({});
+    const [usageCategoryTotals, setUsageCategoryTotals] = useState({});
+
+
+    useEffect(() => {
+        const transformData = async () => {
+            
+            await actions.getIncomes();
+            await actions.getSaves();
+            await actions.getUsage();
+
+            const filteredSave = store.saves
+            const filteredUsage = store.usages
+
+            const totals = {};
+            filteredSave.forEach(({ value, category }) => {
+                const categoryName = category.name;
+                totals[categoryName] = (totals[categoryName] || 0) + value;
+            });
+
+            const usageTotals = {};
+            filteredUsage.forEach(({ value, category }) => {
+                const categoryName = category.name;
+                usageTotals[categoryName] = (usageTotals[categoryName] || 0) + value;
+            });
+
+            setCategoryTotals(totals);
+            setUsageCategoryTotals(usageTotals);
+        };
+
+        transformData();
+    }, []);
+
+
+    const selectedAmount = store.saves.reduce((total, save) => total + save.value, 0);
+
+    const selectedUsageAmount = store.usages.reduce((total, usage) => total + usage.value, 0);
+
+    const selectedIncomeAmount = store.incomes.reduce((total, income) => total + income.value, 0);
+
+    const balance = selectedAmount - selectedUsageAmount;
+
+    const totalIncomes = store.incomes.reduce((sum, income) => sum + income.value, 0);
+    const totalFixedExpenses = store.fixes.reduce((sum, fix) => sum + fix.value, 0);
+    const totalSaves = store.saves.reduce((sum, save) => sum + save.value, 0);
+    const totalOcassionals = store.ocassionals.reduce((sum, ocassional) => sum + ocassional.value, 0);
+
+    const currentBalance = totalIncomes - (totalFixedExpenses + totalSaves + totalOcassionals);
+
+
+    const logout = () => {
+        actions.clearUser();
+    }
+    
 
     const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
         return data.filter((item) => {
@@ -135,7 +191,7 @@ export const Navbar = () => {
                             </div>
                             <div className="available row rounded-pill text-white pb-2 pt-3 mb-2 align-items-center text-center">
                                 <h4 className="col">Disponible</h4>
-                                <h4 className="col"><strong>747€</strong></h4>
+                                <h4 className="col"><strong>{currentBalance.toFixed(2)} €</strong></h4>
                             </div>
                             <div className="dropdown">
                                 <div 
@@ -146,21 +202,21 @@ export const Navbar = () => {
                                     aria-expanded="false"
                                 >
                                     <h4 className="col">Reservado</h4>
-                                    <h4 className="col"><strong>{savesBalanceTotal} €</strong></h4>
+                                    <h4 className="col"><strong>{balance.toFixed(2)} €</strong></h4>
                                 </div>
-                                <ul className="dropdown-menu available p-4 fs-5 text-white" aria-labelledby="savesDetails">
-                                    {Object.entries(saveCategoryTotals).map(([category, total]) => (
-                                        <li className="row available text-center p-0 m-0" key={category}>
-                                            <p className="col text-center">{category}</p>
-                                            <p className="col text-center">{total} €</p>
-                                        </li>
+                                <ul className="dropdown-menu available p-4 fs-5 text-center text-white" aria-labelledby="savesDetails">
+                                    {Object.entries(categoryTotals).map(([category, total]) => (
+                                        <div key={category} className="row fs-5 lh-lg">
+                                            <div className="col fw-bold ">{category}</div>
+                                            <div className="col text-right">{(total - usageCategoryTotals[category] || total).toFixed(2)} €</div>
+                                        </div>
                                     ))}
                                 </ul>
                             </div>
                             <div className="d-flex flex-column position-absolute bottom-0 ">
-                                <Link to="/settings" className="pb-5 px-3 fs-4 p-1 text-decoration-none">
+                                {/* <Link to="/settings" className="pb-5 px-3 fs-4 p-1 text-decoration-none">
                                     <i className="fa-solid fa-gear"></i> <span className="ms-1 d-none d-sm-inline">Configuración</span>
-                                </Link>
+                                </Link> */}
                                 <Link to="/" className="pb-5 px-3 fs-4 p-1 mb-3 text-decoration-none" onClick={() => logout()}>
                                     <i className="fa-solid fa-right-from-bracket"></i> <span className="ms-1 d-none d-sm-inline">Sign out</span>
                                 </Link>

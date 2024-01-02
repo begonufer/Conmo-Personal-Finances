@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear } from '../pages/utils.jsx';
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth } from '../pages/utils.jsx';
 
 
 export const Resume = (props) => {
@@ -85,6 +85,7 @@ export const Resume = (props) => {
             }, {});
             
             setSavesBalance(saveBalance);
+            console.log(props.previousMonthIndex)
         };
         transformData();
     }, [props.selectedMonthIndex, props.selectedYear, props.previousMonthIndex]);
@@ -95,7 +96,12 @@ export const Resume = (props) => {
     const totalFixedMonthAmount = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
     const totalOcassionalMonthAmount = filterDataByMonthYear(store.ocassionals, props.selectedMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
  
-    const previousMonthAmount = props.previousMonthAmount;
+    const allPreviousMonthIncome = filterAllDataPreviousMonth(store.incomes, props.previousMonthIndex, props.selectedYear).reduce((total, income) => total + income.value, 0);
+    const allPreviousMonthSave = filterAllDataPreviousMonth(store.saves, props.previousMonthIndex, props.selectedYear).reduce((total, save) => total + save.value, 0);
+    const allPreviousMonthFixed = filterAllDataPreviousMonth(store.fixes, props.previousMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
+    const allPreviousMonthOcassional = filterAllDataPreviousMonth(store.ocassionals, props.previousMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
+
+    const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
 
     const balance = previousMonthAmount + totalIncomeMonthAmount;
     const balanceBeforeSaves = balance - totalSaveMonthAmount;
@@ -119,7 +125,7 @@ export const Resume = (props) => {
                     </div>
                     <div className="text-center justify-content-center align-items-center p-3">
                         <div className="row">
-                            <div className="col">{props.previousMonth} <i className="fas fa-arrow-right"></i> {previousMonthAmount} €</div>
+                            <div className="col">{props.previousMonth} <i className="fas fa-arrow-right"></i> {previousMonthAmount.toFixed(2)} €</div>
                             <div className="col">{totalIncomeMonthAmount} €</div>
                         </div>
                     </div>
@@ -249,7 +255,7 @@ export const Resume = (props) => {
                                 <div className="text-center text-white justify-content-center align-items-center p-3" id="table-fixed">
                                     <div className="row fw-bold fs-6">
                                         <div className="col">LIBRE</div>
-                                        <div className="col">{balanceBeforeFixed} €</div>
+                                        <div className="col">{balanceBeforeFixed.toFixed(2)} €</div>
                                         <div className="col">{calculatePercentage(balanceBeforeFixed, totalIncomeMonthAmount)} %</div>
                                     </div>
                                 </div>                                
@@ -287,7 +293,7 @@ export const Resume = (props) => {
                                 <div className="text-center justify-content-center align-items-center p-3" id="table-ocassional">
                                     <div className="row fw-bold fs-6">
                                         <div className="col">RESTANTE</div>
-                                        <div className="col">{calculateMonthResult} €</div>
+                                        <div className="col">{calculateMonthResult.toFixed(2)} €</div>
                                         <div className="col">{calculatePercentage(calculateMonthResult, totalIncomeMonthAmount)} %</div>
                                     </div>
                                 </div>

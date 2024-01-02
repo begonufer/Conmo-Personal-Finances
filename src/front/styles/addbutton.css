@@ -46,6 +46,16 @@ ul {
 	transition: bottom .6s ease;
 }
 
+.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+	bottom: 495%;
+	transition: bottom .6s ease;
+}
+
+.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+	bottom: 610%;
+	transition: bottom .6s ease;
+}
+
 .sub-buttons .all-buttons-up-toggle:checked ~ .main-button span {
 	transform: rotate(-45deg);
 	transition: transform .35s ease;

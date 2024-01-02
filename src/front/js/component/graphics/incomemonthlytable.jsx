@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import { format } from "date-fns";
 import es from "date-fns/locale/es";
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth } from '../../pages/utils.jsx';
+
 
 export const MonthlyIncomeTable = (props) => {
     const { store, actions } = useContext(Context);
@@ -14,10 +16,22 @@ export const MonthlyIncomeTable = (props) => {
     };
 
     const [categoryTotals, setCategoryTotals] = useState({});
+    const [previousMonthAmount, setPreviousMonthAmount] =  useState([]);
 
     useEffect(() => {
         const transformData = async () => {
             await actions.getIncomes();
+            await actions.getSaves();
+            await actions.getFixes();
+            await actions.getOcassionals();
+
+            const allPreviousMonthIncome = filterAllDataPreviousMonth(store.incomes, props.previousMonthIndex, props.selectedYear).reduce((total, income) => total + income.value, 0);
+            const allPreviousMonthSave = filterAllDataPreviousMonth(store.saves, props.previousMonthIndex, props.selectedYear).reduce((total, save) => total + save.value, 0);
+            const allPreviousMonthFixed = filterAllDataPreviousMonth(store.fixes, props.previousMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
+            const allPreviousMonthOcassional = filterAllDataPreviousMonth(store.ocassionals, props.previousMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
+        
+            const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
+
             const filteredIncome = store.incomes.filter((data) => {
                 const date = new Date(data.dateTime);
                 return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
@@ -28,14 +42,13 @@ export const MonthlyIncomeTable = (props) => {
                 const categoryName = incomecategory.name;
                 totals[categoryName] = (totals[categoryName] || 0) + value;
             });
-
+            setPreviousMonthAmount(previousMonthAmount);
             setCategoryTotals(totals);
         };
 
         transformData();
-    }, [props.selectedMonthIndex, props.selectedYear]);
+    }, [props.selectedMonthIndex,  props.previousMonthIndex, props.selectedYear]);
 
-    const previousMonthAmount = 587;
     const selectedMonthAmount = store.incomes
         .filter((data) => {
             const date = new Date(data.dateTime);

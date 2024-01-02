@@ -1,37 +1,37 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { AddIncomeCategoryModal } from "../component/addincomecategory.jsx";
+import { AddCategoryModal } from "../component/addcategory.jsx";
 import { Link } from "react-router-dom";
 import "../../styles/forms.css";
 
-export const AddIncomeModal = () => {
+export const AddSavedModal = () => {
     const { store, actions } = useContext(Context);
     useEffect(() => {
-      actions.getIncomeCategories();
+        actions.getOcassionalCategories();
     }, []);
 
     const [value, setValue] = useState("");
-    const [incomecategory_id, setIncomecategory_id] = useState("");
+    const [savedCategory_id, setSavedCategory_id] = useState("");
     const [dateTime, setDateTime] = useState("");
     const updateValue = (valueInputValue) => {
       setValue(valueInputValue);
     };
-    const updateIncomeCategory = (categoryInputValue) => {
-      setIncomecategory_id(categoryInputValue);
+    const updateSavedCategory = (categoryInputValue) => {
+      setSavedCategory_id(categoryInputValue);
     };
     const updateDateTime = (dateTimeInputValue) => {
       setDateTime(dateTimeInputValue);
     };
 
-    const addincome = async () => {
-      await actions.setIncome(dateTime, incomecategory_id, value);
-      console.log(store.incomes);
+    const addsaved = async () => {
+      await actions.setSaved(dateTime, savedCategory_id, value);
+      console.log(store.saves);
       window.location.reload();
     };
 
     return (
         <>
-            <div className="modal fade" id="incomeModal" tabIndex="-1" aria-labelledby="incomeModalLabel" aria-hidden="true">
+            <div className="modal fade" id="savedModal" tabIndex="-1" aria-labelledby="savedModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-body p-0 m-0">
@@ -40,19 +40,19 @@ export const AddIncomeModal = () => {
                             </button>
                             <div>
                                 <h1 className="text-center text-white p-4 mb-2" id="add-title">
-                                    Añade un ingreso
+                                    Añade una reserva
                                 </h1>
                             </div>
                             <div className="justify-content-center align-items-center text-center mt-2 pt-4 pb-5 mb-5">
                                 <div className="row mt-5 mx-0 px-0 justify-content-center text-center">
                                     <input type="date" className="col-3 rounded-0 border-1 " id="inputDate" placeholder="Fecha" onChange={(e) => { updateDateTime(e.target.value); }} />
                                     <div className="col-6">
-                                        <select id="inputCategory" className="w-100 rounded-0" onChange={(e) => {updateIncomeCategory(e.target.value);}}>
+                                        <select id="inputCategory" className="w-100 rounded-0" onChange={(e) => {updateSavedCategory(e.target.value);}}>
                                             <option>Selecciona una categoría</option>
-                                            {store.incomecategories?.map((incomecategory) => {
+                                            {store.ocassionalcategories?.map((ocassionalcategory) => {
                                                 return (
-                                                    <option key={incomecategory.id} value={incomecategory.id}>
-                                                        {incomecategory.name}
+                                                    <option key={ocassionalcategory.id} value={ocassionalcategory.id}>
+                                                        {ocassionalcategory.name}
                                                     </option>
                                                 );
                                             })}
@@ -60,7 +60,7 @@ export const AddIncomeModal = () => {
                                     </div>
                                     <input type="text" className="col-2 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="€" onChange={(e) => {updateValue(e.target.value);}}/>
                                 </div>
-                                <button className="mt-5" title="Añadir categoría" type="button" data-bs-toggle="modal" data-bs-target="#incomeCategoryModal">
+                                <button className="mt-5" title="Añadir categoría" type="button" data-bs-toggle="modal" data-bs-target="#categoryModal">
                                     Añadir una nueva categoría
                                 </button>
                             </div>
@@ -99,7 +99,7 @@ export const AddIncomeModal = () => {
                                 </div>
                             </div> */}
                             <div className="row mx-0 px-0 mt-5 pt-3 justify-content-center align-bottom ">
-                                <button className="btn-add-form col-3 btn btn-lg m-3 mb-4 py-3 fs-3 rounded-pill text-white" onClick={() => addincome()} data-bs-dismiss="modal">
+                                <button className="btn-add-form col-3 btn btn-lg m-3 mb-4 py-3 fs-3 rounded-pill text-white" onClick={() => addsaved()} data-bs-dismiss="modal">
                                     Añadir
                                 </button>
                             </div>
@@ -107,7 +107,7 @@ export const AddIncomeModal = () => {
                     </div>
                 </div>
             </div>
-            <AddIncomeCategoryModal />
+            <AddCategoryModal />
         </>
     );
 };

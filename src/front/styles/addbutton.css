@@ -1,3 +1,89 @@
+@media (max-width: 768px) {
+    .mobile-text {
+        font-size: 14px; /* Tamaño de letra más pequeño para pantallas móviles */
+    }
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		bottom: 150%;
+		transition: bottom .5s ease;
+	}
+	
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		bottom: 265%;
+		transition: bottom .6s ease;
+	}
+	
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		bottom: 380%;
+		transition: bottom .6s ease;
+	}
+	
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		bottom: 495%;
+		transition: bottom .6s ease;
+	}
+	
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		bottom: 610%;
+		transition: bottom .6s ease;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+/* Estilos para pantallas medianas (por ejemplo, tablets) */
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		right: 150%;
+		transition: right .5s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		right: 265%;
+		transition: right .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		right: 380%;
+		transition: right .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		right: 495%;
+		transition: right .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		right: 610%;
+		transition: right .6s ease;
+	}
+}
+
+@media (min-width: 1201px) {
+/* Estilos para pantallas grandes (por ejemplo, escritorios) */
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		bottom: 150%;
+		transition: bottom .5s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		bottom: 265%;
+		transition: bottom .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		bottom: 380%;
+		transition: bottom .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		bottom: 495%;
+		transition: bottom .6s ease;
+	}
+
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		bottom: 610%;
+		transition: bottom .6s ease;
+	}
+}
+
 ul {
 	margin: 0;
 	padding: 0;
@@ -31,30 +117,7 @@ ul {
 	box-shadow: 5px 5px 10px #33333387;
 }
 
-.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
-    bottom: 150%;
-    transition: bottom .5s ease;
-}
 
-.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
-	bottom: 265%;
-	transition: bottom .6s ease;
-}
-
-.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
-	bottom: 380%;
-	transition: bottom .6s ease;
-}
-
-.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
-	bottom: 495%;
-	transition: bottom .6s ease;
-}
-
-.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
-	bottom: 610%;
-	transition: bottom .6s ease;
-}
 
 .sub-buttons .all-buttons-up-toggle:checked ~ .main-button span {
 	transform: rotate(-45deg);

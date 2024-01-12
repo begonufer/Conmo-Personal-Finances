@@ -80,8 +80,8 @@ const TypeTables = ({
     previousMonth
 }) => (
     <div className="d-block w-100 h-100 align-items-center">
-        <div className="row justify-content-center align-items-center m-5">
-            <div className="col-4 text-center align-self-center">
+        <div className="row justify-content-center align-items-center m-md-5 my-5 mx-1">
+            <div className="col-4 text-center d-none d-md-block align-self-center">
                 <img src={peggyConmo} className="w-100" alt="Conmo" />
             </div>
             <AllDataTypeTable
@@ -100,54 +100,52 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
     return(
         <>
-            <div className="d-block w-100 h-100 align-items-center">
-                <div className="row justify-content-center pb-5 mx-5">
-                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
-                    <div className="col-4 text-center my-3">
-                        <MonthlyPie
-                            dataFunctions={[actions.getFixes]}
-                            types={['fixes']}
-                            categoryKeys={['fixedcategory']}
-                            colors={[fixedColors]}
-                            typeNames={['Gasto fijo']}
-                            selectedMonthIndex={selectedMonthIndex}
-                            selectedYear={selectedYear}
-                        />
-                    </div>
-                    <div className="col-7 ms-5 align-self-center my-3">
-                        <MonthlyBarTypes
-                            dataFunctions={[actions.getFixes]}
-                            types={['fixes']}
-                            colors={[fixedTypeColor]}
-                            typeNames={['Gastos fijos']}
-                            selectedMonthIndex={selectedMonthIndex}
-                            selectedYear={selectedYear}
-                            renderAsDataBar={true}
-                        />
-                    </div>
+            <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
+                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
+                <div className="col-md-4 text-center my-md-3 p-md-4 px-5">
+                    <MonthlyPie
+                        dataFunctions={[actions.getFixes]}
+                        types={['fixes']}
+                        categoryKeys={['fixedcategory']}
+                        colors={[fixedColors]}
+                        typeNames={['Gasto fijo']}
+                        selectedMonthIndex={selectedMonthIndex}
+                        selectedYear={selectedYear}
+                    />
                 </div>
-                <div className="row justify-content-center pb-5 mx-5">
-                    <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Anual</h2>
-                    <div className="col-4 text-center my-3">
-                        <AnualPie
-                            dataFunctions={[actions.getFixes]}
-                            types={['fixes']}
-                            categoryKeys={['fixedcategory']}
-                            colors={[fixedColors]}
-                            typeNames={['Gasto fijo']}
-                            selectedYear={selectedYear}
-                        /> 
-                    </div>
-                    <div className="col-7 ms-5 align-self-center my-3">
-                        <AnualBarTypes
-                            dataFunctions={[actions.getFixes]}
-                            types={['fixes']}
-                            colors={[fixedTypeColor]}
-                            typeNames={['Gastos fijos']}
-                            selectedYear={selectedYear}
-                            renderAsDataBar={true}
-                        /> 
-                    </div>
+                <div className="col-md-7 ms-md-5 align-self-center my-3">
+                    <MonthlyBarTypes
+                        dataFunctions={[actions.getFixes]}
+                        types={['fixes']}
+                        colors={[fixedTypeColor]}
+                        typeNames={['Gastos fijos']}
+                        selectedMonthIndex={selectedMonthIndex}
+                        selectedYear={selectedYear}
+                        renderAsDataBar={true}
+                    />
+                </div>
+            </div>
+            <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
+                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Anual</h2>
+                <div className="col-md-4 text-center my-md-3 p-md-4 px-5">
+                    <AnualPie
+                        dataFunctions={[actions.getFixes]}
+                        types={['fixes']}
+                        categoryKeys={['fixedcategory']}
+                        colors={[fixedColors]}
+                        typeNames={['Gasto fijo']}
+                        selectedYear={selectedYear}
+                    /> 
+                </div>
+                <div className="col-md-7 ms-md-5 align-self-center my-3">
+                    <AnualBarTypes
+                        dataFunctions={[actions.getFixes]}
+                        types={['fixes']}
+                        colors={[fixedTypeColor]}
+                        typeNames={['Gastos fijos']}
+                        selectedYear={selectedYear}
+                        renderAsDataBar={true}
+                    /> 
                 </div>
             </div>
         </>

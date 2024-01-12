@@ -29,40 +29,63 @@ export const MovementsListExpenses = () => {
       transformData();
     }, []);
 
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767); // Estado para seguir el tamaño de la pantalla
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth <= 767);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     function getTableRowClass(type) {
         switch (type) {
             case 'Uso de reservado':
-                return 'col usage-movements';
+                return 'col mobile-text usage-movements';
             case 'Gasto fijo':
-                return 'col fixed-movements';
+                return 'col mobile-text fixed-movements';
             case 'Gasto ocasional':
-                return 'col ocassional-movements';
+                return 'col mobile-text ocassional-movements';
             default:
-                return 'col';
+                return 'col mobile-text';
         }
     }
 
     return (
         <>
-            <div className="mb-5">
+            <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-5">
                 <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
-                <div className="container text-center p-5">
+                <div className="col text-center p-lg-5 p-3 px-4 mx-lg-5 mb-5">
                     <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
-                        <div className="col">Fecha</div>
-                        <div className="col">Tipo</div>
-                        <div className="col">Categoría</div>
-                        <div className="col">Importe</div>
+                        <div className="col mobile-text">Fecha</div>
+                        <div className="col mobile-text">Tipo</div>
+                        <div className="col mobile-text">Categoría</div>
+                        <div className="col mobile-text">Importe</div>
                     </div>
                     {allMovements.map((movement) => (  
-                        <div key={movement.id} className="row movements-list lh-lg">
-                            <div className="col">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className={getTableRowClass(movement.type)}>{movement.type}</div>
-                            <div className="col">{movement.category}</div>
-                            <div className="col text-danger">{`- ${movement.value} €`}</div>
+                        <div key={movement.value} className="row movements-list lh-lg d-flex align-items-center">
+                            <div className="col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
+                            <div className={getTableRowClass(movement.type)}>
+                                {isSmallScreen ? (
+                                    (movement.type === 'Uso de reservado' && 'U') ||
+                                    (movement.type === 'Gasto fijo' && 'F') ||
+                                    (movement.type === 'Gasto ocasional' && 'O') ||
+                                    movement.type
+                                ) : (
+                                    movement.type
+                                )}
+                            </div>
+                            <div className="col mobile-text">{movement.category}</div>
+                            <div className="col mobile-text text-danger">{`- ${movement.value} €`}</div>
                         </div>
                     ))}
                 </div>
             </div>
         </>
-    )
+    );
 }

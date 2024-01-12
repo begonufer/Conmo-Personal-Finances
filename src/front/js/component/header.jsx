@@ -11,14 +11,11 @@ export const Header = (props) => {
 
     return (
         <>
-            <div className="text-center text-white" id="left-background">
-                <h1 className="header p-1 pb-3 pt-5 mt-5 mb-0">
-                    {props.type} <i className="icon fas fa-info-circle" onClick={handleToggle} ></i>
-                </h1>
+            <div className="title-m-top text-center text-white pt-2" id="left-background">
+                <h1 className="header p-1 pb-3">{props.type}<i className="icon fas fa-info-circle ms-3" onClick={handleToggle}></i></h1>
                 <div>
                     <Collapse in={openInfo}>
                         <div className="texto-desplegable">
-                            <h2 className="mt-2">Descripción detallada de la sección.</h2>
                             {props.descriptionText}
                         </div>
                     </Collapse>

@@ -53,18 +53,32 @@ export const MovementsList = () => {
       transformData();
     }, []);
 
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth <= 767);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     function getTableRowClass(type) {
         switch (type) {
             case 'Ingreso':
-                return 'col income-movements';
+                return 'col-md col-1 p-0 income-movements';
             case 'Gasto fijo':
-                return 'col fixed-movements';
+                return 'col-md col-1 p-0 fixed-movements';
             case 'Gasto ocasional':
-                return 'col ocassional-movements';
+                return 'col-md col-1 p-0 ocassional-movements';
             case 'Reservado':
-                return 'col saves-movements';
+                return 'col-md col-1 p-0 saves-movements';
             case 'Uso reservado':
-                return 'col usage-movements';
+                return 'col-md col-1 p-0 usage-movements';
             default:
                 return 'col';
         }
@@ -72,24 +86,37 @@ export const MovementsList = () => {
 
     return (
         <>
-            <div className="container p-4 mb-5">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Listado de movimientos</h2>
-                <div className="container text-center p-5">
+            <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
+                <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
+                <div className="col text-center p-lg-5 p-3 px-4 mx-lg-5 mb-5">
                     <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
-                        <div className="col">Fecha</div>
-                        <div className="col">Tipo</div>
-                        <div className="col">Categoría</div>
-                        <div className="col">Importe</div>
-                        <div className="col">Balance</div>
+                        <div className="col mobile-text">Fecha</div>
+                        <div className="col-md col-1 p-0 mobile-text">Tipo</div>
+                        <div className="col-md col-3 mobile-text">Categoría</div>
+                        <div className="col mobile-text">Importe</div>
+                        <div className="col mobile-text">Balance</div>
                     </div>
                     {allMovements.map((movement) => (  
-                        <div key={movement.index} className="row movements-list lh-lg"> 
-                        {/* //cambiado temporalmente de movement.id a movement.index, pendiente de revisión// */}
-                            <div className="col">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className={getTableRowClass(movement.type)}>{movement.type}</div>
-                            <div className="col">{movement.category}</div>
-                            <div className={movement.type === 'Ingreso' ? 'col text-success' : 'col text-danger'}>{movement.type === 'Ingreso' ? `${movement.value} €` : `- ${movement.value} €`}</div>
-                            <div className="col">{movement.balance} €</div>
+                        <div key={movement.value} className="row movements-list lh-lg d-flex align-items-center">
+                            {isSmallScreen
+                                ? <div className="col mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })}</div>
+                                : <div className="col mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>
+                            }
+                            <div className={getTableRowClass(movement.type)}>
+                                {isSmallScreen ? (
+                                    (movement.type === 'Ingreso' && 'I') ||
+                                    (movement.type === 'Uso reservado' && 'U') ||
+                                    (movement.type === 'Reservado' && 'R') ||
+                                    (movement.type === 'Gasto fijo' && 'F') ||
+                                    (movement.type === 'Gasto ocasional' && 'O') ||
+                                    movement.type
+                                ) : (
+                                    movement.type
+                                )}
+                            </div>
+                            <div className="col-md col-3 mobile-text">{movement.category}</div>
+                            <div className={movement.type === 'Ingreso' ? 'col mobile-text text-success' : 'col mobile-text text-danger'}>{movement.type === 'Ingreso' ? `${movement.value} €` : `- ${movement.value} €`}</div>
+                            <div className="col mobile-text">{movement.balance} €</div>
                         </div>
                     ))}
                 </div>

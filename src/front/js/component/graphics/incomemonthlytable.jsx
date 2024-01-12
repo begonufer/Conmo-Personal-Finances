@@ -63,29 +63,29 @@ export const MonthlyIncomeTable = (props) => {
             <div className="row mx-1 gap-2">
                 <div className="col">
                     <div className="row incomes-bg">
-                        <div className="col p-3 fw-bold">Restos</div>
-                        <div className="col p-3 incomes-part-right fw-normal"> {previousMonthAmount} €</div>
+                        <div className="col p-3 mobile-text fw-bold">Restos</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {previousMonthAmount} €</div>
                     </div>
                 </div>
                 <div className="col">
                     <div className="row incomes-bg">
-                        <div className="col p-3 fw-bold">{props.selectedMonth}</div>
-                        <div className="col p-3 incomes-part-right fw-normal"> {selectedMonthAmount} €</div>
+                        <div className="col p-3 mobile-text fw-bold">{props.selectedMonth}</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {selectedMonthAmount} €</div>
                     </div>
                 </div>
             </div>
             <div className="m-3 my-4">
                 {Object.entries(categoryTotals).map(([category, total]) => (
-                    <div key={category} className="row fs-4 lh-lg">
-                        <div className="col-6 fw-bold ">{category}</div>
-                        <div className="col">{calculatePercentage(total, selectedMonthAmount)} %</div>
-                        <div className="col">{total} €</div>
+                    <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
+                        <div className="col mobile-text fw-bold">{category}</div>
+                        <div className="col mobile-text">{calculatePercentage(total, selectedMonthAmount)} %</div>
+                        <div className="col mobile-text">{total} €</div>
                     </div>
                 ))}
             </div>
             <div className="row incomes-bg mx-1 mt-2">
-                <div className="col p-3 fw-bold">Total</div>
-                <div className="col p-3 incomes-part-right fw-normal"> {totalAmount} €</div>
+                <div className="col mobile-text p-3 fw-bold">Total</div>
+                <div className="col mobile-text p-3 incomes-part-right fw-normal"> {totalAmount} €</div>
             </div>
         </>
     );

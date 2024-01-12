@@ -94,33 +94,33 @@ export const AnualOcassionalTable = (props) => {
             <div className="row mx-1 gap-2">
                 <div className="col">
                     <div className="row text-white ocassional-part-right rounded-pill fw-normal fs-4">
-                        <div className="col p-3 ocassional-bold-bg fw-bold">Total</div>
-                        <div className="col p-3 fw-normal">{totalOcassionalAmount} €</div>
-                        <div className="col p-3 fw-normal">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)} %</div>
+                        <div className="col-md col-auto mobile-text p-3 ocassional-bold-bg fw-bold">Total</div>
+                        <div className="col-md col-auto mobile-text py-3 fw-normal">{totalOcassionalAmount} €</div>
+                        <div className="col-md col-auto mobile-text py-3 fw-normal">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)} %</div>
                     </div>
                 </div>
                 <div className="col">
                     <div className="row text-white ocassional-bg">
-                        <div className="col p-3 fw-bold">Media</div>
-                        <div className="col p-3 ocassional-part-right fw-normal">{calculateAverage(totalOcassionalAmount)} €</div>
+                        <div className="col mobile-text p-3 fw-bold">Media</div>
+                        <div className="col mobile-text p-3 ocassional-part-right fw-normal">{calculateAverage(totalOcassionalAmount)} €</div>
                     </div>
                 </div>
             </div>
             <div className="m-4">
                 {Object.entries(ocassionalCategoryTotals).map(([category, total]) => (
-                    <div className="row fs-4 lh-lg" key={category}>
-                        <div className="col fw-bold">{category}</div>
-                        <div className="col">{total} €</div>
-                        <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                        <div className="col">{calculateAverage(total)} €</div>                          
+                    <div className="row fs-4 lh-lg d-flex align-items-center" key={category}>
+                        <div className="col mobile-text fw-bold">{category}</div>
+                        <div className="col mobile-text">{total} €</div>
+                        <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)} %</div>
+                        <div className="col mobile-text">{calculateAverage(total)} €</div>                          
                     </div>
                 ))}
             </div>
             <div className="row text-white ocassional-part-right rounded-pill fw-normal fs-4 mx-1 mt-4">
-                <div className="col p-3 ocassional-bold-bg fw-bold">Restante</div>
-                <div className="col p-3 fw-normal">{calculateResult} €</div>
-                <div className="col p-3 fw-normal">{calculatePercentage(calculateResult, totalIncomeAmount)} %</div>
-                <div className="col p-3 fw-normal">{calculateAverage(calculateResult)} €</div>
+                <div className="col mobile-text p-3 ocassional-bold-bg fw-bold">Restante</div>
+                <div className="col mobile-text p-3 fw-normal">{calculateResult} €</div>
+                <div className="col mobile-text p-3 fw-normal">{calculatePercentage(calculateResult, totalIncomeAmount)} %</div>
+                <div className="col mobile-text p-3 fw-normal">{calculateAverage(calculateResult)} €</div>
             </div>
         </>
     );

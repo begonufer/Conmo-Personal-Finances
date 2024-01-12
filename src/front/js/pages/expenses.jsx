@@ -252,80 +252,72 @@ const PieChart = ({peggyConmo, selectedMonth, selectedMonthIndex, selectedYear})
         <>
             <div className="d-block w-100 h-100 align-items-center">
                 <div className="row justify-content-center align-items-center mx-5">
-                    <div className="col-4 text-center align-self-center">
+                    <div className="col-4 text-center d-none d-md-block align-self-center">
                         <img src={peggyConmo} className="w-100" alt="Conmo" />
                     </div>
                     <div className="col">
                         <div id="pieCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
                             <div className="carousel-inner">
-                                <div className="carousel-item active">
+                                <div className="carousel-item active pb-md-0 pb-4 text-center">
                                     <div className="row">
                                         <h2 className="text-center pt-3 mt-1">Mensual</h2>
-                                        <div className="col mx-3 text-center">
-                                            <div className="row mt-2">
-                                                <h4 className="mb-4">Tipos</h4>
-                                                <MonthlyPieTypes
-                                                    dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
-                                                    types={['usages', 'fixes', 'ocassionals']}
-                                                    colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
-                                                    typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
-                                                    selectedMonthIndex={selectedMonthIndex}
-                                                    selectedYear={selectedYear}
-                                                />
-                                            </div>
+                                        <div className="col-md-6 col mt-2 text-center">
+                                            <h4 className="mb-4">Tipos</h4>
+                                            <MonthlyPieTypes
+                                                dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                                                types={['usages', 'fixes', 'ocassionals']}
+                                                colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
+                                                typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
+                                                selectedMonthIndex={selectedMonthIndex}
+                                                selectedYear={selectedYear}
+                                            />
                                         </div>
-                                        <div className="col mx-3 text-center">
-                                            <div className="row mt-2">
-                                                <h4 className="mb-4">Categorías</h4>
-                                                <MonthlyPie
-                                                    dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
-                                                    types={['usages', 'fixes', 'ocassionals']}
-                                                    categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
-                                                    colors={[usageColors, fixedColors, ocassionalColors]}
-                                                    typeNames={['Uso de reservado', 'Gasto fijo', 'Gasto ocasional']}
-                                                    selectedMonthIndex={selectedMonthIndex}
-                                                    selectedYear={selectedYear}
-                                                />
-                                            </div>
+                                        <div className="col-md-6 col mt-2 text-center">
+                                            <h4 className="mb-4">Categorías</h4>
+                                            <MonthlyPie
+                                                dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                                                types={['usages', 'fixes', 'ocassionals']}
+                                                categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
+                                                colors={[usageColors, fixedColors, ocassionalColors]}
+                                                typeNames={['Uso de reservado', 'Gasto fijo', 'Gasto ocasional']}
+                                                selectedMonthIndex={selectedMonthIndex}
+                                                selectedYear={selectedYear}
+                                            />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="carousel-item">
+                                <div className="carousel-item pb-md-0 pb-4 text-center">
                                     <div className="row">
                                         <h2 className="text-center pt-3 mt-1">Anual</h2>
-                                        <div className="col mx-3 text-center">
-                                            <div className="row mt-2">
-                                                <h4 className="mb-4">Tipos</h4>
-                                                <AnualPieTypes
-                                                    dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
-                                                    types={['usages', 'fixes', 'ocassionals']}
-                                                    colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
-                                                    typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
-                                                    selectedYear={selectedYear}
-                                                />
-                                            </div>
+                                        <div className="col-md-6 col-12 mt-2 text-center">
+                                            <h4 className="mb-4">Tipos</h4>
+                                            <AnualPieTypes
+                                                dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                                                types={['usages', 'fixes', 'ocassionals']}
+                                                colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
+                                                typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
+                                                selectedYear={selectedYear}
+                                            />
                                         </div>
-                                        <div className="col mx-3 text-center">
-                                            <div className="row mt-2">
-                                                <h4 className="mb-4">Categorías</h4>
-                                                <AnualPie
-                                                    dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
-                                                    types={['usages', 'fixes', 'ocassionals']}
-                                                    categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
-                                                    colors={[usageColors, fixedColors, ocassionalColors]}
-                                                    typeNames={['Uso de reservado', 'Gasto fijo', 'Gasto ocasional']}
-                                                    selectedYear={selectedYear}
-                                                />
-                                            </div>
+                                        <div className="col-md-6 col-12 mt-2 text-center">
+                                            <h4 className="mb-4">Categorías</h4>
+                                            <AnualPie
+                                                dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                                                types={['usages', 'fixes', 'ocassionals']}
+                                                categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
+                                                colors={[usageColors, fixedColors, ocassionalColors]}
+                                                typeNames={['Uso de reservado', 'Gasto fijo', 'Gasto ocasional']}
+                                                selectedYear={selectedYear}
+                                            />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button className="carousel-control-prev" type="button" data-bs-target="#pieCarousel" data-bs-slide="prev">
+                            <button className="carousel-control-prev m-0" type="button" data-bs-target="#pieCarousel" data-bs-slide="prev">
                                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span className="visually-hidden">Anterior</span>
                             </button>
-                            <button className="carousel-control-next" type="button" data-bs-target="#pieCarousel" data-bs-slide="next">
+                            <button className="carousel-control-next m-0" type="button" data-bs-target="#pieCarousel" data-bs-slide="next">
                                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span className="visually-hidden">Siguiente</span>
                             </button>
@@ -341,9 +333,9 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
     return(
         <>
-            <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-5 mx-5 gap-5">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
-                <div className="col text-center">
+            <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-lg-5 mx-lg-5 mx-3 gap-5">
+                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-lg-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
+                <div className="col-lg col-md-8 col text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -354,7 +346,7 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
                         renderAsDataBar={true}
                     />                    
                 </div>
-                <div className="col text-center">
+                <div className="col-lg col-md-8 col text-center">
                     <AnualBarTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -373,9 +365,9 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
     return (
         <>
-            <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-5 mx-5 gap-5">
+            <div className="row text-center justify-content-center align-items-bottom py-lg-5 mt-lg-3 px-lg-5 mx-lg-5 mx-3 gap-5">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Tipos</h2>
-                <div className="col text-center">
+                <div className="col-lg col-md-8 col text-center">
                     <MonthlyLineTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -385,7 +377,7 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
                         selectedYear={selectedYear}
                     />                    
                 </div>
-                <div className="col text-center">
+                <div className="col-lg col-md-8 col text-center">
                     <AnualLineTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -402,12 +394,12 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
 
 const ExpensesTables = ({ selectedMonth, selectedMonthIndex, selectedYear, previousMonth, previousMonthIndex, previousMonthAmount }) => (
     <>
-        <div className="row align-items-center justify-content-center m-5 mb-0" id="table-of-percentages">
+        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
             <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedMonth}</h2>
             <MonthlyExpensesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} previousMonthIndex={previousMonthIndex} previousMonthAmount={previousMonthAmount} />
         </div>
-        <div className="row align-items-center justify-content-center m-5 mt-0 px-5" id="table-of-percentages">
-            <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mx-5 fs-1 fw-semibold">{selectedYear}</h2>
+        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
+            <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedYear}</h2>
             <AnualExpensesTable selectedYear={selectedYear} />
         </div>
     </>

@@ -42,10 +42,10 @@ export const AddFixedModal = () => {
                                     Añade un gasto fijo
                                 </h1>
                             </div>
-                            <div className="justify-content-center align-items-center text-center mt-2">
-                                <div className="row mt-5 mx-0 px-0 justify-content-center text-center">
-                                    <input type="date" className="col-3 rounded-0 border-1 " id="inputDate" placeholder="Fecha" onChange={(e) => { updateDateTime(e.target.value); }} />
-                                    <div className="col-4">
+                            <div className="justify-content-center align-items-center text-center my-5 pt-md-5">
+                                <div className="row mx-0 px-0 justify-content-center text-center gap-3 gap-md-0">
+                                    <input type="date" className="col-md-3 col-11 p-3 rounded-0 border-1 " id="inputDate" placeholder="Fecha" onChange={(e) => { updateDateTime(e.target.value); }} />
+                                    <div className="col-md-6">
                                         <select id="inputCategory" className="w-100 rounded-0" onChange={(e) => {updateFixedCategory(e.target.value);}}>
                                             <option>Selecciona una categoría</option>
                                             {store.fixedcategories?.map((fixedcategory) => {
@@ -57,17 +57,18 @@ export const AddFixedModal = () => {
                                             })}
                                         </select>
                                     </div>
-                                    <input type="text" className="col-2 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="€" onChange={(e) => {updateValue(e.target.value);}}/>
-                                    <input type="text" className="col-2 rounded-0 border-1" id="inputPercentage" placeholder="%"/>
+                                    <input type="text" className="col-md-2 col-11 p-3 rounded-0 border-1 mx-3" id="inputQuantity" placeholder="0.00 €" onChange={(e) => {updateValue(e.target.value);}}/>
                                 </div>
                                 <button className="mt-5" title="Añadir categoría" type="button" data-bs-toggle="modal" data-bs-target="#fixedCategoryModal">
                                     Añadir una nueva categoría
                                 </button>
                             </div>
-                            <div className="row mx-0 px-0 mt-5 pt-3 justify-content-center align-bottom ">
-                                <button className="btn-add-form col-3 btn btn-lg m-3 py-3 fs-3 rounded-pill text-white" onClick={() => addFixed()} data-bs-dismiss="modal">
-                                    Añadir
-                                </button>
+                            <div className="justify-content-center align-items-center">
+                                <div className="text-center">
+                                    <button className="btn-add-form btn btn-lg m-3 mb-4 py-3 px-5 fs-3 rounded-pill text-white" onClick={() => addFixed()} data-bs-dismiss="modal">
+                                        Añadir
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

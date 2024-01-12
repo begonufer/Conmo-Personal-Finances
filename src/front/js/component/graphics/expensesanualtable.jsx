@@ -101,33 +101,44 @@ export const AnualExpensesTable = (props) => {
 
     return (
         <>
-            <div className="col mt-4 mb-3 align-self-center text-center justify-content-center align-items-bottom">
-                <div className="wrap flex-column justify-content-center align-items-center rounded-1">
-                    <div className="row expense-pill text-white fw-normal expense-part-bottom fs-4">
-                        <h4 className="expense-part-top p-3 text-white fs-2 p-3 mb-0">Total gastos</h4>
-                        <div className="col p-3 fw-normal">{(totalExpenses).toFixed(2)} €</div>
-                        <div className="col p-3 fw-normal">{calculatePercentage(totalExpenses, totalIncomeAmount)} %</div>
-                        <div className="col p-3 fw-normal">{calculateAverage(totalExpenses)} €</div>
+            <div className="row align-self-center text-center justify-content-center align-items-bottom mt-2">
+                <div className="wrap flex-column justify-content-center align-items-center pb-2 rounded-1">
+                    <h4 className="text-expenses fs-1 fw-bold p-3 mb-0">GASTOS</h4>
+                    <div className="expense-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                        <div className="row text-white mobile-text">
+                            <div className="col">Total</div>
+                            <div className="col">%</div>
+                            <div className="col">Media</div>
+                        </div>
                     </div>
-                    <div className="row">
-                        <div className="col wrap flex-column justify-content-center align-items-center pe-0 rounded-1">
-                            <h4 className="text-white fs-2 p-3 mb-0 rounded-1 text-center py-3" id="table-fixed">FIJOS</h4>
-                            <div className="fixed-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                    <div className="text-center justify-content-center align-items-center pt-3">
+                        <div className="row mobile-text">
+                            <div className="col text-center">{totalExpenses} €</div>
+                            <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)} %</div>
+                            <div className="col text-center">{calculateAverage(totalExpenses)} €</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="d-lg-flex pb-2 rounded-1">
+                        <div className="col-lg col-12 justify-content-center align-items-center pe-0 rounded-1">
+                            <h4 className="text-fixed fs-1 fw-bold p-3 mb-0 rounded-1 text-center py-3">FIJOS</h4>
+                            <div className="fixed-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
                                 </div>
                             </div>
-                            <div className="text-center justify-content-center align-items-center fixed-content-bg p-3">
-                                <div className="row">
+                            <div className="text-center justify-content-center align-items-center p-3">
+                                <div className="row mobile-text">
                                     <div className="col">{totalFixedAmount} €</div>
                                     <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)} %</div>
                                     <div className="col">{calculateAverage(totalFixedAmount)} €</div>
                                 </div>
                             </div>
-                            <div className="fixed-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                            <div className="fixed-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
@@ -135,8 +146,8 @@ export const AnualExpensesTable = (props) => {
                                 </div>
                             </div>
                             {Object.entries(fixedCategoryTotals).map(([category, total]) => (
-                                <div className="text-center justify-content-center align-items-center fixed-content-bg p-3" key={category}>
-                                    <div className="row">
+                                <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
+                                    <div className="row mobile-text">
                                         <div className="col">{category}</div>
                                         <div className="col">{total} €</div>
                                         <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
@@ -144,8 +155,8 @@ export const AnualExpensesTable = (props) => {
                                     </div>
                                 </div>
                             ))}
-                            <div className="text-center text-white justify-content-center align-items-center p-3" id="table-fixed">
-                                <div className="row fw-bold fs-6">
+                            <div className="text-center text-white justify-content-center align-items-center mb-3 p-lg-3 p-2 rounded-pill" id="table-fixed">
+                                <div className="row mobile-text fw-bold fs-6">
                                     <div className="col">LIBRE</div>
                                     <div className="col">{balanceBeforeFixed} €</div>
                                     <div className="col">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)} %</div>
@@ -153,25 +164,24 @@ export const AnualExpensesTable = (props) => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="col wrap flex-column justify-content-center align-items-center px-0 rounded-1">
-                            <h4 className="text-white fs-2 p-3 mb-0 rounded-1 text-center py-3"  id="table-ocassional">OCASIONALES</h4>
-                            <div className="ocassional-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                        <div className="col-lg col-12 wrap flex-column justify-content-center align-items-center rounded-1">
+                            <h4 className="text-ocassional fs-1 fw-bold p-3 mb-0 text-center py-3">OCASIONALES</h4>
+                            <div className="ocassional-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
                                 </div>
                             </div>
-                            <div className="text-center justify-content-center align-items-center ocassional-content-bg p-3">
-                                <div className="row">
+                            <div className="text-center justify-content-center align-items-center p-3">
+                                <div className="row mobile-text">
                                     <div className="col">{totalOcassionalAmount} €</div>
                                     <div className="col">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)} %</div>
                                     <div className="col">{calculateAverage(totalOcassionalAmount)} €</div>
                                 </div>
                             </div>
-                            <div className="ocassional-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                            <div className="ocassional-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
@@ -179,8 +189,8 @@ export const AnualExpensesTable = (props) => {
                                 </div>
                             </div>
                             {Object.entries(ocassionalCategoryTotals).map(([category, total]) => (
-                                <div className="text-center justify-content-center align-items-center ocassional-content-bg p-3" key={category}>
-                                    <div className="row">
+                                <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
+                                <div className="row mobile-text">
                                         <div className="col">{category}</div>
                                         <div className="col">{total} €</div>
                                         <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
@@ -188,8 +198,8 @@ export const AnualExpensesTable = (props) => {
                                     </div>
                                 </div>
                             ))}
-                            <div className="text-center justify-content-center align-items-center p-3" id="table-ocassional">
-                                <div className="row fw-bold fs-6">
+                            <div className="text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill" id="table-ocassional">
+                                <div className="row mobile-text text-white fw-bold fs-6">
                                     <div className="col">RESTANTE</div>
                                     <div className="col">{calculateResult} €</div>
                                     <div className="col">{calculatePercentage(calculateResult, totalIncomeAmount)} %</div>
@@ -197,43 +207,38 @@ export const AnualExpensesTable = (props) => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="col wrap flex-column justify-content-center align-items-center ps-0 rounded-1">
-                            <h4 className="text-white fs-2 p-3 mb-0 table-usage rounded-1 text-center py-3">USO RESERVADO</h4>
-                            <div className="usage-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                        <div className="col-lg col-12 wrap flex-column justify-content-center align-items-center pb-2 rounded-1">
+                            <h4 className="text-usage fs-1 fw-bold p-3 mb-0 rounded-1 text-center py-3">USO RESERVADO</h4>
+                            <div className="usage-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Total</div>
-                                    <div className="col">%</div>
                                     <div className="col">Media</div>
                                 </div>
                             </div>
-                            <div className="text-center justify-content-center align-items-center usage-content-bg p-3">
-                                <div className="row">
+                            <div className="text-center justify-content-center align-items-center p-3">
+                                <div className="row mobile-text">
                                     <div className="col">{totalUsageAmount} €</div>
-                                    <div className="col">{calculatePercentage(totalUsageAmount, totalIncomeAmount)} %</div>
                                     <div className="col">{calculateAverage(totalUsageAmount)} €</div>
                                 </div>
                             </div>
-                            <div className="usage-light-bg text-center justify-content-center align-items-center p-3">
-                                <div className="row">
+                            <div className="usage-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
+                                <div className="row text-white mobile-text">
                                     <div className="col">Categoría</div>
                                     <div className="col">Total</div>
-                                    <div className="col">%</div>
                                     <div className="col">Media</div>
                                 </div>
                             </div>
                             {Object.entries(usageCategoryTotals).map(([category, total]) => (
-                                <div className="text-center justify-content-center align-items-center usage-content-bg p-3" key={category}>
-                                    <div className="row">
+                                <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
+                                    <div className="row mobile-text">
                                         <div className="col">{category}</div>
                                         <div className="col">{total} €</div>
-                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
                                         <div className="col">{calculateAverage(total)} €</div>                            
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </>

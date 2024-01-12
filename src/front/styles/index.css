@@ -1,6 +1,218 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+@media (max-width: 768px) {
+    .mobile-text {
+        font-size: 14px; /* Tamaño de letra más pequeño para pantallas móviles */
+    }
+	.description-text {
+		margin-left: 5%;
+		margin-right: 5%;
+		padding-bottom: 15px;
+	}
+	.header {
+		font-size: 3em;
+	}
+	.texto-desplegable {
+		margin-top: 1px;
+		padding: 10px;
+	}
+	.custom-dropdown {
+		position: relative;
+		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
+		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		background-color: rgb(7, 128, 139);
+		margin-left: 15%;
+		margin-right: 15%;
+		margin-top: 10px;
+		border-radius: 50px;
+	}
+	.carousel-control-prev-icon, .carousel-control-next-icon {
+		border-radius: 50%; /* Ajusta la forma del área de selección */
+		padding: 10px; /* Ajusta el relleno del área de selección */
+	}
+	
+	#tableCarousel .carousel-control-prev, .carousel-control-next {
+		width: 28%;
+		height: 20%;
+		transform: translateY(450%);
+		margin-right:36%;
+		margin-left: 36%;
+		margin-top: 3%;
+	}
+
+	#pieCarousel .carousel-control-prev {
+		top: 36px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 25%;
+		padding-left: 25%;
+	}
+	
+	#pieCarousel .carousel-control-next {
+		top: 36px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 25%;
+		padding-left: 25%;
+	}
+
+	#landing {
+		height: calc(100vh - 169.86px);
+	}
+	.conmo-m {
+		font-family: 'Righteous', cursive;
+		color:white;
+		padding: 10px;
+		font-size: 250%;
+		width: 100%;
+	}
+	.fa-info-circle {
+		position: absolute;
+		margin-top: 1rem;
+		cursor: pointer;
+	}
+	.title-m-top {
+		margin-top: 100px;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+/* Estilos para pantallas medianas (por ejemplo, tablets) */
+	.description-text {
+		margin-left: 10%;
+		margin-right: 10%;
+		padding-bottom: 15px;
+	}
+	.header {
+		font-size: 4em;
+	}
+	.texto-desplegable {
+		margin-top: 2px;
+		padding: 5px;
+	}
+	.custom-dropdown {
+		position: relative;
+		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
+		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		background-color: rgb(7, 128, 139);
+		margin-left: 30%;
+		margin-right: 30%;
+		margin-top: 10px;
+		border-radius: 50px;
+	}
+	.carousel-control-prev-icon, .carousel-control-next-icon {
+		border-radius: 50%; /* Ajusta la forma del área de selección */
+		padding: 10px; /* Ajusta el relleno del área de selección */
+	}
+	
+	#tableCarousel .carousel-control-prev, .carousel-control-next {
+		width: 5%;
+	}
+	#pieCarousel .carousel-control-prev {
+		top: 38px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 25%;
+		padding-left: 25%;
+	}
+	
+	#pieCarousel .carousel-control-next {
+		top: 38px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 25%;
+		padding-left: 25%;
+	}
+	#landing {
+		height: calc(100vh - 100px);
+	}
+	.conmo-m {
+		font-family: 'Righteous', cursive;
+		color:white;
+		padding: 10px;
+		font-size: 250%;
+	}
+	.title-m-top {
+		margin-top: 100px;
+	}
+	.fa-info-circle {
+		position: absolute;
+		margin-top: 1rem;
+		cursor: pointer;
+	}
+}
+
+@media (min-width: 1201px) {
+/* Estilos para pantallas grandes (por ejemplo, escritorios) */
+	.description-text {
+		margin-left: 30%;
+		margin-right: 30%;
+		padding-bottom: 20px;
+	}
+	.header {
+		font-size: 5em;
+	}
+	.texto-desplegable {
+		margin-top: 10px;
+		padding: 10px;
+	}
+	.custom-dropdown {
+		position: relative;
+		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
+		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		background-color: rgb(7, 128, 139);
+		margin-left: 30%;
+		margin-right: 30%;
+		margin-top: 10px;
+		border-radius: 50px;
+	}
+	.carousel-control-prev-icon, .carousel-control-next-icon {
+		border-radius: 50%; /* Ajusta la forma del área de selección */
+		padding: 10px; /* Ajusta el relleno del área de selección */
+	}
+	
+	#tableCarousel .carousel-control-prev, .carousel-control-next {
+		width: 5%;
+	}
+
+	#pieCarousel .carousel-control-prev {
+		top: 42px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 38%;
+		padding-left: 38%;
+	}
+	
+	#pieCarousel .carousel-control-next {
+		top: 42px;
+		transform: translateY(-50%);
+		width: 5%;
+		height: 2%;
+		padding-right: 38%;
+		padding-left: 38%;
+	}
+	.conmo-m {
+		font-family: 'Righteous', cursive;
+		color:white;
+		padding: 10px;
+		font-size: 250%;
+	}
+	.title-m-top {
+		margin-top: 100px;
+	}
+	.fa-info-circle {
+		position: absolute;
+		margin-top: 1rem;
+		cursor: pointer;
+	}
+}
+
 body {
     font-family: 'Quicksand', sans-serif;
     background-color: rgba(40, 124, 147, 0.162);
@@ -33,8 +245,14 @@ body {
 	background-color:  rgb(237, 209, 29);
 }
 
-#table-incomes {
-	background-color: rgb(207, 193, 44);
+/* #table-incomes {
+    border-width: 3px;
+    border-style: solid;
+    border-color: rgb(207, 193, 44);
+} */
+
+.textincomes {
+	color: rgb(207, 193, 44);
 }
 
 .incomes-bg {
@@ -52,20 +270,25 @@ body {
 }
 
 .income-light-bg {
-	background-color: rgb(220, 214, 149);
+	/* background-color: rgb(220, 214, 149); */
 	font-weight: bold;
 	font-size:1.1em;
+	background-color: rgb(207, 193, 44);
 }
 
-.income-content-bg {
-	background-color: rgb(255, 251, 204);
+.income-content-text {
+	/* background-color: rgb(255, 251, 204); */
 	font-size:1.2em;
 }
 
+.text-saves {
+	color: rgb(27, 100, 113);
+}
+
 .saves-light-bg {
-	background-color: rgb(104, 186, 189);
 	font-weight: bold;
 	font-size:1.1em;
+	background-color: rgb(27, 100, 113);
 }
 
 .saves-content-bg {
@@ -86,8 +309,12 @@ body {
 	border-bottom-left-radius: 50px;
 }
 
+.text-usage {
+	color: rgb(43, 160, 214);
+}
+
 .usage-light-bg {
-	background-color: rgb(72, 183, 224);
+	background-color: rgb(43, 160, 214);
 	font-weight: bold;
 	font-size:1.1em;
 }
@@ -110,6 +337,10 @@ body {
 	border-bottom-left-radius: 50px;
 }
 
+.text-fixed {
+	color: rgb(147, 40, 90);
+}
+
 .fixed-bg {
 	background-color: rgb(147, 40, 90);
 	font-weight: bold;
@@ -118,9 +349,9 @@ body {
 }
 
 .fixed-light-bg {
-	background-color: rgb(181, 113, 145);
 	font-weight: bold;
 	font-size:1.1em;
+	background-color:  rgb(147, 40, 90);
 }
 
 .fixed-content-bg {
@@ -153,6 +384,10 @@ body {
 	background-color: rgb(203, 64, 129);
 }
 
+.text-ocassional {
+	color: rgb(138, 181, 63);
+}
+
 .ocassional-bg {
 	background-color: rgb(138, 181, 63);
 	font-weight: bold;
@@ -161,9 +396,9 @@ body {
 }
 
 .ocassional-light-bg {
-	background-color: rgb(164, 203, 97);
 	font-weight: bold;
 	font-size:1.1em;
+	background-color:  rgb(138, 181, 63);
 }
 
 .ocassional-content-bg {
@@ -184,10 +419,14 @@ body {
 	border-bottom-left-radius: 50px;
 }
 
+.text-expenses {
+	color: brown;
+}
+
 .expense-light-bg {
-	background-color: rgb(195, 111, 111);
 	font-weight: bold;
 	font-size:1.1em;
+	background-color: brown;
 }
 
 .expense-content-bg {
@@ -309,10 +548,7 @@ body {
 	font-size: 20%;
 }
   
-.texto-desplegable {
-	margin-top: 10px;
-	padding: 10px;
-}
+
 
 .table-title {
 	background-color: rgb(207, 193, 44);
@@ -431,3 +667,18 @@ body {
 	background-color: rgb(72, 183, 224);
 	color: rgb(7, 128, 139);
 }
+.conmo-lg {
+    font-family: 'Righteous', cursive;
+    color:white;
+    padding: 10px;
+	font-size: 400%;
+}
+
+.title-in {
+    color:white;
+	font-size: 300%;
+}
+.object-fit-cover {
+    object-fit: cover;
+}
+

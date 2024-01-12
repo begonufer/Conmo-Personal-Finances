@@ -48,24 +48,24 @@ export const MonthlyFixedTable = (props) => {
         <>
             <div className="row mx-1 gap-2">
                 <div className="col">
-                    <div className="fixed-bg text-white p-3">{selectedMonthAmount} €</div>
+                    <div className="fixed-bg mobile-text text-white p-3">{selectedMonthAmount} €</div>
                 </div>
                 <div className="col">
-                    <div className="fixed-bg text-white p-3">{calculatePercentage(selectedMonthAmount, incomeMonthAmount)} %</div>
+                    <div className="fixed-bg mobile-text text-white p-3">{calculatePercentage(selectedMonthAmount, incomeMonthAmount)} %</div>
                 </div>
-            </div>
+            </div> 
             <div className="m-3 my-4">
                 {Object.entries(categoryTotals).map(([category, total]) => (
-                    <div key={category} className="row fs-4 lh-lg">
-                        <div className="col-6 fw-bold ">{category}</div>
-                        <div className="col">{calculatePercentage(total, incomeMonthAmount)} %</div>
-                        <div className="col">{total} €</div>
+                    <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
+                        <div className="col mobile-text fw-bold">{category}</div>
+                        <div className="col mobile-text">{calculatePercentage(total, incomeMonthAmount)} %</div>
+                        <div className="col mobile-text">{total} €</div>
                     </div>
                 ))}
             </div>
             <div className="row fixed-bg text-white mx-1 mt-2">
-                <div className="col p-3 fw-bold">Libre</div>
-                <div className="col p-3 fixed-part-right fw-normal">{restAmount} €</div>
+                <div className="col mobile-text p-3 fw-bold">Libre</div>
+                <div className="col mobile-text p-3 fixed-part-right fw-normal">{restAmount} €</div>
             </div>
         </>
     );

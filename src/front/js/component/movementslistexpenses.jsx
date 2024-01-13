@@ -67,9 +67,9 @@ export const MovementsListExpenses = () => {
                         <div className="col mobile-text">Categoría</div>
                         <div className="col mobile-text">Importe</div>
                     </div>
-                    {allMovements.map((movement) => (  
-                        <div key={movement.value} className="row movements-list lh-lg d-flex align-items-center">
-                            <div className="col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
+                    {allMovements.map((movement, index) => (  
+                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
+                            <div className="col-md col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
                             <div className={getTableRowClass(movement.type)}>
                                 {isSmallScreen ? (
                                     (movement.type === 'Uso de reservado' && 'U') ||
@@ -80,8 +80,8 @@ export const MovementsListExpenses = () => {
                                     movement.type
                                 )}
                             </div>
-                            <div className="col mobile-text">{movement.category}</div>
-                            <div className="col mobile-text text-danger">{`- ${movement.value} €`}</div>
+                            <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                            <div className="col mobile-text text-danger">{`- ${movement.value.toFixed(2)} €`}</div>
                         </div>
                     ))}
                 </div>

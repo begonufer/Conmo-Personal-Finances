@@ -1,12 +1,28 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import { Context } from "../store/appContext";
-import { optionsLinear, optionsBalanceLinear } from "../pages/chartoptions.jsx";
+import { optionsLinear, optionsLinearMobile, optionsBalanceLinear, optionsBalanceLinearMobile } from "../pages/chartoptions.jsx";
 import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
 import { Line } from "react-chartjs-2";
 import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals } from '../pages/utils.jsx';
 
 export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear }) => {
     const { store } = useContext(Context);
+        
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        return isMobile ? optionsLinearMobile : optionsLinear;
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
         const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
@@ -57,7 +73,7 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
     return (
         <>
             {typeBarData.length > 0 ? (
-                <Line options={optionsLinear} data={daTabarras} />
+                <Line options={getOptions()} data={daTabarras} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}
@@ -67,6 +83,22 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
 
 export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, color }) => {
     const { store } = useContext(Context);
+    
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        return isMobile ? optionsBalanceLinearMobile : optionsBalanceLinear;
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const [chartData, setChartData] = useState([]);
 
@@ -128,7 +160,7 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
     return (
         <>
             {typeBarData.length > 0 ? (
-                <Line options={optionsBalanceLinear} data={chartDataBar} />
+                <Line options={getOptions()} data={chartDataBar} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}
@@ -138,6 +170,22 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
 
 export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }) => {
     const { store } = useContext(Context);
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        return isMobile ? optionsLinearMobile : optionsLinear;
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
         const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
@@ -172,8 +220,15 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
         return 'rgb(0, 0, 0)';
     };
 
+    const customizeLabels = (labels) => {
+        if (isMobile) {
+            return labels.map(label => label.substring(0, 2));
+        }
+        return labels;
+    };
+
     const daTabarras = {
-        labels: store.months,
+        labels: customizeLabels(store.months),
         datasets: typeBarData.map((typeData, index) => ({
             label: typeNames[index],
             data: typeData.data.map((data) => data.value),
@@ -187,7 +242,7 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
     return (
         <>
             {typeBarData.length > 0 ? (
-                <Line options={optionsLinear} data={daTabarras} />
+                <Line options={getOptions()} data={daTabarras} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}
@@ -197,6 +252,22 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
 
 export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear, color }) => {
     const { store } = useContext(Context);
+    
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        return isMobile ? optionsBalanceLinearMobile : optionsBalanceLinear;
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const [chartData, setChartData] = useState([]);
 
@@ -243,8 +314,15 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
         buildBarDataChart();
     }, [selectedYear]);
 
+    const customizeLabels = (labels) => {
+        if (isMobile) {
+            return labels.map(label => label.substring(0, 2));
+        }
+        return labels;
+    };
+
     const chartDataBar = {
-        labels: store.months,
+        labels: customizeLabels(store.months),
         datasets: [
             {
                 label: "Balance",
@@ -261,7 +339,7 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
     return (
         <>
             {typeBarData.length > 0 ? (
-                <Line options={optionsBalanceLinear} data={chartDataBar} />
+                <Line options={getOptions()} data={chartDataBar} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}

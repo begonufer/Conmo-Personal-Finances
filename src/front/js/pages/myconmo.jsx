@@ -42,13 +42,6 @@ ChartJS.register(
 export const MyConmo = () => {
     const { store, actions } = useContext(Context);
 
-    const allPreviousMonthIncome = filterAllDataPreviousMonth(store.incomes, previousMonthIndex, selectedYear).reduce((total, income) => total + income.value, 0);
-    const allPreviousMonthSave = filterAllDataPreviousMonth(store.saves, previousMonthIndex, selectedYear).reduce((total, save) => total + save.value, 0);
-    const allPreviousMonthFixed = filterAllDataPreviousMonth(store.fixes, previousMonthIndex, selectedYear).reduce((total, fixed) => total + fixed.value, 0);
-    const allPreviousMonthOcassional = filterAllDataPreviousMonth(store.ocassionals, previousMonthIndex, selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
-
-    const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
-
     const {
         todayDate,
         currentMonthIndex,
@@ -127,7 +120,6 @@ export const MyConmo = () => {
                     selectedYear={selectedYear}
                     previousMonth={previousMonth}
                     previousMonthIndex={previousMonthIndex}
-                    previousMonthAmount={previousMonthAmount}
                 />
                 <ResumeAnual selectedYear={selectedYear} />
             </div>
@@ -287,7 +279,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
     return (
         <>
-            <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
+            <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 mb-3">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Evolución</h2>
                 <div className="col-lg-6 col-md-8 mt-lg-5 text-center">
                     <MonthlyLineTypes
@@ -308,6 +300,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
                         selectedYear={selectedYear}
                     />                    
                 </div>
+                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-md-5 mt-5 fs-1 fw-semibold">Balance</h2>
                 <div className="col-lg-6 col-md-8 mt-5 text-center">
                     <MonthlyLineBalance
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}

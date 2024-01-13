@@ -8,13 +8,6 @@ import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth 
 export const MonthlyIncomeTable = (props) => {
     const { store, actions } = useContext(Context);
 
-    const calculatePercentage = (amount, total) => {
-        if (total === 0) {
-            return 0;
-        }
-        return ((amount / total) * 100).toFixed(0);
-    };
-
     const [categoryTotals, setCategoryTotals] = useState({});
     const [previousMonthAmount, setPreviousMonthAmount] =  useState([]);
 
@@ -32,22 +25,21 @@ export const MonthlyIncomeTable = (props) => {
         
             const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
 
-            const filteredIncome = store.incomes.filter((data) => {
-                const date = new Date(data.dateTime);
-                return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
-            });
+            const filteredIncome = filterDataByMonthYear(store.incomes);
 
             const totals = {};
             filteredIncome.forEach(({ value, incomecategory }) => {
                 const categoryName = incomecategory.name;
                 totals[categoryName] = (totals[categoryName] || 0) + value;
             });
+
             setPreviousMonthAmount(previousMonthAmount);
+
             setCategoryTotals(totals);
         };
 
         transformData();
-    }, [props.selectedMonthIndex,  props.previousMonthIndex, props.selectedYear]);
+    }, [props.selectedMonthIndex, props.previousMonthIndex, props.selectedYear]);
 
     const selectedMonthAmount = store.incomes
         .filter((data) => {
@@ -64,28 +56,28 @@ export const MonthlyIncomeTable = (props) => {
                 <div className="col">
                     <div className="row incomes-bg">
                         <div className="col p-3 mobile-text fw-bold">Restos</div>
-                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {previousMonthAmount} €</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {previousMonthAmount.toFixed(2)} €</div>
                     </div>
                 </div>
                 <div className="col">
                     <div className="row incomes-bg">
                         <div className="col p-3 mobile-text fw-bold">{props.selectedMonth}</div>
-                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {selectedMonthAmount} €</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {selectedMonthAmount.toFixed(2)} €</div>
                     </div>
                 </div>
             </div>
             <div className="m-3 my-4">
                 {Object.entries(categoryTotals).map(([category, total]) => (
                     <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
-                        <div className="col mobile-text fw-bold">{category}</div>
+                        <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col mobile-text">{calculatePercentage(total, selectedMonthAmount)} %</div>
-                        <div className="col mobile-text">{total} €</div>
+                        <div className="col mobile-text">{total.toFixed(2)} €</div>
                     </div>
                 ))}
             </div>
             <div className="row incomes-bg mx-1 mt-2">
                 <div className="col mobile-text p-3 fw-bold">Total</div>
-                <div className="col mobile-text p-3 incomes-part-right fw-normal"> {totalAmount} €</div>
+                <div className="col mobile-text p-3 incomes-part-right fw-normal"> {totalAmount.toFixed(2)} €</div>
             </div>
         </>
     );

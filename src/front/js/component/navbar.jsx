@@ -7,150 +7,62 @@ export const Navbar = () => {
 
     const { store, actions } = useContext(Context);
 
-    const calculatePercentage = (amount, total) => {
-        if (total === 0) {
-            return 0;
-        }
-        return ((amount / total) * 100).toFixed(0);
-    };
-
-    const calculateAverage = (monthlyValues) => {
-        return (monthlyValues / 12).toFixed(2); 
-    };
-
     const [categoryTotals, setCategoryTotals] = useState({});
     const [usageCategoryTotals, setUsageCategoryTotals] = useState({});
+    const getCategorySavesBalance = async () => {
+        await actions.getSaves();
+        await actions.getUsage();
 
+        const filteredSave = store.saves
+        const filteredUsage = store.usages
+
+        const totals = {};
+        filteredSave.forEach(({ value, category }) => {
+            const categoryName = category.name;
+            totals[categoryName] = (totals[categoryName] || 0) + value;
+        });
+
+        const usageTotals = {};
+        filteredUsage.forEach(({ value, category }) => {
+            const categoryName = category.name;
+            usageTotals[categoryName] = (usageTotals[categoryName] || 0) + value;
+        });
+
+        setCategoryTotals(totals);
+        setUsageCategoryTotals(usageTotals);
+    }; 
+
+    const [savesBalance, setSavesBalance] = useState([]);
+    const [totalBalance, setTotalBalance] = useState([]);
+
+    const getBalances = async () => {
+        await actions.getIncomes();
+        await actions.getSaves();
+        await actions.getUsage();
+        await actions.getFixes();
+        await actions.getOcassionals();
+
+        const incomesAmount = store.incomes.reduce((total, income) => total + income.value, 0);
+        const savesAmount = store.saves.reduce((total, save) => total + save.value, 0);
+        const usageAmount = store.usages.reduce((total, usage) => total + usage.value, 0);
+        const fixesAmount = store.fixes.reduce((total, fixed) => total + fixed.value, 0);
+        const ocassionalsAmount = store.ocassionals.reduce((total, ocassional) => total + ocassional.value, 0);
+
+        const balance = savesAmount - usageAmount;
+        setSavesBalance(balance.toFixed(2));
+
+        const generalBalance = incomesAmount - (fixesAmount + savesAmount + ocassionalsAmount);
+        setTotalBalance(generalBalance.toFixed(2));
+    }; 
 
     useEffect(() => {
-        const transformData = async () => {
-            
-            await actions.getIncomes();
-            await actions.getSaves();
-            await actions.getUsage();
-
-            const filteredSave = store.saves
-            const filteredUsage = store.usages
-
-            const totals = {};
-            filteredSave.forEach(({ value, category }) => {
-                const categoryName = category.name;
-                totals[categoryName] = (totals[categoryName] || 0) + value;
-            });
-
-            const usageTotals = {};
-            filteredUsage.forEach(({ value, category }) => {
-                const categoryName = category.name;
-                usageTotals[categoryName] = (usageTotals[categoryName] || 0) + value;
-            });
-
-            setCategoryTotals(totals);
-            setUsageCategoryTotals(usageTotals);
-        };
-
-        transformData();
+        getBalances();
+        getCategorySavesBalance();
     }, []);
-
-
-    const selectedAmount = store.saves.reduce((total, save) => total + save.value, 0);
-
-    const selectedUsageAmount = store.usages.reduce((total, usage) => total + usage.value, 0);
-
-    const selectedIncomeAmount = store.incomes.reduce((total, income) => total + income.value, 0);
-
-    const balance = selectedAmount - selectedUsageAmount;
-
-    const totalIncomes = store.incomes.reduce((sum, income) => sum + income.value, 0);
-    const totalFixedExpenses = store.fixes.reduce((sum, fix) => sum + fix.value, 0);
-    const totalSaves = store.saves.reduce((sum, save) => sum + save.value, 0);
-    const totalOcassionals = store.ocassionals.reduce((sum, ocassional) => sum + ocassional.value, 0);
-
-    const currentBalance = totalIncomes - (totalFixedExpenses + totalSaves + totalOcassionals);
-
-
+    
     const logout = () => {
         actions.clearUser();
     }
-    
-
-    const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
-        return data.filter((item) => {
-            const date = new Date(item.dateTime);
-            return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
-        });
-    }; //usar esta función como función general
-
-    const months = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-
-    const todayDate = new Date();
-    const currentMonthIndex = todayDate.getMonth();
-    const nameCurrentMonth = months[currentMonthIndex];
-    const currentYear = new Date().getFullYear();
-
-    const filterAllDataBeforeMonth = (data, month, year) => {
-        return data.filter(item => {
-            const itemDate = new Date(item.dateTime);
-            const itemMonth = itemDate.getMonth();
-            const itemYear = itemDate.getFullYear();
-            return (itemYear < year || (itemYear === year && itemMonth <= month));
-        });
-    };
-
-    const allPreviousMonthSave = filterAllDataBeforeMonth(store.saves, currentMonthIndex, currentYear).reduce((total, save) => total + save.value, 0);
-  
-
-    const [saveCategoryTotals, setSaveCategoryTotals] = useState({});
-    const [savesBalance, setSavesBalance] = useState({});
-
-    const dataFilteredByCategory = (filteredSave) => {
-
-        const saveTotals = {};
-       
-        filteredSave.forEach(({ value, category }) => {
-            const categoryName = category.name;
-            saveTotals[categoryName] = (saveTotals[categoryName] || 0) + value;
-        });
-
-        setSaveCategoryTotals(saveTotals);
-    }
-
-    useEffect(() => {
-        const transformData = async () => {
-            await actions.getSaves();
-
-            const filteredSave = filterDataByMonthYear(store.saves, currentMonthIndex, currentYear);
-
-            const filterAllDataBeforeMonth = (data, currentMonthIndex, currentYear) => {
-                return data.filter(item => {
-                    const itemDate = new Date(item.dateTime);
-                    const itemMonth = itemDate.getMonth();
-                    const itemYear = itemDate.getFullYear();
-            
-                    // Filtrar por el año y el mes, incluyendo el mes seleccionado
-                    return (itemYear < currentYear || (itemYear === currentYear && itemMonth <= currentMonthIndex));
-                });
-            };
-            
-            const allPreviousMonthSaves = filterAllDataBeforeMonth(store.saves, currentMonthIndex, currentYear);
-        
-            const saveBalance = allPreviousMonthSaves.reduce((acc, { value, category }) => {
-                const categoryName = category.name;
-                acc[categoryName] = (acc[categoryName] || 0) + value;
-                return acc;
-            }, {});
-            
-            setSavesBalance(saveBalance);
-            
-            dataFilteredByCategory(filteredSave);
-        };
-        transformData();
-    }, []);
-
-    const totalSaveMonthAmount = filterDataByMonthYear(store.saves, currentMonthIndex, currentYear).reduce((total, save) => total + save.value, 0);
-    const savesBalanceTotal = Object.values(savesBalance).reduce((total, categoryTotal) => total + categoryTotal, 0);
 
 	return (
         <>
@@ -205,7 +117,7 @@ export const Navbar = () => {
                             </div>
                             <div className="available row rounded-pill text-white pb-2 pt-3 mt-3 mb-2 align-items-center text-center">
                                 <h4 className="col">Disponible</h4>
-                                <h4 className="col"><strong>{currentBalance.toFixed(2)} €</strong></h4>
+                                <h4 className="col"><strong>{totalBalance} €</strong></h4>
                             </div>
                             <div className="accordion accordion-flush" id="savedBalance">
                                 <div 
@@ -218,7 +130,7 @@ export const Navbar = () => {
                                     aria-controls="collapseBalance"
                                 >
                                     <h4 className="col">Reservado</h4>
-                                    <h4 className="col"><strong>{balance.toFixed(2)} €</strong></h4>
+                                    <h4 className="col"><strong>{savesBalance} €</strong></h4>
                                 </div>
                                 <div id="collapseBalance" className="available collapse p-2 text-white" aria-labelledby="categoriesBalance" data-bs-parent="#savedBalance">
                                     {Object.entries(categoryTotals).map(([category, total]) => (

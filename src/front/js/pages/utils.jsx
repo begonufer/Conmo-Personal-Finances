@@ -8,6 +8,10 @@ export const calculatePercentage = (amount, total) => {
     return ((amount / total) * 100).toFixed(0);
 };
 
+export const calculateAverage = (monthlyValues) => {
+    return (monthlyValues / 12).toFixed(2); 
+};
+
 export const useMonthSelection = () => {
 
     const { store } = useContext(Context);

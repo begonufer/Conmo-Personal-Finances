@@ -32,11 +32,11 @@ export const MovementsListOcassional = () => {
                         <div className="col mobile-text">Categoría</div>
                         <div className="col mobile-text">Importe</div>
                     </div>
-                    {ocassionals.map((movement) => (  
-                        <div key={movement.id} className="row movements-list lh-lg d-flex align-items-center">
+                    {ocassionals.map((movement, index) => (  
+                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
                             <div className="col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className="col mobile-text">{movement.category}</div>
-                            <div className="col mobile-text text-danger">{`- ${movement.value} €`}</div>
+                            <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                            <div className="col mobile-text text-danger">{`- ${movement.value.toFixed(2)} €`}</div>
                         </div>
                     ))}
                 </div>

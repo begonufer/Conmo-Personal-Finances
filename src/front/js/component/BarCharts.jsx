@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import { Context } from "../store/appContext";
-import { allDataBarOptions, barOptions } from "../pages/chartoptions.jsx";
+import { allDataBarOptions, barOptions, allDataBarOptionsMobile, barOptionsMobile } from "../pages/chartoptions.jsx";
 import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
 import { Bar } from "react-chartjs-2";
 import {
@@ -13,6 +13,26 @@ import {
 
 export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, renderAsDataBar }) => {
     const { store } = useContext(Context);
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        if (renderAsDataBar) {
+            return isMobile ? barOptionsMobile : barOptions;
+        } else {
+            return isMobile ? allDataBarOptionsMobile : allDataBarOptions;
+        }
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
         const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
@@ -71,11 +91,7 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
     return (
         <>
             {typeBarData.length > 0 ? (
-                renderAsDataBar ? (
-                    <Bar options={barOptions} data={dataBar} />
-                ) : (
-                    <Bar options={allDataBarOptions} data={daTabarras} />
-                )
+                <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}
@@ -85,6 +101,26 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
 
 export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, renderAsDataBar }) => {
     const { store } = useContext(Context);
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useLayoutEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const isMobile = windowWidth <= 768;
+    const getOptions = () => {
+        if (renderAsDataBar) {
+            return isMobile ? barOptionsMobile : barOptions;
+        } else {
+            return isMobile ? allDataBarOptionsMobile : allDataBarOptions;
+        }
+    };
+
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
         const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
@@ -118,8 +154,16 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
         }
         return 'rgb(0, 0, 0)';
     };
+
+    const customizeLabels = (labels) => {
+        if (isMobile) {
+            return labels.map(label => label.substring(0, 2));
+        }
+        return labels;
+    };
+
     const dataBar = {
-        labels: store.months,
+        labels: customizeLabels(store.months),
         datasets: typeBarData.map((typeData) => ({
             label: typeData.label,
             data: typeData.data.map((data) => data.value),
@@ -128,7 +172,7 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
     };
 
     const daTabarras = {
-        labels: store.months,
+        labels: customizeLabels(store.months),
         datasets: typeBarData.map((typeData, index) => ({
             label: typeNames[index],
             data: typeData.data.map((data) => data.value),
@@ -142,11 +186,7 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
     return (
         <>
             {typeBarData.length > 0 ? (
-                renderAsDataBar ? (
-                    <Bar options={barOptions} data={dataBar} />
-                ) : (
-                    <Bar options={allDataBarOptions} data={daTabarras} />
-                )
+                <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
             ) : (
                 <p>No hay datos en este mes.</p>
             )}

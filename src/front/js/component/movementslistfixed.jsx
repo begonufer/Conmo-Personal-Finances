@@ -30,11 +30,11 @@ export const MovementsListFixed = () => {
                         <div className="col mobile-text">Categoría</div>
                         <div className="col mobile-text">Importe</div>
                     </div>
-                    {fixes.map((movement) => (  
-                        <div key={movement.id} className="row movements-list lh-lg d-flex align-items-center">
+                    {fixes.map((movement, index) => (  
+                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
                             <div className="col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className="col mobile-text">{movement.category}</div>
-                            <div className="col mobile-text text-danger">{`- ${movement.value} €`}</div>
+                            <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                            <div className="col mobile-text text-danger">{`- ${movement.value.toFixed(2)} €`}</div>
                         </div>
                     ))}
                 </div>

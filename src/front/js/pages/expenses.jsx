@@ -27,15 +27,6 @@ import { MonthlyLineTypes, AnualLineTypes } from "../component/LineCharts.jsx";
 export const Expenses = () => {
 
     const { store, actions } = useContext(Context);
-
-    const allPreviousMonthIncome = filterAllDataBeforeMonth(store.incomes, previousMonthIndex, selectedYear).reduce((total, income) => total + income.value, 0);
-    const allPreviousMonthSave = filterAllDataBeforeMonth(store.saves, previousMonthIndex, selectedYear).reduce((total, save) => total + save.value, 0);
-    const allPreviousMonthUsage = filterAllDataBeforeMonth(store.usages, previousMonthIndex, selectedYear).reduce((total, usage) => total + usage.value, 0);
-    const allPreviousMonthFixed = filterAllDataBeforeMonth(store.fixes, previousMonthIndex, selectedYear).reduce((total, fixed) => total + fixed.value, 0);
-    const allPreviousMonthOcassional = filterAllDataBeforeMonth(store.ocassionals, previousMonthIndex, selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
-    
-    const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthUsage - allPreviousMonthFixed - allPreviousMonthOcassional;
-
     // const [incomeBarData, setIncomeBarData] = useState([]);
     // const [saveBarData, setSaveBarData] = useState([]);
     // const [usageBarData, setUsageBarData] = useState([]);
@@ -238,7 +229,6 @@ export const Expenses = () => {
                 selectedYear={selectedYear}
                 previousMonth={previousMonth}
                 previousMonthIndex={previousMonthIndex}
-                previousMonthAmount={previousMonthAmount}
             />
             <MovementsListExpenses />
             <AddButton />
@@ -392,11 +382,11 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
     );
 };
 
-const ExpensesTables = ({ selectedMonth, selectedMonthIndex, selectedYear, previousMonth, previousMonthIndex, previousMonthAmount }) => (
+const ExpensesTables = ({ selectedMonth, selectedMonthIndex, selectedYear }) => (
     <>
         <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
             <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedMonth}</h2>
-            <MonthlyExpensesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear} previousMonth={previousMonth} previousMonthIndex={previousMonthIndex} previousMonthAmount={previousMonthAmount} />
+            <MonthlyExpensesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/>
         </div>
         <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
             <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedYear}</h2>

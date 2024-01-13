@@ -1,65 +1,68 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
-import { calculatePercentage } from '../../pages/utils.jsx';
+import { useMonthSelection, filterAllDataPreviousMonth, filterDataByMonthYear, calculatePercentage, calculateAverage } from "../../pages/utils.jsx";
 
 export const MonthlyFixedTable = (props) => {
 
     const { store, actions } = useContext(Context);
 
     const [categoryTotals, setCategoryTotals] = useState({});
+    const getCategoryData = async () => {
+        await actions.getFixes();
+        const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
+        const totals = {};
+        filteredFixed.forEach(({ value, fixedcategory }) => {
+            const categoryName = fixedcategory.name;
+            totals[categoryName] = (totals[categoryName] || 0) + value;
+        });
+        setCategoryTotals(totals);
+    };
+
+    const [incomeMonthAmount, setIncomeMonthAmount] = useState();
+    const [fixedMonthAmount, setFixedMonthAmount] = useState();
+    const [restAmount, setRestAmount] = useState();
+
+    const getTotals = async () => {
+        await actions.getIncomes();
+        await actions.getSaves();
+        await actions.getFixes();
+
+        const filteredIncome = filterDataByMonthYear(store.incomes, props.selectedMonthIndex, props.selectedYear);
+        const filteredSaved = filterDataByMonthYear(store.saves, props.selectedMonthIndex, props.selectedYear);
+        const filteredFixed = filterDataByMonthYear(store.fixes, props.selectedMonthIndex, props.selectedYear);
+
+        const totalIncome = filteredIncome.reduce((total, income) => total + income.value, 0);
+        const totalSaved = filteredSaved.reduce((total, save) => total + save.value, 0);
+        const totalFixed = filteredFixed.reduce((total, fixed) => total + fixed.value, 0);
+        
+        const balanceAtFixed = totalIncome - ( totalSaved + totalFixed );
+
+        setIncomeMonthAmount(totalIncome.toFixed(2));
+        setFixedMonthAmount(totalFixed.toFixed(2));
+        setRestAmount(balanceAtFixed.toFixed(2));
+    };
 
     useEffect(() => {
-        const transformData = async () => {
-            await actions.getFixes();
-            await actions.getIncomes();
-            
-            const filteredFixed = store.fixes.filter((data) => {
-                const date = new Date(data.dateTime);
-                return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
-            });
-
-            const totals = {};
-            filteredFixed.forEach(({ value, fixedcategory }) => {
-                const categoryName = fixedcategory.name;
-                totals[categoryName] = (totals[categoryName] || 0) + value;
-            });
-            setCategoryTotals(totals);
-        };
-        transformData();
+        getTotals();
+        getCategoryData();
     }, [props.selectedMonthIndex, props.selectedYear]);
- 
-    const incomeMonthAmount = store.incomes
-    .filter((data) => {
-        const date = new Date(data.dateTime);
-        return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
-    })
-    .reduce((total, income) => total + income.value, 0);
-
-    const selectedMonthAmount = store.fixes
-        .filter((data) => {
-            const date = new Date(data.dateTime);
-            return date.getMonth() === props.selectedMonthIndex && date.getFullYear() === props.selectedYear;
-        })
-        .reduce((total, fixed) => total + fixed.value, 0);
-
-    const restAmount = incomeMonthAmount - selectedMonthAmount;
 
     return (
         <>
             <div className="row mx-1 gap-2">
                 <div className="col">
-                    <div className="fixed-bg mobile-text text-white p-3">{selectedMonthAmount} €</div>
+                    <div className="fixed-bg mobile-text text-white p-3">{fixedMonthAmount} €</div>
                 </div>
                 <div className="col">
-                    <div className="fixed-bg mobile-text text-white p-3">{calculatePercentage(selectedMonthAmount, incomeMonthAmount)} %</div>
+                    <div className="fixed-bg mobile-text text-white p-3">{calculatePercentage(fixedMonthAmount, incomeMonthAmount)} %</div>
                 </div>
             </div> 
             <div className="m-3 my-4">
                 {Object.entries(categoryTotals).map(([category, total]) => (
                     <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
-                        <div className="col mobile-text fw-bold">{category}</div>
+                        <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col mobile-text">{calculatePercentage(total, incomeMonthAmount)} %</div>
-                        <div className="col mobile-text">{total} €</div>
+                        <div className="col mobile-text">{total.toFixed(2)} €</div>
                     </div>
                 ))}
             </div>

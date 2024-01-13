@@ -38,6 +38,110 @@ export const barOptions = {
     },
 };
 
+export const barOptionsMobile = {
+    plugins: {
+        legend: {
+            display: false,
+        }
+    },
+    responsive: true,
+    scales: {
+        x: {
+            stacked: true,
+            grid: {
+                display: false,
+            },
+            ticks: {
+                font: {
+                    size: 10,
+                },
+                maxRotation: 0,
+                minRotation: 0,
+            },
+        },
+        y: {
+            stacked: true,
+            display: false,
+            grid: {
+                display: false, 
+            },
+        },
+    },
+};
+
+export const allDataBarOptions = {
+    plugins: {
+        legend: {
+            position: "bottom",
+            margin: 20,
+            display: true,
+            labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+                font: {
+                    size: 11,
+                },
+                padding: 20,
+            },
+        },
+    },
+    responsive: true,
+    scales: {
+        x: {
+            stacked: false,
+            ticks: {
+                font: {
+                    size: 10,
+                },
+            },
+        },
+        y: {
+            stacked: false,
+            display: false,
+            grid: {
+                display: false,
+            },
+        },
+    },
+};
+
+export const allDataBarOptionsMobile = {
+    plugins: {
+        legend: {
+            position: "bottom",
+            margin: 20,
+            display: false,
+            labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+                font: {
+                    size: 11,
+                },
+                maxRotation: 0,
+                minRotation: 0,
+                padding: 20,
+            },
+        },
+    },
+    responsive: true,
+    scales: {
+        x: {
+            stacked: false,
+            ticks: {
+                font: {
+                    size: 10,
+                },
+            },
+        },
+        y: {
+            stacked: false,
+            display: false,
+            grid: {
+                display: false,
+            },
+        },
+    },
+};
 
 //borrar la siguiente option al acabar las bar charts
 export const simpleBarOptions = {
@@ -77,6 +181,47 @@ export const optionsLinear = {
                     size: 11,
                 },
                 padding: 20,
+            },
+        },
+    },
+    scales: {
+        x: {
+            stacked: false,
+            grid: {
+                display: false,
+            },
+            ticks: {
+                font: {
+                    size: 10,
+                },
+            },
+        },
+        y: {
+            stacked: false,
+            display: false,
+            grid: {
+                display: false,
+            },
+        },
+    },
+};
+
+export const optionsLinearMobile = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            margin: 20,
+            display: false,
+            labels: {
+                usePointStyle: true,
+                pointStyle: 'circle',
+                font: {
+                    size: 11,
+                },
+                padding: 20,
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
     },
@@ -145,12 +290,13 @@ export const optionsBalanceLinear = {
     },
 };
 
-export const allDataBarOptions = {
+export const optionsBalanceLinearMobile = {
+    responsive: true,
     plugins: {
         legend: {
             position: "bottom",
             margin: 20,
-            display: true,
+            display: false,
             labels: {
                 usePointStyle: true,
                 pointStyle: "circle",
@@ -158,28 +304,39 @@ export const allDataBarOptions = {
                     size: 11,
                 },
                 padding: 20,
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
     },
-    responsive: true,
     scales: {
         x: {
-            stacked: false,
+            stacked: true,
+            grid: {
+                display: false,
+            },
             ticks: {
                 font: {
                     size: 10,
                 },
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
         y: {
-            stacked: false,
-            display: false,
+            stacked: true,
             grid: {
-                display: false,
+                drawOnChartArea: false,
+            },
+            ticks: {
+                callback: function (value) {
+                    return value === 0 ? value : "";
+                },
             },
         },
     },
 };
+
 
 
 

@@ -33,11 +33,11 @@ export const MovementsListIncomes = () => {
                         <div className="col mobile-text">Categoría</div>
                         <div className="col mobile-text">Importe</div>
                     </div>
-                    {incomes.map((movement) => (  
-                        <div key={movement.id} className="row movements-list lh-lg d-flex align-items-center">
+                    {incomes.map((movement, index) => (  
+                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
                             <div className="col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className="col mobile-text">{movement.category}</div>
-                            <div className="col mobile-text text-success">{`${movement.value} €`}</div>
+                            <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                            <div className="col mobile-text text-success">{`${movement.value.toFixed(2)} €`}</div>
                         </div>
                     ))}
                 </div>

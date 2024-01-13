@@ -26,6 +26,8 @@ export const AddFixedModal = () => {
   
     const addFixed = async () => {
       await actions.setFixed(dateTime,fixedcategory_id,value);
+      console.log(store.fixes);
+      window.location.reload();
     };
 
     return (

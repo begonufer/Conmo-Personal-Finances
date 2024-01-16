@@ -3,11 +3,12 @@ import { Context } from "../store/appContext";
 import { optionsLinear, optionsLinearMobile, optionsBalanceLinear, optionsBalanceLinearMobile } from "../pages/chartoptions.jsx";
 import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
 import { Line } from "react-chartjs-2";
+import { Spinner } from "../component/Spinner.jsx";
 import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals } from '../pages/utils.jsx';
 
 export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear }) => {
     const { store } = useContext(Context);
-        
+    const [loading, setLoading] = useState(false);        
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -25,6 +26,9 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
 
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
+        
+        setLoading(true);
+
         const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
         const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
@@ -39,6 +43,8 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
         }));
         console.log(typeDataArray)
         setTypeBarData(typeDataArray);
+        
+        setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
@@ -72,18 +78,24 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Line options={getOptions()} data={daTabarras} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Line options={getOptions()} data={daTabarras} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };
 
 export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, color }) => {
     const { store } = useContext(Context);
-    
+    const [loading, setLoading] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -103,6 +115,9 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
     const [chartData, setChartData] = useState([]);
 
     const buildBarDataChart = async () => {
+        
+        setLoading(true);
+
         const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
         const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
@@ -137,6 +152,8 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
             };
         });
         setChartData(netChartData);
+        
+        setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
@@ -159,18 +176,24 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Line options={getOptions()} data={chartDataBar} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Line options={getOptions()} data={chartDataBar} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };
 
 export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }) => {
     const { store } = useContext(Context);
-
+    const [loading, setLoading] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -188,6 +211,9 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
 
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
+        
+        setLoading(true);
+
         const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
             await loadData([dataFunction]);
@@ -201,6 +227,8 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
         }));
         console.log(typeDataArray)
         setTypeBarData(typeDataArray);
+        
+        setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
@@ -241,17 +269,25 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Line options={getOptions()} data={daTabarras} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Line options={getOptions()} data={daTabarras} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };
 
 export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear, color }) => {
     const { store } = useContext(Context);
+    
+    const [loading, setLoading] = useState(false);
     
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -272,6 +308,9 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
     const [chartData, setChartData] = useState([]);
 
     const buildBarDataChart = async () => {
+        
+        setLoading(true);
+        
         const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
 
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
@@ -308,6 +347,8 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
         });
 
         setChartData(netChartData);
+        
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -338,11 +379,17 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Line options={getOptions()} data={chartDataBar} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Line options={getOptions()} data={chartDataBar} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };

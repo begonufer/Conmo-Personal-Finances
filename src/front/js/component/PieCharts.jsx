@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Context } from "../store/appContext";
 import { pieOptions } from "../pages/chartoptions.jsx";
+
+import { Spinner } from "../component/Spinner.jsx";
 import {
     filterDataByMonthYear,
     loadData,
@@ -12,6 +14,7 @@ import { Pie } from "react-chartjs-2";
 
 export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
+    const [loading, setLoading] = useState(false);
     const [typesTotals, setTypesTotals] = useState({});
     const filterAndBuildTypeData = (data, selectedMonthIndex, selectedYear, typeName, color ) => {
         const filteredData = filterDataByMonthYear(data, selectedMonthIndex, selectedYear);
@@ -40,6 +43,7 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
         }
     };
     const transformData = async () => {
+        setLoading(true);
         const combinedTotals = {};
         for (let i = 0; i < dataFunctions.length; i++) {
             const totals = await loadDataAndFilter(actions, dataFunctions[i], types[i], selectedMonthIndex, selectedYear, typeNames[i], colors[i]);
@@ -55,6 +59,7 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
         }
         console.log("Totales después de acumular:", combinedTotals);
         setTypesTotals(combinedTotals);
+        setLoading(false);
     };
     useEffect(() => {
         transformData();
@@ -71,12 +76,18 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
     };
     return (
         <>
-            {Object.keys(typesTotals).length > 0 ? (
-                <>
-                    <Pie data={data} options={pieOptions} />
-                </>
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
+                <>
+                    {Object.keys(typesTotals).length > 0 ? (
+                        <>
+                            <Pie data={data} options={pieOptions} />
+                        </>
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
             )}
         </>
     );
@@ -84,6 +95,7 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
 
 export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNames, selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
+    const [loading, setLoading] = useState(false);
     const [categoryTotals, setCategoryTotals] = useState({});
     const loadDataAndFilter = async (actions, dataFunction, type, selectedMonthIndex, selectedYear, typeName, categoryKey, colors) => {
         try {
@@ -96,6 +108,7 @@ export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNam
         }
     };
     const transformData = async () => {
+        setLoading(true);
         const combinedTotals = {};
         for (let i = 0; i < dataFunctions.length; i++) {
             const totals = await loadDataAndFilter(actions, dataFunctions[i], types[i], selectedMonthIndex, selectedYear, typeNames[i], categoryKeys[i], colors[i]);
@@ -113,6 +126,7 @@ export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNam
         }
         console.log("Totales después de acumular:", combinedTotals);
         setCategoryTotals(combinedTotals);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -132,13 +146,20 @@ export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNam
 
     return (
         <>
-            {Object.keys(categoryTotals).length > 0 ? (<Pie data={data} options={pieOptions} />) : (<p>No hay datos para este mes.</p>)}
+            {loading ? (
+                <Spinner />
+            ) : (
+                <>
+                    {Object.keys(categoryTotals).length > 0 ? (<Pie data={data} options={pieOptions} />) : (<p>No hay datos para este mes.</p>)}
+                </>
+            )}
         </>
     );
 };
 
 export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selectedYear }) => {
     const { store, actions } = useContext(Context);
+    const [loading, setLoading] = useState(false);
     const [typesTotals, setTypesTotals] = useState({});
     const filterAndBuildTypeData = (data, selectedYear, typeName, color ) => {
         const filteredData = filterDataByYear(data, selectedYear);
@@ -167,6 +188,7 @@ export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selecte
         }
     };
     const transformData = async () => {
+        setLoading(true);
         const combinedTotals = {};
         for (let i = 0; i < dataFunctions.length; i++) {
             const totals = await loadDataAndFilter(actions, dataFunctions[i], types[i], selectedYear, typeNames[i], colors[i]);
@@ -182,6 +204,7 @@ export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selecte
         }
         console.log("Totales después de acumular:", combinedTotals);
         setTypesTotals(combinedTotals);
+        setLoading(false);
     };
     useEffect(() => {
         transformData();
@@ -198,19 +221,26 @@ export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selecte
     };
     return (
         <>
-            {Object.keys(typesTotals).length > 0 ? (
-                <>
-                    <Pie data={data} options={pieOptions} />
-                </>
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {Object.keys(typesTotals).length > 0 ? (
+                        <>
+                            <Pie data={data} options={pieOptions} />
+                        </>
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };
 
 export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames, selectedYear }) => {
     const { store, actions } = useContext(Context);
+    const [loading, setLoading] = useState(false);
     const [categoryTotals, setCategoryTotals] = useState({});
     const loadAnualDataAndFilter = async (actions, dataFunction, type, selectedYear, typeName, categoryKey, colors) => {
         try {
@@ -224,6 +254,7 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
     };
 
     const transformData = async () => {
+        setLoading(true);
         const combinedTotals = {};
         for (let i = 0; i < dataFunctions.length; i++) {
             const totals = await loadAnualDataAndFilter(actions, dataFunctions[i], types[i], selectedYear, typeNames[i], categoryKeys[i], colors[i]);
@@ -241,6 +272,7 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
         }
         console.log("Totales después de acumular:", combinedTotals);
         setCategoryTotals(combinedTotals);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -260,7 +292,13 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
 
     return (
         <>
-            {Object.keys(categoryTotals).length > 0 ? (<Pie data={data} options={pieOptions} />) : (<p>No hay datos para este año.</p>)}
+            {loading ? (
+                <Spinner />
+            ) : (
+                <> 
+                    {Object.keys(categoryTotals).length > 0 ? (<Pie data={data} options={pieOptions} />) : (<p>No hay datos para este año.</p>)}
+                </>
+            )};
         </>
     );
 };

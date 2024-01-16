@@ -178,16 +178,9 @@ export const Expenses = () => {
 
     const descriptionText = (
         <div className="texto-desplegable">
-            <h2>Aquí podrás encontrar el estado general de tus gastos:</h2>
-            <div className="description-text mt-4">
-                <ul>
-                    <li> Cuánta parte de tus ingresos destinas a cada tipo de gasto o a cada categoría. </li>
-                    <li> Qué días del mes, o meses del año, has gastado más y en qué categorías. </li>
-                    <li> Balance general de tus ingresos a lo largo del mes y del año. </li>
-                    <li> En la tabla resumen podrás encontrar los datos de todas las categorías y tipos, desgranados. </li>
-                    <li> Tendrás una idea general de la media que sueles destinar a cada uno de los apartados para que puedas gestionar tus finanzas de manera óptima, acorde con tus necesidades y objetivos. </li>
-                    <li> Por último encontrarás el listado de todos tus movimientos, el cual podrás descargar a tu correo electrónico si lo deseas. </li>
-                </ul>
+            <h3>Estado general de tus gastos.</h3>
+            <div className="description-text">
+                <p>Comparando gastos fijos, ocasionales y gasto realizado sobre las reservas</p>
             </div>
         </div>
     );
@@ -325,7 +318,7 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
         <>
             <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-lg-5 mx-lg-5 mx-3 gap-5">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-lg-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
-                <div className="col-lg col-md-8 col text-center">
+                <div className="col-lg col-md-8 col-12 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -336,7 +329,7 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
                         renderAsDataBar={true}
                     />                    
                 </div>
-                <div className="col-lg col-md-8 col text-center">
+                <div className="col-lg col-md-8 col-12 text-center">
                     <AnualBarTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -357,7 +350,7 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
         <>
             <div className="row text-center justify-content-center align-items-bottom py-lg-5 mt-lg-3 px-lg-5 mx-lg-5 mx-3 gap-5">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Tipos</h2>
-                <div className="col-lg col-md-8 col text-center">
+                <div className="col-lg col-md-8 col-12 text-center">
                     <MonthlyLineTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
@@ -367,7 +360,7 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
                         selectedYear={selectedYear}
                     />                    
                 </div>
-                <div className="col-lg col-md-8 col text-center">
+                <div className="col-lg col-md-8 col-12 text-center">
                     <AnualLineTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}

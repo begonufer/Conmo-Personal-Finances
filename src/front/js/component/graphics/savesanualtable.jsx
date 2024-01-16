@@ -83,32 +83,32 @@ export const AnualSavesTable = (props) => {
     return (
         <>
             <div className="row mx-1 gap-2">
-                <div className="col p-0">
+                <div className="col-md col-12 p-0">
                     <div className="row text-white saves-part-right rounded-pill fw-normal fs-5 mx-1">
                         <div className="col mobile-text py-3 saves-bold-bg fw-bold">Reservado</div>
-                        <div className="col mobile-text py-3 fw-normal"> {selectedAmount.toFixed(2)} €</div>
+                        <div className="col mobile-text py-3 fw-normal"> {selectedAmount.toFixed(2)}€</div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row text-white usage-part-right rounded-pill fw-normal fs-5">
-                        <div className="col-md col-auto mobile-text p-3 usage-bold-bg fw-bold">Usado</div>
-                        <div className="col-md col-auto mobile-text py-3 fw-normal"> {selectedUsageAmount.toFixed(2)} €</div>
-                        <div className="col-md col-auto mobile-text py-3 fw-normal">{calculatePercentage(selectedUsageAmount, selectedAmount)} %</div>
+                        <div className="col mobile-text p-3 usage-bold-bg fw-bold">Usado</div>
+                        <div className="col mobile-text py-3 fw-normal"> {selectedUsageAmount.toFixed(2)}€</div>
+                        <div className="col mobile-text py-3 fw-normal">{calculatePercentage(selectedUsageAmount, selectedAmount)}%</div>
                     </div>
                 </div>
                 <div className="col-md col-12 p-0">
                     <div className="row text-white saves-part-right rounded-pill fw-normal fs-5 mx-0 mx-md-1 my-2 my-md-0">
                         <div className="col mobile-text p-3 saves-bold-bg fw-bold">Balance</div>
-                        <div className="col mobile-text p-3 fw-normal">{balance.toFixed(2)} €</div>
+                        <div className="col mobile-text p-3 fw-normal">{balance.toFixed(2)}€</div>
                     </div>
                 </div>
             </div>
             <div className="row text-white saves-bold-bg rounded-pill fs-5 mx-1 mt-3 mt-md-5">
-                <div className="col-3 mobile-text p-2">Categoría</div>
-                <div className="col-md col-3 mobile-text p-2">Reserva</div>
+                <div className="col-md-3 col-2 overflow-hidden text-truncate mobile-text p-2">Categoría</div>
+                <div className="col-md col-3 overflow-hidden text-truncate mobile-text p-2">Reservado</div>
                 <div className="col-md col-2 mobile-text p-2">%</div>
                 <div className="col d-none d-md-block p-2">Media</div>
-                <div className="col-md col-2 mobile-text p-2">Uso</div>
+                <div className="col-md col-3 mobile-text p-2">Uso</div>
                 <div className="col-md col-2 mobile-text p-2">%</div>
                 <div className="col d-none d-md-block p-2">Media</div>
                 <div className="col d-none d-md-block p-2">Balance</div>
@@ -116,11 +116,11 @@ export const AnualSavesTable = (props) => {
             <div className="m-2 m-md-3 my-md-4">
                 {Object.entries(categoryTotals).map(([category, total]) => (
                     <div key={category} className="row fs-5 lh-lg d-flex align-items-center">
-                        <div className="col-3 mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
+                        <div className="col-md-3 col-2 mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col-md col-3 mobile-text">{total.toFixed(2)}€</div>
                         <div className="col-md col-2 mobile-text">{calculatePercentage(total, selectedIncomeAmount)}%</div>
-                        <div className="col d-none d-md-block">{calculateAverage(total)} €</div>
-                        <div className="col-md col-2 mobile-text">{- ((usageCategoryTotals[category]) || 0).toFixed(2)}€</div>
+                        <div className="col d-none d-md-block">{calculateAverage(total)}€</div>
+                        <div className="col-md col-3 mobile-text">{- ((usageCategoryTotals[category]) || 0).toFixed(2)}€</div>
                         <div className="col-md col-2 mobile-text">{calculatePercentage(usageCategoryTotals[category] || 0, total)}%</div>
                         <div className="col d-none d-md-block">{calculateAverage((usageCategoryTotals[category]) || 0)}€</div>
                         <div className="col d-none d-md-block">{(total - usageCategoryTotals[category] || 0).toFixed(2)}€</div>
@@ -180,7 +180,7 @@ export const AnualSavesTable = (props) => {
 //         <>
 //             <div className="row">
 //                 <div className="col mx-3">
-//                     <p className="incomes-bg p-3">Sobrante de {props.previousMonth} <i className="fas fa-arrow-right"></i> {previousMonthAmount} €</p>
+//                     <p className="incomes-bg p-3">Sobrante de {props.previousMonth} <i className="fas fa-arrow-right"></i> {previousMonthAmount}€</p>
 //                 </div>
 //                 <div className="col mx-3">
 //                     <p className="incomes-bg p-3">{props.selectedMonth} <i className="fas fa-arrow-right"></i> {selectedMonthAmount} €</p>
@@ -192,7 +192,7 @@ export const AnualSavesTable = (props) => {
 //                         {Object.entries(categoryTotals).map(([category, total]) => (
 //                             <tr className="line" key={category}>
 //                                 <th scope="row" className="half-width">{category}</th>
-//                                 <td>{calculatePercentage(total, selectedMonthAmount)} %</td>
+//                                 <td>{calculatePercentage(total, selectedMonthAmount)}%</td>
 //                                 <td>{total} €</td>
 //                             </tr>
 //                         ))}

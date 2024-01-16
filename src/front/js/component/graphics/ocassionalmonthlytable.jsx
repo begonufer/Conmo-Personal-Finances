@@ -22,7 +22,7 @@ export const MonthlyOcassionalTable = (props) => {
 
         const calculateOcassionalMonthAmount = calculateTotals(filterMonthlyOcassional);
 
-        setOcassionalMonthAmount(calculateOcassionalMonthAmount);
+        setOcassionalMonthAmount(calculateOcassionalMonthAmount.toFixed(2));
         const filterMonthlyIncome = filterDataByMonthYear(store.incomes, props.selectedMonthIndex, props.selectedYear);
 
         const calculateIncomeMonthAmount = calculateTotals(filterMonthlyIncome);
@@ -39,24 +39,24 @@ export const MonthlyOcassionalTable = (props) => {
         <>
             <div className="row mx-1 gap-2">
                 <div className="col">
-                    <div className="ocassional-bg mobile-text text-white p-3">{ocassionalMonthAmount.toFixed(2)} €</div>
+                    <div className="ocassional-bg mobile-text text-white p-3">{ocassionalMonthAmount}€</div>
                 </div>
                 <div className="col">
-                    <div className="ocassional-bg mobile-text text-white p-3">{calculatePercentage(ocassionalMonthAmount, incomeMonthAmount)} %</div>
+                    <div className="ocassional-bg mobile-text text-white p-3">{calculatePercentage(ocassionalMonthAmount, incomeMonthAmount)}%</div>
                 </div>
             </div>
             <div className="m-3 my-4">
                 {Object.entries(ocassionalCategoryTotals).map(([category, total]) => (
                     <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
-                        <div className="col mobile-text">{calculatePercentage(total, incomeMonthAmount)} %</div>
-                        <div className="col mobile-text">{total.toFixed(2)} €</div>
+                        <div className="col mobile-text">{calculatePercentage(total, incomeMonthAmount)}%</div>
+                        <div className="col mobile-text">{total.toFixed(2)}€</div>
                     </div>
                 ))}
             </div>
             <div className="row ocassional-bg text-white mx-1 mt-2">
                 <div className="col mobile-text p-3 fw-bold">Restante</div>
-                <div className="col mobile-text p-3 ocassional-part-right fw-normal">{restAmount.toFixed(2)} €</div>
+                <div className="col mobile-text p-3 ocassional-part-right fw-normal">{restAmount.toFixed(2)}€</div>
             </div>
         </>
     );

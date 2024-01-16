@@ -9,36 +9,36 @@ export const MonthlyIncomeTable = (props) => {
     const { store, actions } = useContext(Context);
 
     const [categoryTotals, setCategoryTotals] = useState({});
+    const getCategoryTotals = async () => {
+        await actions.getIncomes();
+        const filteredIncome = filterDataByMonthYear(store.incomes, props.selectedMonthIndex, props.selectedYear);
+        const totals = {};
+        filteredIncome.forEach(({ value, incomecategory }) => {
+            const categoryName = incomecategory.name;
+            totals[categoryName] = (totals[categoryName] || 0) + value;
+        });
+        setCategoryTotals(totals);
+    }
+
     const [previousMonthAmount, setPreviousMonthAmount] =  useState([]);
+    const getPreviousMonthTotal = async () => {
+        await actions.getIncomes();
+        await actions.getSaves();
+        await actions.getFixes();
+        await actions.getOcassionals();
+
+        const allPreviousMonthIncome = filterAllDataPreviousMonth(store.incomes, props.previousMonthIndex, props.selectedYear).reduce((total, income) => total + income.value, 0);
+        const allPreviousMonthSave = filterAllDataPreviousMonth(store.saves, props.previousMonthIndex, props.selectedYear).reduce((total, save) => total + save.value, 0);
+        const allPreviousMonthFixed = filterAllDataPreviousMonth(store.fixes, props.previousMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
+        const allPreviousMonthOcassional = filterAllDataPreviousMonth(store.ocassionals, props.previousMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
+
+        const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
+        setPreviousMonthAmount(previousMonthAmount);
+    };
 
     useEffect(() => {
-        const transformData = async () => {
-            await actions.getIncomes();
-            await actions.getSaves();
-            await actions.getFixes();
-            await actions.getOcassionals();
-
-            const allPreviousMonthIncome = filterAllDataPreviousMonth(store.incomes, props.previousMonthIndex, props.selectedYear).reduce((total, income) => total + income.value, 0);
-            const allPreviousMonthSave = filterAllDataPreviousMonth(store.saves, props.previousMonthIndex, props.selectedYear).reduce((total, save) => total + save.value, 0);
-            const allPreviousMonthFixed = filterAllDataPreviousMonth(store.fixes, props.previousMonthIndex, props.selectedYear).reduce((total, fixed) => total + fixed.value, 0);
-            const allPreviousMonthOcassional = filterAllDataPreviousMonth(store.ocassionals, props.previousMonthIndex, props.selectedYear).reduce((total, ocassional) => total + ocassional.value, 0);
-        
-            const previousMonthAmount = allPreviousMonthIncome - allPreviousMonthSave - allPreviousMonthFixed - allPreviousMonthOcassional;
-
-            const filteredIncome = filterDataByMonthYear(store.incomes);
-
-            const totals = {};
-            filteredIncome.forEach(({ value, incomecategory }) => {
-                const categoryName = incomecategory.name;
-                totals[categoryName] = (totals[categoryName] || 0) + value;
-            });
-
-            setPreviousMonthAmount(previousMonthAmount);
-
-            setCategoryTotals(totals);
-        };
-
-        transformData();
+        getPreviousMonthTotal();
+        getCategoryTotals();
     }, [props.selectedMonthIndex, props.previousMonthIndex, props.selectedYear]);
 
     const selectedMonthAmount = store.incomes
@@ -53,16 +53,16 @@ export const MonthlyIncomeTable = (props) => {
     return (
         <>
             <div className="row mx-1 gap-2">
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row incomes-bg">
-                        <div className="col p-3 mobile-text fw-bold">Restos</div>
-                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {previousMonthAmount.toFixed(2)} €</div>
+                        <div className="col p-3 mobile-text fw-bold">Restante</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {previousMonthAmount}€</div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row incomes-bg">
                         <div className="col p-3 mobile-text fw-bold">{props.selectedMonth}</div>
-                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {selectedMonthAmount.toFixed(2)} €</div>
+                        <div className="col p-3 mobile-text incomes-part-right fw-normal"> {selectedMonthAmount.toFixed(2)}€</div>
                     </div>
                 </div>
             </div>
@@ -70,14 +70,14 @@ export const MonthlyIncomeTable = (props) => {
                 {Object.entries(categoryTotals).map(([category, total]) => (
                     <div key={category} className="row fs-4 lh-lg d-flex align-items-center">
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
-                        <div className="col mobile-text">{calculatePercentage(total, selectedMonthAmount)} %</div>
-                        <div className="col mobile-text">{total.toFixed(2)} €</div>
+                        <div className="col mobile-text">{calculatePercentage(total, selectedMonthAmount)}%</div>
+                        <div className="col mobile-text">{total.toFixed(2)}€</div>
                     </div>
                 ))}
             </div>
             <div className="row incomes-bg mx-1 mt-2">
                 <div className="col mobile-text p-3 fw-bold">Total</div>
-                <div className="col mobile-text p-3 incomes-part-right fw-normal"> {totalAmount.toFixed(2)} €</div>
+                <div className="col mobile-text p-3 incomes-part-right fw-normal">{totalAmount}€</div>
             </div>
         </>
     );

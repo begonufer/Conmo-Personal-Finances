@@ -10,9 +10,11 @@ import {
     calculateTypeDayTotals,
     calculateTypeMonthTotals,
   } from '../pages/utils.jsx';
+import { Spinner } from "../component/Spinner.jsx";
 
 export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, renderAsDataBar }) => {
     const { store } = useContext(Context);
+    const [loading, setLoading] = useState(false);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -35,6 +37,7 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
 
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
+        setLoading(true);
         const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
         const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
@@ -49,6 +52,7 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
         }));
         console.log(typeDataArray)
         setTypeBarData(typeDataArray);
+        setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
@@ -90,10 +94,16 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
             )}
         </>
     );
@@ -101,6 +111,7 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
 
 export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, renderAsDataBar }) => {
     const { store } = useContext(Context);
+    const [loading, setLoading] = useState(false);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -123,6 +134,7 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
 
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
+        setLoading(true);
         const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
         const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
             await loadData([dataFunction]);
@@ -136,6 +148,7 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
         }));
         console.log(typeDataArray)
         setTypeBarData(typeDataArray);
+        setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
@@ -185,11 +198,17 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
 
     return (
         <>
-            {typeBarData.length > 0 ? (
-                <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
+            {loading ? (
+                <Spinner />
             ) : (
-                <p>No hay datos en este mes.</p>
-            )}
+                <>
+                    {typeBarData.length > 0 ? (
+                        <Bar options={getOptions()} data={renderAsDataBar ? dataBar : daTabarras} />
+                    ) : (
+                        <p>No hay datos en este mes.</p>
+                    )}
+                </>
+            )};
         </>
     );
 };

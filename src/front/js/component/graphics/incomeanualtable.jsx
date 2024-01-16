@@ -54,16 +54,16 @@ export const AnualIncomeTable = (props) => {
     return (
         <>
             <div className="row mx-1 gap-2">
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row incomes-bg">
                         <div className="col mobile-text p-3 fw-bold">Total</div>
-                        <div className="col mobile-text p-3 incomes-part-right fw-normal">{totalIncomeAmount.toFixed(2)} €</div>
+                        <div className="col mobile-text p-3 incomes-part-right fw-normal">{totalIncomeAmount.toFixed(2)}€</div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row incomes-bg">
                         <div className="col mobile-text p-3 fw-bold">Media</div>
-                        <div className="col mobile-text p-3 incomes-part-right fw-normal">{calculateAverage(totalIncomeAmount)} €</div>
+                        <div className="col mobile-text p-3 incomes-part-right fw-normal">{calculateAverage(totalIncomeAmount)}€</div>
                     </div>
                 </div>
             </div>
@@ -71,9 +71,9 @@ export const AnualIncomeTable = (props) => {
                 {Object.entries(incomeCategoryTotals).map(([category, total]) => (
                     <div className="row fs-4 lh-lg d-flex align-items-center" key={category}>
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
-                        <div className="col mobile-text">{total.toFixed(2)} €</div>
-                        <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                        <div className="col mobile-text">{calculateAverage(total)} €</div>                          
+                        <div className="col mobile-text">{total.toFixed(2)}€</div>
+                        <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                        <div className="col mobile-text">{calculateAverage(total)}€</div>                          
                     </div>
                 ))}
             </div>

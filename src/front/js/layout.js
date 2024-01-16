@@ -12,7 +12,7 @@ import { MyConmo } from "./pages/myconmo.jsx";
 import { Incomes } from "./pages/incomes.jsx";
 import { Expenses } from "./pages/expenses.jsx";
 import { FixedExpenses } from "./pages/fixedexpenses.jsx";
-import { VariableExpenses } from "./pages/variableexpenses.jsx";
+import { OcassionalExpenses } from "./pages/ocassionalexpenses.jsx";
 import { Saves } from "./pages/saves.jsx";
 import { Settings } from "./pages/settings.jsx";
 import { Navbar } from "./component/navbar.jsx";
@@ -63,7 +63,7 @@ const Layout = () => {
                                     <Route element={<Incomes />} path="/incomes" />
                                     <Route element={<Expenses />} path="/expenses" />
                                     <Route element={<FixedExpenses />} path="/fixedexpenses" />
-                                    <Route element={<VariableExpenses />} path="/variableexpenses" />
+                                    <Route element={<OcassionalExpenses />} path="/ocassionalexpenses" />
                                     <Route element={<Saves />} path="/saves" />
                                     <Route element={<Settings />} path="/settings" />
                                 </>

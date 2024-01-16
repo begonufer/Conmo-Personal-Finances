@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
+import { Spinner } from "../component/Spinner.jsx";
 
 export const MovementsListExpenses = () => {
 
     const { store, actions } = useContext(Context);
 
+    const [loading, setLoading] = useState(false);
+
     const [allMovements, setAllMovements] = useState([]);
   
     useEffect(() => {
       async function transformData() {
+        setLoading(true);
         await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
@@ -24,6 +28,7 @@ export const MovementsListExpenses = () => {
             const sortedData = allData.sort((a, b) => b.dateTime - a.dateTime);
 
             setAllMovements(sortedData);
+        setLoading(false);
       }
   
       transformData();
@@ -60,31 +65,39 @@ export const MovementsListExpenses = () => {
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-5">
                 <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
-                <div className="col text-center p-lg-5 p-3 px-4 mx-lg-5 mb-5">
-                    <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
-                        <div className="col mobile-text">Fecha</div>
-                        <div className="col mobile-text">Tipo</div>
-                        <div className="col mobile-text">Categoría</div>
-                        <div className="col mobile-text">Importe</div>
-                    </div>
-                    {allMovements.map((movement, index) => (  
-                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
-                            <div className="col-md col mobile-text">{movement.dateTime.toLocaleDateString()}</div>
-                            <div className={getTableRowClass(movement.type)}>
-                                {isSmallScreen ? (
-                                    (movement.type === 'Uso de reservado' && 'U') ||
-                                    (movement.type === 'Gasto fijo' && 'F') ||
-                                    (movement.type === 'Gasto ocasional' && 'O') ||
-                                    movement.type
-                                ) : (
-                                    movement.type
-                                )}
+                {loading ? (
+                    <Spinner />
+                ) : (
+                    <>
+                        <div className="col text-center p-lg-5 p-3 px-4 mx-lg-5 mb-5">
+                            <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
+                                <div className="col mobile-text">Fecha</div>
+                                <div className="col mobile-text">Tipo</div>
+                                <div className="col overflow-hidden text-truncate mobile-text">Categoría</div>
+                                <div className="col mobile-text">Importe</div>
                             </div>
-                            <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
-                            <div className="col mobile-text text-danger">{`- ${movement.value.toFixed(2)} €`}</div>
+                            {allMovements.map((movement, index) => (  
+                                <div key={index} className="row movements-list lh-lg d-flex align-items-center">
+                                    {isSmallScreen
+                                        ? <div className="col mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })}</div>
+                                        : <div className="col">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>
+                                    }                            <div className={getTableRowClass(movement.type)}>
+                                        {isSmallScreen ? (
+                                            (movement.type === 'Uso de reservado' && 'U') ||
+                                            (movement.type === 'Gasto fijo' && 'F') ||
+                                            (movement.type === 'Gasto ocasional' && 'O') ||
+                                            movement.type
+                                        ) : (
+                                            movement.type
+                                        )}
+                                    </div>
+                                    <div className="col mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                                    <div className="col mobile-text text-danger">{`-${movement.value.toFixed(2)}€`}</div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </>
+                )}
             </div>
         </>
     );

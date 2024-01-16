@@ -60,6 +60,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						password
 					})
 				})
+				if (!response.ok) {
+					throw new Error("Email o contraseña incorrectos.");
+				}			
 				const user = await response.json()
 				if (user.token){
 					localStorage.setItem('token', user.token)

@@ -31,10 +31,12 @@ export const FixedExpenses = () => {
                 type={'Gastos fijos'}
                 descriptionText={
                     <div className="texto-desplegable">
-                        <h2 className="mt-2">Descripción detallada de la sección.</h2>
+                        <h3>Estadísticas en relación a tus gastos fijos mensuales y anuales.</h3>
                         <div className="description-text">
-                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit maxime sunt praesentium dolores recusandae vitae ab unde quam neque, doloribus ducimus tenetur ad magnam ratione culpa voluptatum rem accusamus quas.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
+                            <ul>
+                                <li>Gastos recurrentes y obligatorios.</li>
+                                <li>Ejemplos: Gasto de supermercado, factura de la luz, alquiler, hipoteca...</li>
+                            </ul>
                         </div>
                     </div>
                 }

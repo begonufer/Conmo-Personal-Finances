@@ -3,12 +3,16 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/welcome.css";
 
+import { Spinner } from "../component/Spinner.jsx";
+
 export const Signup =()=>{
     const [name,setName] = useState('');
     const [surname,setSurname] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+
     const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const updateName = (nameInputValue) => {
@@ -36,8 +40,10 @@ export const Signup =()=>{
     }
     return (
         <>
-            {loading}
-            {!loading && (<div className="w-100">
+            {loading ? (
+                <Spinner />
+            ) : (
+            <div className="w-100">
                 <div className="m-0 vh-100 row justify-content-center align-items-center">
                     <div className="col-auto login p-0 rounded shadow">
                         <div className="row p-md-5 p-2 m-0 text-center justify-content-center align-items-center rounded-1">
@@ -67,7 +73,8 @@ export const Signup =()=>{
                         </div>
                     </div>
                 </div>
-            </div>)}
+            </div>
+            )}
         </>
     )
 }

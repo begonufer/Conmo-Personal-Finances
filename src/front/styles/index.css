@@ -63,7 +63,7 @@
 		height: calc(100vh - 169.86px);
 	}
 	.conmo-m {
-		font-family: 'Righteous', cursive;
+		font-family: 'Outfit', sans-serif;
 		color:white;
 		padding: 10px;
 		font-size: 250%;
@@ -132,7 +132,7 @@
 		height: calc(100vh - 100px);
 	}
 	.conmo-m {
-		font-family: 'Righteous', cursive;
+		font-family: 'Outfit', sans-serif;
 		color:white;
 		padding: 10px;
 		font-size: 250%;
@@ -198,7 +198,7 @@
 		padding-left: 38%;
 	}
 	.conmo-m {
-		font-family: 'Righteous', cursive;
+		font-family: 'Outfit', sans-serif;
 		color:white;
 		padding: 10px;
 		font-size: 250%;
@@ -538,7 +538,7 @@ body {
 }
 
 .conmo /*Da formato al logo*/ {
-    font-family: 'Righteous', cursive;
+    font-family: 'Outfit', sans-serif;
     color:white;
     padding: 10px;
 }
@@ -668,7 +668,7 @@ body {
 	color: rgb(7, 128, 139);
 }
 .conmo-lg {
-    font-family: 'Righteous', cursive;
+    font-family: 'Outfit', sans-serif;
     color:white;
     padding: 10px;
 	font-size: 400%;

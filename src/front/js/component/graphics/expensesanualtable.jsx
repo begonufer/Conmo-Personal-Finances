@@ -117,7 +117,7 @@ export const AnualExpensesTable = (props) => {
 
     return (
         <>
-            <div className="row align-self-center text-center justify-content-center align-items-bottom mt-2">
+            <div className="row align-self-center text-center justify-content-center align-items-bottom mt-2 px-md-2 px-0">
                 <div className="wrap flex-column justify-content-center align-items-center pb-2 rounded-1">
                     <h4 className="text-expenses fs-1 fw-bold p-3 mb-0">GASTOS</h4>
                     <div className="expense-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -129,9 +129,9 @@ export const AnualExpensesTable = (props) => {
                     </div>
                     <div className="text-center justify-content-center align-items-center pt-3">
                         <div className="row mobile-text">
-                            <div className="col text-center">{totalExpenses} €</div>
-                            <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)} %</div>
-                            <div className="col text-center">{calculateAverage(totalExpenses)} €</div>
+                            <div className="col text-center">{totalExpenses}€</div>
+                            <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)}%</div>
+                            <div className="col text-center">{calculateAverage(totalExpenses)}€</div>
                         </div>
                     </div>
                 </div>
@@ -148,14 +148,14 @@ export const AnualExpensesTable = (props) => {
                             </div>
                             <div className="text-center justify-content-center align-items-center p-3">
                                 <div className="row mobile-text">
-                                    <div className="col">{totalFixedAmount} €</div>
-                                    <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(totalFixedAmount)} €</div>
+                                    <div className="col">{totalFixedAmount}€</div>
+                                    <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)}%</div>
+                                    <div className="col">{calculateAverage(totalFixedAmount)}€</div>
                                 </div>
                             </div>
                             <div className="fixed-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                 <div className="row text-white mobile-text">
-                                    <div className="col">Categoría</div>
+                                    <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
@@ -164,19 +164,19 @@ export const AnualExpensesTable = (props) => {
                             {Object.entries(fixedCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                     <div className="row mobile-text">
-                                        <div className="col">{category}</div>
-                                        <div className="col">{total.toFixed(2)} €</div>
-                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(total)} €</div>                            
+                                        <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                        <div className="col">{total.toFixed(2)}€</div>
+                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                        <div className="col">{calculateAverage(total)}€</div>                            
                                     </div>
                                 </div>
                             ))}
                             <div className="text-center text-white justify-content-center align-items-center mb-3 p-lg-3 p-2 rounded-pill" id="table-fixed">
                                 <div className="row mobile-text fw-bold fs-6">
-                                    <div className="col">LIBRE</div>
-                                    <div className="col">{balanceBeforeFixed}€</div>
-                                    <div className="col">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(balanceBeforeFixed)}€</div>
+                                    <div className="col-md col-3 overflow-hidden text-truncate mobile-text">LIBRE</div>
+                                    <div className="col mobile-text">{balanceBeforeFixed}€</div>
+                                    <div className="col mobile-text">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)}%</div>
+                                    <div className="col mobile-text">{calculateAverage(balanceBeforeFixed)}€</div>
                                 </div>
                             </div>
                         </div>
@@ -191,14 +191,14 @@ export const AnualExpensesTable = (props) => {
                             </div>
                             <div className="text-center justify-content-center align-items-center p-3">
                                 <div className="row mobile-text">
-                                    <div className="col">{totalOcassionalAmount} €</div>
-                                    <div className="col">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(totalOcassionalAmount)} €</div>
+                                    <div className="col">{totalOcassionalAmount}€</div>
+                                    <div className="col">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)}%</div>
+                                    <div className="col">{calculateAverage(totalOcassionalAmount)}€</div>
                                 </div>
                             </div>
                             <div className="ocassional-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                 <div className="row text-white mobile-text">
-                                    <div className="col">Categoría</div>
+                                    <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
@@ -207,19 +207,19 @@ export const AnualExpensesTable = (props) => {
                             {Object.entries(ocassionalCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                 <div className="row mobile-text">
-                                        <div className="col">{category}</div>
-                                        <div className="col">{total.toFixed(2)} €</div>
-                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(total)} €</div>                            
+                                        <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                        <div className="col">{total.toFixed(2)}€</div>
+                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                        <div className="col">{calculateAverage(total)}€</div>                            
                                     </div>
                                 </div>
                             ))}
                             <div className="text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill" id="table-ocassional">
                                 <div className="row mobile-text text-white fw-bold fs-6">
-                                    <div className="col">RESTANTE</div>
-                                    <div className="col">{totalRestAmount}€</div>
-                                    <div className="col">{calculatePercentage(totalRestAmount, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(totalRestAmount)}€</div>
+                                    <div className="col-md col-2 overflow-hidden text-truncate mobile-text">RESTANTE</div>
+                                    <div className="col mobile-text">{totalRestAmount}€</div>
+                                    <div className="col mobile-text">{calculatePercentage(totalRestAmount, totalIncomeAmount)}%</div>
+                                    <div className="col mobile-text">{calculateAverage(totalRestAmount)}€</div>
                                 </div>
                             </div>
                         </div>
@@ -233,13 +233,13 @@ export const AnualExpensesTable = (props) => {
                             </div>
                             <div className="text-center justify-content-center align-items-center p-3">
                                 <div className="row mobile-text">
-                                    <div className="col">{totalUsageAmount} €</div>
-                                    <div className="col">{calculateAverage(totalUsageAmount)} €</div>
+                                    <div className="col">{totalUsageAmount}€</div>
+                                    <div className="col">{calculateAverage(totalUsageAmount)}€</div>
                                 </div>
                             </div>
                             <div className="usage-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                 <div className="row text-white mobile-text">
-                                    <div className="col">Categoría</div>
+                                    <div className="col-4 overflow-hidden text-truncate">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">Media</div>
                                 </div>
@@ -247,9 +247,9 @@ export const AnualExpensesTable = (props) => {
                             {Object.entries(usageCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                     <div className="row mobile-text">
-                                        <div className="col">{category}</div>
-                                        <div className="col">{total.toFixed(2)} €</div>
-                                        <div className="col">{calculateAverage(total)} €</div>                            
+                                        <div className="col-4 overflow-hidden text-truncate">{category}</div>
+                                        <div className="col">{total.toFixed(2)}€</div>
+                                        <div className="col">{calculateAverage(total)}€</div>                            
                                     </div>
                                 </div>
                             ))}

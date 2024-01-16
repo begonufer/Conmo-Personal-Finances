@@ -37,15 +37,16 @@ export const Saves = () => {
                 type={'Reservado'}
                 descriptionText={
                     <div className="texto-desplegable">
-                        <h2 className="mt-2">Descripción detallada de la sección.</h2>
+                        <h3>Estadísticas y tablas sobre tus reservas y el uso que haces de ellas.</h3>
                         <div className="description-text">
-                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit maxime sunt praesentium dolores recusandae vitae ab unde quam neque, doloribus ducimus tenetur ad magnam ratione culpa voluptatum rem accusamus quas.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem?</p>
+                            <ul>
+                                <li>Dinero que se reserva mes a mes en una categoría determinada para poder gastarlo en el momento en el que lo necesites.</li>
+                                <li>Ejemplos: Fotografía, ropa, muebles...</li>
+                            </ul>
                         </div>
                     </div>
                 }
             />
-
             <Selector
                 openMonthsDropdown={openMonthsDropdown}
                 selectedMonth={selectedMonth}

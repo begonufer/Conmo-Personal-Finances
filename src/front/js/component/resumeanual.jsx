@@ -129,13 +129,13 @@ export const ResumeAnual = (props) => {
                     </div>
                     <div className="text-center justify-content-center align-items-center p-3">
                         <div className="row">
-                            <div className="col">{totalIncomeAmount} €</div>
-                            <div className="col">{calculateAverage(totalIncomeAmount)} €</div>
+                            <div className="col">{totalIncomeAmount}€</div>
+                            <div className="col">{calculateAverage(totalIncomeAmount)}€</div>
                         </div>
                     </div>
                     <div className="income-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                         <div className="row text-white mobile-text">
-                            <div className="col">Categoría</div>
+                            <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                             <div className="col">Total</div>
                             <div className="col">%</div>
                             <div className="col">Media</div>
@@ -144,10 +144,10 @@ export const ResumeAnual = (props) => {
                     {Object.entries(incomeCategoryTotals).map(([category, total]) => (
                         <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                             <div className="row mobile-text align-items-center">
-                                <div className="col">{category}</div>
-                                <div className="col">{total.toFixed(2)} €</div>
-                                <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                <div className="col">{calculateAverage(total)} €</div>                          
+                                <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                <div className="col">{total.toFixed(2)}€</div>
+                                <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                <div className="col">{calculateAverage(total)}€</div>                          
                             </div>
                         </div>
                     ))}
@@ -165,14 +165,14 @@ export const ResumeAnual = (props) => {
                             </div>
                             <div className="text-center justify-content-center align-items-center p-3">
                                 <div className="row mobile-text">
-                                    <div className="col">{totalSavedAmount} €</div>
-                                    <div className="col">{calculatePercentage(totalSavedAmount, totalIncomeAmount)} %</div>
-                                    <div className="col">{calculateAverage(totalSavedAmount)} €</div>
+                                    <div className="col">{totalSavedAmount}€</div>
+                                    <div className="col">{calculatePercentage(totalSavedAmount, totalIncomeAmount)}%</div>
+                                    <div className="col">{calculateAverage(totalSavedAmount)}€</div>
                                 </div>
                             </div>
                             <div className="saves-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                 <div className="row text-white mobile-text">
-                                    <div className="col">Categoría</div>
+                                    <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">%</div>
                                     <div className="col">Media</div>
@@ -181,10 +181,10 @@ export const ResumeAnual = (props) => {
                             {Object.entries(saveCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                 <div className="row mobile-text">
-                                        <div className="col">{category}</div>
-                                        <div className="col">{total.toFixed(2)} €</div>
-                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(total)} €</div>                            
+                                        <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                        <div className="col">{total.toFixed(2)}€</div>
+                                        <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                        <div className="col">{calculateAverage(total)}€</div>                            
                                     </div>
                                 </div>
                             ))}
@@ -199,13 +199,13 @@ export const ResumeAnual = (props) => {
                             </div>
                             <div className="text-center justify-content-center align-items-center p-3">
                                 <div className="row mobile-text">
-                                    <div className="col">{totalUsageAmount} €</div>
-                                    <div className="col">{calculateAverage(totalUsageAmount)} €</div>
+                                    <div className="col">{totalUsageAmount}€</div>
+                                    <div className="col">{calculateAverage(totalUsageAmount)}€</div>
                                 </div>
                             </div>
                             <div className="usage-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                 <div className="row text-white mobile-text">
-                                    <div className="col">Categoría</div>
+                                    <div className="col-4 overflow-hidden text-truncate">Categoría</div>
                                     <div className="col">Total</div>
                                     <div className="col">Media</div>
                                 </div>
@@ -213,9 +213,9 @@ export const ResumeAnual = (props) => {
                             {Object.entries(usageCategoryTotals).map(([category, total]) => (
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                     <div className="row mobile-text">
-                                        <div className="col">{category}</div>
-                                        <div className="col">{total.toFixed(2)} €</div>
-                                        <div className="col">{calculateAverage(total)} €</div>                            
+                                        <div className="col-4 overflow-hidden text-truncate">{category}</div>
+                                        <div className="col">{total.toFixed(2)}€</div>
+                                        <div className="col">{calculateAverage(total)}€</div>                            
                                     </div>
                                 </div>
                             ))}
@@ -233,9 +233,9 @@ export const ResumeAnual = (props) => {
                     </div>
                     <div className="text-center justify-content-center align-items-center pt-3">
                         <div className="row mobile-text">
-                            <div className="col text-center">{totalExpenses} €</div>
-                            <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)} %</div>
-                            <div className="col text-center">{calculateAverage(totalExpenses)} €</div>
+                            <div className="col text-center">{totalExpenses}€</div>
+                            <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)}%</div>
+                            <div className="col text-center">{calculateAverage(totalExpenses)}€</div>
                         </div>
                     </div>
                     <div>
@@ -251,14 +251,14 @@ export const ResumeAnual = (props) => {
                                 </div>
                                 <div className="text-center justify-content-center align-items-center p-3">
                                     <div className="row mobile-text">
-                                        <div className="col">{totalFixedAmount} €</div>
-                                        <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(totalFixedAmount)} €</div>
+                                        <div className="col">{totalFixedAmount}€</div>
+                                        <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)}%</div>
+                                        <div className="col">{calculateAverage(totalFixedAmount)}€</div>
                                     </div>
                                 </div>
                                 <div className="fixed-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                     <div className="row text-white mobile-text">
-                                        <div className="col">Categoría</div>
+                                        <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                                         <div className="col">Total</div>
                                         <div className="col">%</div>
                                         <div className="col">Media</div>
@@ -267,19 +267,19 @@ export const ResumeAnual = (props) => {
                                 {Object.entries(fixedCategoryTotals).map(([category, total]) => (
                                     <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                         <div className="row mobile-text">
-                                            <div className="col">{category}</div>
-                                            <div className="col">{total.toFixed(2)} €</div>
-                                            <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                            <div className="col">{calculateAverage(total)} €</div>                            
+                                            <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                            <div className="col">{total.toFixed(2)}€</div>
+                                            <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                            <div className="col">{calculateAverage(total)}€</div>                            
                                         </div>
                                     </div>
                                 ))}
                                 <div className="text-center text-white justify-content-center align-items-center mb-3 p-lg-3 p-2 rounded-pill" id="table-fixed">
                                     <div className="row mobile-text fw-bold fs-6">
-                                        <div className="col">LIBRE</div>
-                                        <div className="col">{balanceBeforeFixed} €</div>
-                                        <div className="col">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(balanceBeforeFixed)} €</div>
+                                        <div className="col-3 mobile-text overflow-hidden text-truncate">LIBRE</div>
+                                        <div className="col mobile-text">{balanceBeforeFixed}€</div>
+                                        <div className="col mobile-text">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)}%</div>
+                                        <div className="col mobile-text">{calculateAverage(balanceBeforeFixed)}€</div>
                                     </div>
                                 </div>
                             </div>
@@ -294,14 +294,14 @@ export const ResumeAnual = (props) => {
                                 </div>
                                 <div className="text-center justify-content-center align-items-center p-3">
                                     <div className="row mobile-text">
-                                        <div className="col">{totalOcassionalAmount} €</div>
-                                        <div className="col">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(totalOcassionalAmount)} €</div>
+                                        <div className="col">{totalOcassionalAmount}€</div>
+                                        <div className="col">{calculatePercentage(totalOcassionalAmount, totalIncomeAmount)}%</div>
+                                        <div className="col">{calculateAverage(totalOcassionalAmount)}€</div>
                                     </div>
                                 </div>
                                 <div className="ocassional-light-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
                                     <div className="row text-white mobile-text">
-                                        <div className="col">Categoría</div>
+                                        <div className="col-3 overflow-hidden text-truncate">Categoría</div>
                                         <div className="col">Total</div>
                                         <div className="col">%</div>
                                         <div className="col">Media</div>
@@ -310,19 +310,19 @@ export const ResumeAnual = (props) => {
                                 {Object.entries(ocassionalCategoryTotals).map(([category, total]) => (
                                     <div className="text-center justify-content-center align-items-center p-lg-3 p-1" key={category}>
                                     <div className="row mobile-text">
-                                            <div className="col">{category}</div>
-                                            <div className="col">{total.toFixed(2)} €</div>
-                                            <div className="col">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                                            <div className="col">{calculateAverage(total)} €</div>                            
+                                            <div className="col-3 overflow-hidden text-truncate">{category}</div>
+                                            <div className="col">{total.toFixed(2)}€</div>
+                                            <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                                            <div className="col">{calculateAverage(total)}€</div>                            
                                         </div>
                                     </div>
                                 ))}
                                 <div className="text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill" id="table-ocassional">
                                     <div className="row mobile-text text-white fw-bold fs-6">
-                                        <div className="col">RESTANTE</div>
-                                        <div className="col">{totalRestAmount} €</div>
-                                        <div className="col">{calculatePercentage(totalRestAmount, totalIncomeAmount)} %</div>
-                                        <div className="col">{calculateAverage(totalRestAmount)} €</div>
+                                        <div className="col-3 mobile-text overflow-hidden text-truncate">RESTANTE</div>
+                                        <div className="col mobile-text">{totalRestAmount}€</div>
+                                        <div className="col mobile-text">{calculatePercentage(totalRestAmount, totalIncomeAmount)}%</div>
+                                        <div className="col mobile-text">{calculateAverage(totalRestAmount)}€</div>
                                     </div>
                                 </div>
                             </div>

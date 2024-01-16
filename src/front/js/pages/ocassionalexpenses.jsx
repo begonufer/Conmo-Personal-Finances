@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, ocassionalTypeColor } from "../pages/typescolors.jsx";
+import { Context } from "../store/appContext.js";
+import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, ocassionalTypeColor } from "./typescolors.jsx";
 import { MovementsListOcassional } from "../component/movementslistocassional.jsx";
 import { AddButton } from "../component/addbutton.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
@@ -12,7 +12,7 @@ import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
 
 import { useMonthSelection } from './utils.jsx';
 
-export const VariableExpenses = () => {
+export const OcassionalExpenses = () => {
     const {
         todayDate,
         currentMonthIndex,
@@ -35,9 +35,14 @@ export const VariableExpenses = () => {
             <Header
                 type={'Gastos ocasionales'}
                 descriptionText={
-                    <div className="description-text">
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit maxime sunt praesentium dolores recusandae vitae ab unde quam neque, doloribus ducimus tenetur ad magnam ratione culpa voluptatum rem accusamus quas.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugiat harum neque nostrum facere, incidunt commodi architecto et cum unde sed ab excepturi veritatis ex ut dolor accusamus deserunt rem.</p>
+                    <div className="texto-desplegable">
+                        <h3>Estadísticas en relación a tus gastos ocasionales mensuales y anuales.</h3>
+                        <div className="description-text">
+                            <ul>
+                                <li>Gastos puntuales de cualquier tipo.</li>
+                                <li>Ejemplos: Ropa, cine, farmacia...</li>
+                            </ul>
+                        </div>
                     </div>
                 }
             />

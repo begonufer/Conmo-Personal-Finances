@@ -57,17 +57,17 @@ export const AnualFixedTable = (props) => {
     return (
         <>
             <div className="row mx-1 gap-2">
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row text-white fixed-part-right rounded-pill fw-normal fs-4">
-                        <div className="col-md col-auto mobile-text p-3 fixed-bold-bg fw-bold">Total</div>
-                        <div className="col-md col-auto mobile-text py-3 fw-normal">{totalFixedAmount} €</div>
-                        <div className="col-md col-auto mobile-text py-3 fw-normal">{calculatePercentage(totalFixedAmount, totalIncomeAmount)} %</div>
+                        <div className="col mobile-text p-3 fixed-bold-bg fw-bold">Total</div>
+                        <div className="col mobile-text py-3 fw-normal">{totalFixedAmount}€</div>
+                        <div className="col mobile-text py-3 fw-normal">{calculatePercentage(totalFixedAmount, totalIncomeAmount)}%</div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-md col-12">
                     <div className="row text-white fixed-bg">
                         <div className="col mobile-text p-3 fw-bold">Media</div>
-                        <div className="col mobile-text p-3 fixed-part-right fw-normal">{calculateAverage(totalIncomeAmount)} €</div>
+                        <div className="col mobile-text p-3 fixed-part-right fw-normal">{calculateAverage(totalIncomeAmount)}€</div>
                     </div>
                 </div>
             </div>
@@ -75,17 +75,17 @@ export const AnualFixedTable = (props) => {
                 {Object.entries(fixedCategoryTotals).map(([category, total]) => (
                     <div className="row fs-4 lh-lg d-flex align-items-center" key={category}>
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
-                        <div className="col mobile-text">{total} €</div>
-                        <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)} %</div>
-                        <div className="col mobile-text">{calculateAverage(total)} €</div>                          
+                        <div className="col mobile-text">{total}€</div>
+                        <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
+                        <div className="col mobile-text">{calculateAverage(total)}€</div>                          
                     </div>
                 ))}
             </div>
             <div className="row text-white fixed-part-right rounded-pill fw-normal fs-4 mx-1 mt-4">
                 <div className="col mobile-text p-3 fixed-bold-bg fw-bold">Libre</div>
-                <div className="col mobile-text p-3 fw-normal">{freeTotal} €</div>
-                <div className="col mobile-text p-3 fw-normal">{calculatePercentage(freeTotal, totalIncomeAmount)} %</div>
-                <div className="col mobile-text p-3 fw-normal">{calculateAverage(freeTotal)} €</div>
+                <div className="col mobile-text p-3 fw-normal">{freeTotal}€</div>
+                <div className="col mobile-text p-3 fw-normal">{calculatePercentage(freeTotal, totalIncomeAmount)}%</div>
+                <div className="col mobile-text p-3 fw-normal">{calculateAverage(freeTotal)}€</div>
             </div>
         </>
     );

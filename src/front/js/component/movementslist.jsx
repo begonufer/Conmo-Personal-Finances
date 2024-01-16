@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
+import { Spinner } from "../component/Spinner.jsx";
 
 export const MovementsList = () => {
 
     const { store, actions } = useContext(Context);
+
+    const [loading, setLoading] = useState(false);
 
     const [allMovements, setAllMovements] = useState([]);
     const [incomes, setIncomes] = useState([]);
@@ -14,6 +17,7 @@ export const MovementsList = () => {
   
     useEffect(() => {
       async function transformData() {
+        setLoading(true);
         await actions.getIncomes();
         await actions.getSaves();
         await actions.getUsage();
@@ -48,6 +52,7 @@ export const MovementsList = () => {
             const reversedData = sortedData.reverse();
 
             setAllMovements(reversedData);
+        setLoading(false);
       }
   
       transformData();
@@ -88,38 +93,44 @@ export const MovementsList = () => {
         <>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
                 <h2 className="movements-head text-white text-center shadow rounded-pill p-3 mx-5 mb-3 fs-1 fw-semibold">Listado de movimientos</h2>
-                <div className="col text-center p-lg-5 mx-lg-5 mb-5">
-                    <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
-                        <div className="col mobile-text">Fecha</div>
-                        <div className="col-md col-1 p-0 mobile-text">Tipo</div>
-                        <div className="col-md col-3 mobile-text">Categoría</div>
-                        <div className="col mobile-text">Importe</div>
-                        <div className="col mobile-text">Balance</div>
-                    </div>
-                    {allMovements.map((movement, index) => (  
-                        <div key={index} className="row movements-list lh-lg d-flex align-items-center">
-                            {isSmallScreen
-                                ? <div className="col mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })}</div>
-                                : <div className="col mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>
-                            }
-                            <div className={getTableRowClass(movement.type)}>
-                                {isSmallScreen ? (
-                                    (movement.type === 'Ingreso' && 'I') ||
-                                    (movement.type === 'Uso reservado' && 'U') ||
-                                    (movement.type === 'Reservado' && 'R') ||
-                                    (movement.type === 'Gasto fijo' && 'F') ||
-                                    (movement.type === 'Gasto ocasional' && 'O') ||
-                                    movement.type
-                                ) : (
-                                    movement.type
-                                )}
+                {loading ? (
+                    <Spinner />
+                ) : (
+                    <>
+                        <div className="col text-center p-lg-5 mx-lg-5 mb-5">
+                            <div className="row movements-head rounded-pill fs-5 text-white fw-bold py-2 mb-4">
+                                <div className="col-md col-3 mobile-text">Fecha</div>
+                                <div className="col-md col-1 overflow-hidden text-truncate p-0 mobile-text">Tipo</div>
+                                <div className="col-md col-3 overflow-hidden text-truncate mobile-text">Categoría</div>
+                                <div className="col overflow-hidden text-truncate mobile-text">Importe</div>
+                                <div className="col overflow-hidden text-truncate mobile-text">Balance</div>
                             </div>
-                            <div className="col-md col-2 mobile-text overflow-hidden text-truncate">{movement.category}</div>
-                            <div className={movement.type === 'Ingreso' ? 'col-md col-3 mobile-text text-success' : 'col-md col-3 mobile-text text-danger'}>{movement.type === 'Ingreso' ? `${movement.value.toFixed(2)} €` : `- ${movement.value.toFixed(2)} €`}</div>
-                            <div className="col-md col-3 mobile-text">{movement.balance.toFixed(2)} €</div>
+                            {allMovements.map((movement, index) => (  
+                                <div key={index} className="row movements-list lh-lg d-flex align-items-center">
+                                    {isSmallScreen
+                                        ? <div className="col col-3 overflow-hidden text-truncate mobile-text">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })}</div>
+                                        : <div className="col">{movement.dateTime.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>
+                                    }
+                                    <div className={getTableRowClass(movement.type)}>
+                                        {isSmallScreen ? (
+                                            (movement.type === 'Ingreso' && 'I') ||
+                                            (movement.type === 'Uso reservado' && 'U') ||
+                                            (movement.type === 'Reservado' && 'R') ||
+                                            (movement.type === 'Gasto fijo' && 'F') ||
+                                            (movement.type === 'Gasto ocasional' && 'O') ||
+                                            movement.type
+                                        ) : (
+                                            movement.type
+                                        )}
+                                    </div>
+                                    <div className="col-md col-2 mobile-text overflow-hidden text-truncate">{movement.category}</div>
+                                    <div className={movement.type === 'Ingreso' ? 'col-md col-3 mobile-text text-success' : 'col-md col-3 mobile-text text-danger'}>{movement.type === 'Ingreso' ? `${movement.value.toFixed(2)}€` : `-${movement.value.toFixed(2)}€`}</div>
+                                    <div className="col-md col-3 mobile-text">{movement.balance.toFixed(2)}€</div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </>
+                )}
             </div>
         </>
     )

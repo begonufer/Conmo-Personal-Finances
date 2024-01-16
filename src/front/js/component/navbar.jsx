@@ -108,8 +108,8 @@ export const Navbar = () => {
                                 <Link to="/fixedexpenses" className="nav-item pb-4 px-3 fs-4 p-1">
                                     <i className="fa-solid fa-circle-dollar-to-slot"> </i> <span>Gastos fijos</span>
                                 </Link>
-                                <Link to="/variableexpenses" className="nav-item pb-4 px-3 fs-4 p-1">
-                                    <i className="fa-solid fa-cash-register"></i> <span>Gastos variables</span>                       
+                                <Link to="/ocassionalexpenses" className="nav-item pb-4 ps-3 fs-4 p-1">
+                                    <i className="fa-solid fa-cash-register"></i> <span>Gastos ocasionales</span>                       
                                 </Link>
                                 <Link to="/saves" className="nav-item pb-4 px-3 fs-4 p-1">
                                     <i className="fa-solid fa-box"></i> <span>Reserva</span>                     
@@ -130,13 +130,13 @@ export const Navbar = () => {
                                     aria-controls="collapseBalance"
                                 >
                                     <h4 className="col">Reservado</h4>
-                                    <h4 className="col"><strong>{savesBalance} €</strong></h4>
+                                    <h4 className="col"><strong>{savesBalance}€</strong></h4>
                                 </div>
                                 <div id="collapseBalance" className="available collapse p-2 text-white" aria-labelledby="categoriesBalance" data-bs-parent="#savedBalance">
                                     {Object.entries(categoryTotals).map(([category, total]) => (
                                         <div key={category} className="row fs-5 px-3 lh-lg">
-                                            <div className="col-8 fw-bold">{category}</div>
-                                            <div className="col-4 text-end">{(total - usageCategoryTotals[category] || total).toFixed(2)} €</div>
+                                            <div className="col-8 mobile-text fw-bold">{category}</div>
+                                            <div className="col-4 mobile-text text-end">{(total - usageCategoryTotals[category] || total).toFixed(2)}€</div>
                                         </div>
                                     ))}
                                 </div>

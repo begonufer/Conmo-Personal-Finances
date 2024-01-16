@@ -131,6 +131,8 @@ export const allDataBarOptionsMobile = {
                 font: {
                     size: 10,
                 },
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
         y: {
@@ -235,6 +237,8 @@ export const optionsLinearMobile = {
                 font: {
                     size: 10,
                 },
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
         y: {
@@ -329,9 +333,11 @@ export const optionsBalanceLinearMobile = {
                 drawOnChartArea: false,
             },
             ticks: {
-                callback: function (value) {
-                    return value === 0 ? value : "";
+                font: {
+                    size: 8,
                 },
+                maxRotation: 0,
+                minRotation: 0,
             },
         },
     },

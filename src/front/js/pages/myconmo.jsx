@@ -63,19 +63,26 @@ export const MyConmo = () => {
 
     const descriptionText = (
         <div className="texto-desplegable">
-            <h2>Aquí podrás encontrar el estado general de tus finanzas:</h2>
+            <h3>
+                Aquí encontrarás el estado general de tus finanzas
+            </h3>
+            <h3>y podrás comparar tus gastos e ingresos:</h3>
             <div className="description-text mt-4">
-                <ul>
-                    <li>{" "}Cuánta parte de tus ingresos destinas a cada tipo de gasto o a cada categoría.{" "}</li>
-                    <li>{" "}Qué días del mes, o meses del año, has gastado más y en qué categorías.{" "}</li>
-                    <li>{" "}Balance general de tus ingresos a lo largo del mes y del año.{" "}</li>
-                    <li>{" "}En la tabla resumen podrás encontrar los datos de todas las categorías y tipos, desgranados.{" "}</li>
-                    <li>{" "}Tendrás una idea general de la media que sueles destinar a cada uno de los apartados para que puedas gestionar tus finanzas de manera óptima, acorde con tus necesidades y objetivos.{" "}</li>
-                    <li>{" "}Por último encontrarás el listado de todos tus movimientos, el cual podrás descargar a tu correo electrónico si lo deseas.{" "}</li>
-                </ul>
+                <p>Gráficas de los tipos de gastos e ingresos.</p>
+                <p>Balance general.</p>
+                <div>Tabla resumen con todos los tipos de movimientos:
+                    <ul>
+                        <li>● Ingresos</li>
+                        <li>● Reservado</li>
+                        <li>● Uso de reservado</li>
+                        <li>● Gastos fijos</li>
+                        <li>● Gastos ocasionales</li>
+                    </ul>
+                </div>
+                <p className="mt-3">Listado de todos los movimientos.</p>
             </div>
         </div>
-  );
+    );
 
     const header = (
         <>
@@ -217,7 +224,7 @@ const CategoriesCharts = ({ selectedMonthIndex, selectedYear }) => {
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Categorías</h2>
-                <div className="col-lg col-md-8 col mt-lg-5 text-center">
+                <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['saves', 'fixes', 'ocassionals']}
@@ -228,7 +235,7 @@ const CategoriesCharts = ({ selectedMonthIndex, selectedYear }) => {
                         renderAsDataBar={true}
                     />                    
                 </div>
-                <div className="col-lg col-md-8 col mt-5 text-center">
+                <div className="col-lg col-md-8 col-12 mt-5 text-center">
                     <AnualBarTypes 
                         dataFunctions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['saves', 'fixes', 'ocassionals']}
@@ -249,7 +256,7 @@ const TypesCharts = ({ selectedMonthIndex, selectedYear }) => {
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Tipos</h2>
-                <div className="col-lg col-md-8 col mt-lg-5 text-center">
+                <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
@@ -260,7 +267,7 @@ const TypesCharts = ({ selectedMonthIndex, selectedYear }) => {
                         renderAsDataBar={false}
                     />                    
                 </div>
-                <div className="col-lg col-md-8 col mt-5 text-center">
+                <div className="col-lg col-md-8 col-12 mt-5 text-center">
                     <AnualBarTypes 
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
@@ -281,7 +288,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 mb-3">
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Evolución</h2>
-                <div className="col-lg-6 col-md-8 mt-lg-5 text-center">
+                <div className="col-lg-6 col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyLineTypes
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
@@ -291,7 +298,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
                         selectedYear={selectedYear}
                     />                    
                 </div>
-                <div className="col-lg-6 col-md-8 mt-5 text-center">
+                <div className="col-lg-6 col-md-8 col-12 mt-5 text-center">
                     <AnualLineTypes
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
@@ -301,7 +308,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
                     />                    
                 </div>
                 <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-md-5 mt-5 fs-1 fw-semibold">Balance</h2>
-                <div className="col-lg-6 col-md-8 mt-5 text-center">
+                <div className="col-lg-6 col-md-8 col-12 mt-5 text-center">
                     <MonthlyLineBalance
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
@@ -312,7 +319,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
                         color={[balanceColor]}
                     />                    
                 </div>
-                <div className="col-lg-6 col-md-8 mt-5 text-center">
+                <div className="col-lg-6 col-md-8 col-12 mt-5 text-center">
                     <AnualLineBalance
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}

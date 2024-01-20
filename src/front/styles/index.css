@@ -543,6 +543,11 @@ body {
     padding: 10px;
 }
 
+.btn-check:focus+.btn, .btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0 #ffffff00;
+}
+
 .icon {
 	cursor: pointer;
 	font-size: 20%;

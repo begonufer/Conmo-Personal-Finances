@@ -208,7 +208,7 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };

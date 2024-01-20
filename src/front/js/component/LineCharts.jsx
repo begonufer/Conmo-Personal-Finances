@@ -186,7 +186,7 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };
@@ -279,7 +279,7 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };
@@ -389,7 +389,7 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };

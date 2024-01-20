@@ -87,8 +87,8 @@ def is_logged():
 @api.route('/incomecategories', methods=['GET'])
 @jwt_required()
 def get_incomecategories():
-    return jsonify([income_category.serialize() for income_category in IncomeCategory.query.all()])
-
+    user_id = get_jwt_identity()
+    return jsonify([income_category.serialize() for income_category in IncomeCategory.query.filter_by(user_id=user_id).all()])
 
 #Añade un ingreso
 
@@ -141,13 +141,15 @@ def get_incomes():
 @api.route('/fixedcategories', methods=['GET'])
 @jwt_required()
 def get_fixedcategories():
-    return jsonify([fixed_category.serialize() for fixed_category in FixedCategory.query.all()])
+    user_id = get_jwt_identity()
+    return jsonify([fixed_category.serialize() for fixed_category in FixedCategory.query.filter_by(user_id=user_id).all()])
 
 # #Elimina categorías de gastos fijos
 
 # @api.route('/fixedcategories/id', methods=['DELETE'])
 # @jwt_required()
 # def delete_fixed_categories():
+
 #Añade un gasto fijo the good -->
 
 @api.route('/fixed', methods=['POST'])
@@ -196,8 +198,8 @@ def get_fixes():
 @api.route('/ocassionalcategories', methods=['GET'])
 @jwt_required()
 def get_ocassionalcategories():
-    return jsonify([ocassional_category.serialize() for ocassional_category in OcassionalCategory.query.all()])
-
+    user_id = get_jwt_identity()
+    return jsonify([ocassional_category.serialize() for ocassional_category in OcassionalCategory.query.filter_by(user_id=user_id).all()])
 
 # #Elimina categorías de gastos ocasionales
 

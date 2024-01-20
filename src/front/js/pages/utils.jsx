@@ -5,7 +5,14 @@ export const calculatePercentage = (amount, total) => {
     if (total === 0) {
         return 0;
     }
-    return ((amount / total) * 100).toFixed(0);
+
+    const result = (amount / total) * 100;
+    
+    if (isNaN(result) || !isFinite(result)) {
+        return 0;
+    }
+
+    return result.toFixed(0);
 };
 
 export const calculateAverage = (monthlyValues) => {

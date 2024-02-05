@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, balanceColor, incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
-import { Resume } from "../component/resume.jsx";
-import { ResumeAnual } from "../component/resumeanual.jsx";
-import { AddButton } from "../component/addbutton.jsx";
-import { MovementsList } from "../component/movementslist.jsx";
+import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, balanceColor, incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { Resume } from "../component/Tables.jsx";
+import { ResumeAnual } from "../component/Tables.jsx";
+import { AddButton } from "../component/AddButton.jsx";
+import { MovementsList } from "../component/MovementsLists.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
-import { Selector } from "../component/graphics/dateselector.jsx";
-import { Header } from "../component/header.jsx";
-import { AllDataTypeTable } from "../component/alldatatypetable.jsx";
-import { useMonthSelection, filterAllDataPreviousMonth } from "./utils.jsx";
+import { Selector } from "../component/DateSelector.jsx";
+import { Header } from "../component/Header.jsx";
+import { useMonthSelection, filterAllDataPreviousMonth } from "../utils.jsx";
 
 import { MonthlyPie, MonthlyPieTypes, AnualPie, AnualPieTypes } from "../component/PieCharts.jsx";
 import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
@@ -120,7 +119,7 @@ export const MyConmo = () => {
                     selectedYear={selectedYear}
                 />
             </div>
-            <div className="row gap-5 m-lg-5 mb-0 justify-content-center pb-lg-5 pb-4 mx-3" id="table-of-percentages">
+            <div className="row gap-5 m-lg-5 mb-0 justify-content-center pb-lg-5 pb-4 mx-3 fs-small">
                 <Resume
                     selectedMonth={selectedMonth}
                     selectedMonthIndex={selectedMonthIndex}
@@ -223,7 +222,7 @@ const CategoriesCharts = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Categorías</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Categorías</h2>
                 <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
@@ -255,7 +254,7 @@ const TypesCharts = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Tipos</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Tipos</h2>
                 <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
@@ -287,7 +286,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 mb-3">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Evolución</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Evolución</h2>
                 <div className="col-lg-6 col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyLineTypes
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
@@ -307,7 +306,7 @@ const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
                         selectedYear={selectedYear}
                     />                    
                 </div>
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-md-5 mt-5 fs-1 fw-semibold">Balance</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-md-5 mt-5 fs-1 fw-semibold">Balance</h2>
                 <div className="col-lg-6 col-md-8 col-12 mt-5 text-center">
                     <MonthlyLineBalance
                         dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}

@@ -11,8 +11,8 @@ export const Header = (props) => {
 
     return (
         <>
-            <div className="title-m-top text-center text-white pt-2" id="left-background">
-                <h1 className="header p-1 pb-3">{props.type}<i className="icon fas fa-info-circle ms-3" onClick={handleToggle}></i></h1>
+            <div className="title-m-top text-center text-white pt-2 conmo-light-bg">
+                <h1 className="header p-1 pb-3">{props.type}<i className="info-icon fas fa-info-circle ms-3" onClick={handleToggle}></i></h1>
                 <div>
                     <Collapse in={openInfo}>
                         <div className="texto-desplegable">

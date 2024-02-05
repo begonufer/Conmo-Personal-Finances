@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor } from "../pages/typescolors.jsx";
-import { MovementsListIncomes } from "../component/movementslistincomes.jsx";
-import { AddButton } from "../component/addbutton.jsx";
+import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor } from "../typescolors.jsx";
+import { MovementsListIncomes } from "../component/MovementsLists.jsx";
+import { AddButton } from "../component/AddButton.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
-import { Selector } from "../component/graphics/dateselector.jsx";
-import { Header } from "../component/header.jsx";
-import { AllDataTypeTable } from "../component/alldatatypetable.jsx";
-import { useMonthSelection } from './utils.jsx';
+import { Selector } from "../component/DateSelector.jsx";
+import { Header } from "../component/Header.jsx";
+import { TypeResume } from "../component/TypeResume.jsx";
+import { useMonthSelection } from '../utils.jsx';
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
 import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
 
@@ -85,13 +85,13 @@ const TypeTables = ({
             <div className="col-4 text-center d-none d-md-block align-self-center">
                 <img src={peggyConmo} className="w-100" alt="Conmo" />
             </div>
-            <AllDataTypeTable
+            <TypeResume
                 selectedMonth={selectedMonth}
                 selectedMonthIndex={selectedMonthIndex}
                 selectedYear={selectedYear}
                 previousMonth={previousMonth}
-                MonthlyTypeTable={'MonthlyIncomeTable'}
-                AnualTypeTable={'AnualIncomeTable'}
+                MonthlyTypeResume={'MonthlyIncomeResume'}
+                AnualTypeResume={'AnualIncomeResume'}
             />
         </div>
     </div>
@@ -102,7 +102,7 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
     return(
         <>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
                 <div className="col-md-4 text-center my-md-3 p-md-4 px-5">
                     <MonthlyPie
                         dataFunctions={[actions.getIncomes]}
@@ -127,7 +127,7 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                 </div>
             </div>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Anual</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 fs-1 fw-semibold">Anual</h2>
                 <div className="col-md-4 text-center my-md-3 p-md-4 px-5">
                     <AnualPie 
                         dataFunctions={[actions.getIncomes]}

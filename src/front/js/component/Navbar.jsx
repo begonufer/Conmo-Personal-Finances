@@ -1,7 +1,6 @@
 import React , { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/welcome.css";
 
 export const Navbar = () => {
 
@@ -58,6 +57,14 @@ export const Navbar = () => {
     useEffect(() => {
         getBalances();
         getCategorySavesBalance();
+        const unsubscribe = actions.subscribeToType(['saves','usages'], () => {
+            getBalances();
+            getCategorySavesBalance();
+            console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, []);
     
     const logout = () => {
@@ -82,7 +89,7 @@ export const Navbar = () => {
                             <i className="fa-solid fa-bars"></i>
                         </button>
                     </div>
-                    <div className="offcanvas offcanvas-end p-3" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div className="offcanvas offcanvas-end p-3 conmo-bg" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">
                             <Link to="/myconmo" className="navbar-brand align-middle align-items-center text-decoration-none">
                                 <span className="text-white fs-1">Mi</span><span className="conmo text-center fs-1">CONMO</span>
@@ -115,13 +122,13 @@ export const Navbar = () => {
                                     <i className="fa-solid fa-box"></i> <span>Reserva</span>                     
                                 </Link>
                             </div>
-                            <div className="available row rounded-pill text-white pb-2 pt-3 mt-3 mb-2 align-items-center text-center">
+                            <div className="conmo-light-bg row rounded-pill text-white pb-2 pt-3 mt-3 mb-2 align-items-center text-center">
                                 <h4 className="col">Disponible</h4>
                                 <h4 className="col"><strong>{totalBalance} €</strong></h4>
                             </div>
                             <div className="accordion accordion-flush" id="savedBalance">
                                 <div 
-                                    className="available row rounded-pill text-white pb-2 pt-3 mb-2 align-items-center text-center"
+                                    className="conmo-light-bg row rounded-pill text-white pb-2 pt-3 mb-2 align-items-center text-center"
                                     type="button"
                                     id="categoriesBalance"
                                     data-bs-toggle="collapse"
@@ -132,7 +139,7 @@ export const Navbar = () => {
                                     <h4 className="col">Reservado</h4>
                                     <h4 className="col"><strong>{savesBalance}€</strong></h4>
                                 </div>
-                                <div id="collapseBalance" className="available collapse p-2 text-white" aria-labelledby="categoriesBalance" data-bs-parent="#savedBalance">
+                                <div id="collapseBalance" className="conmo-light-bg collapse p-2 text-white" aria-labelledby="categoriesBalance" data-bs-parent="#savedBalance">
                                     {Object.entries(categoryTotals).map(([category, total]) => (
                                         <div key={category} className="row fs-5 px-3 lh-lg">
                                             <div className="col-8 mobile-text fw-bold">{category}</div>

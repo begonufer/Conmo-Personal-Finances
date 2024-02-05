@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Context } from "../store/appContext";
-import { pieOptions } from "../pages/chartoptions.jsx";
+import { pieOptions } from "../chartoptions.jsx";
 
 import { Spinner } from "../component/Spinner.jsx";
 import {
@@ -9,7 +9,7 @@ import {
     filterDataByYear,
     filterAndBuildData,
     filterAndBuildAnualData
-} from "../pages/utils.jsx";
+} from "../utils.jsx";
 import { Pie } from "react-chartjs-2";
 
 export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selectedMonthIndex, selectedYear }) => {
@@ -63,6 +63,13 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
     };
     useEffect(() => {
         transformData();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            transformData();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedMonthIndex, selectedYear]);
     const data = {
         labels:  Object.keys(typesTotals),
@@ -131,6 +138,13 @@ export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNam
 
     useEffect(() => {
         transformData();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            transformData();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedMonthIndex, selectedYear]);
 
     const data = {
@@ -208,6 +222,13 @@ export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selecte
     };
     useEffect(() => {
         transformData();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            transformData();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedYear]);
     const data = {
         labels:  Object.keys(typesTotals),
@@ -233,7 +254,7 @@ export const AnualPieTypes = ({ dataFunctions, types, colors, typeNames, selecte
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };
@@ -277,6 +298,13 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
 
     useEffect(() => {
         transformData();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            transformData();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedYear]);
 
     const data = {
@@ -298,7 +326,7 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
                 <> 
                     {Object.keys(categoryTotals).length > 0 ? (<Pie data={data} options={pieOptions} />) : (<p>No hay datos para este año.</p>)}
                 </>
-            )};
+            )}
         </>
     );
 };

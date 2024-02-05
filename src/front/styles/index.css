@@ -1,17 +1,39 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
 @media (max-width: 768px) {
-    .mobile-text {
-        font-size: 14px; /* Tamaño de letra más pequeño para pantallas móviles */
-    }
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		bottom: 150%;
+		transition: bottom .5s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		bottom: 265%;
+		transition: bottom .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		bottom: 380%;
+		transition: bottom .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		bottom: 495%;
+		transition: bottom .6s ease;
+	}	
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		bottom: 610%;
+		transition: bottom .6s ease;
+	}
+	.mobile-text {
+	  	font-size: 14px;
+	}
+	#inputQuantity::placeholder {
+		color:  rgb(27, 100, 113);
+		text-align: center;
+		font-size: 25px;
+	}
 	.description-text {
 		margin-left: 5%;
 		margin-right: 5%;
 		padding-bottom: 15px;
 	}
 	.header {
-		font-size: 3em;
+	  	font-size: 3em;
 	}
 	.texto-desplegable {
 		margin-top: 1px;
@@ -19,28 +41,29 @@
 	}
 	.custom-dropdown {
 		position: relative;
-		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
-		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		display: flex;
+		justify-content: center;
 		background-color: rgb(7, 128, 139);
 		margin-left: 15%;
 		margin-right: 15%;
 		margin-top: 10px;
 		border-radius: 50px;
+		z-index: 1000;
 	}
-	.carousel-control-prev-icon, .carousel-control-next-icon {
-		border-radius: 50%; /* Ajusta la forma del área de selección */
-		padding: 10px; /* Ajusta el relleno del área de selección */
+	.carousel-control-prev-icon,
+	.carousel-control-next-icon {
+		border-radius: 50%;
+		padding: 10px;
 	}
-	
-	#tableCarousel .carousel-control-prev, .carousel-control-next {
+	#tableCarousel .carousel-control-prev,
+	.carousel-control-next {
 		width: 28%;
 		height: 20%;
 		transform: translateY(450%);
-		margin-right:36%;
+		margin-right: 36%;
 		margin-left: 36%;
 		margin-top: 3%;
 	}
-
 	#pieCarousel .carousel-control-prev {
 		top: 36px;
 		transform: translateY(-50%);
@@ -49,7 +72,6 @@
 		padding-right: 25%;
 		padding-left: 25%;
 	}
-	
 	#pieCarousel .carousel-control-next {
 		top: 36px;
 		transform: translateY(-50%);
@@ -58,13 +80,12 @@
 		padding-right: 25%;
 		padding-left: 25%;
 	}
-
 	#landing {
-		height: calc(100vh - 169.86px);
+	  	height: calc(100vh - 169.86px);
 	}
 	.conmo-m {
-		font-family: 'Outfit', sans-serif;
-		color:white;
+		font-family: "Outfit", sans-serif;
+		color: white;
 		padding: 10px;
 		font-size: 250%;
 		width: 100%;
@@ -75,12 +96,47 @@
 		cursor: pointer;
 	}
 	.title-m-top {
-		margin-top: 100px;
+	  	margin-top: 100px;
+	}
+	.table-columns {
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50rem;
+		color: white;
+		font-size: 14px;
+		padding: 0.5rem;
+		font-weight: bold;
+	}
+	.type-table-title {
+		font-size: calc(1.375rem + 1.5vw);
+		font-weight: bold;
+		padding: 0.5rem;
+		margin-bottom: 0.5rem;
 	}
 }
-
+  
 @media (min-width: 769px) and (max-width: 1200px) {
-/* Estilos para pantallas medianas (por ejemplo, tablets) */
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		right: 150%;
+		transition: right .5s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		right: 265%;
+		transition: right .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		right: 380%;
+		transition: right .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		right: 495%;
+		transition: right .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		right: 610%;
+		transition: right .6s ease;
+	}
 	.description-text {
 		margin-left: 10%;
 		margin-right: 10%;
@@ -95,20 +151,22 @@
 	}
 	.custom-dropdown {
 		position: relative;
-		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
-		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		display: flex;
+		justify-content: center;
 		background-color: rgb(7, 128, 139);
 		margin-left: 30%;
 		margin-right: 30%;
 		margin-top: 10px;
 		border-radius: 50px;
+		z-index: 1000;
 	}
-	.carousel-control-prev-icon, .carousel-control-next-icon {
-		border-radius: 50%; /* Ajusta la forma del área de selección */
-		padding: 10px; /* Ajusta el relleno del área de selección */
+	.carousel-control-prev-icon,
+	.carousel-control-next-icon {
+		border-radius: 50%;
+		padding: 10px;
 	}
-	
-	#tableCarousel .carousel-control-prev, .carousel-control-next {
+	#tableCarousel .carousel-control-prev,
+	.carousel-control-next {
 		width: 5%;
 	}
 	#pieCarousel .carousel-control-prev {
@@ -119,7 +177,6 @@
 		padding-right: 25%;
 		padding-left: 25%;
 	}
-	
 	#pieCarousel .carousel-control-next {
 		top: 38px;
 		transform: translateY(-50%);
@@ -132,8 +189,8 @@
 		height: calc(100vh - 100px);
 	}
 	.conmo-m {
-		font-family: 'Outfit', sans-serif;
-		color:white;
+		font-family: "Outfit", sans-serif;
+		color: white;
 		padding: 10px;
 		font-size: 250%;
 	}
@@ -145,10 +202,43 @@
 		margin-top: 1rem;
 		cursor: pointer;
 	}
+	.table-columns {
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50rem;
+		padding: 1rem;
+		color: white;
+	}
+	.type-table-title {
+		font-size: calc(1.375rem + 1.5vw);
+		font-weight: bold;
+		padding: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
 }
 
 @media (min-width: 1201px) {
-/* Estilos para pantallas grandes (por ejemplo, escritorios) */
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton1 {
+		bottom: 150%;
+		transition: bottom .5s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton2 {
+		bottom: 265%;
+		transition: bottom .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton3 {
+		bottom: 380%;
+		transition: bottom .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton4 {
+		bottom: 495%;
+		transition: bottom .6s ease;
+	}
+	.sub-buttons .all-buttons-up-toggle:checked ~ #boton5 {
+		bottom: 610%;
+		transition: bottom .6s ease;
+	}
 	.description-text {
 		margin-left: 30%;
 		margin-right: 30%;
@@ -163,23 +253,24 @@
 	}
 	.custom-dropdown {
 		position: relative;
-		display: flex; /* Utilizamos flexbox para centrar horizontalmente */
-		justify-content: center; /* Alineamos los elementos verticalmente en el centro */
+		display: flex;
+		justify-content: center;
 		background-color: rgb(7, 128, 139);
 		margin-left: 30%;
 		margin-right: 30%;
 		margin-top: 10px;
 		border-radius: 50px;
+		z-index: 1000;
 	}
-	.carousel-control-prev-icon, .carousel-control-next-icon {
-		border-radius: 50%; /* Ajusta la forma del área de selección */
-		padding: 10px; /* Ajusta el relleno del área de selección */
+	.carousel-control-prev-icon,
+	.carousel-control-next-icon {
+		border-radius: 50%;
+		padding: 10px;
 	}
-	
-	#tableCarousel .carousel-control-prev, .carousel-control-next {
+	#tableCarousel .carousel-control-prev,
+	.carousel-control-next {
 		width: 5%;
 	}
-
 	#pieCarousel .carousel-control-prev {
 		top: 42px;
 		transform: translateY(-50%);
@@ -188,7 +279,6 @@
 		padding-right: 38%;
 		padding-left: 38%;
 	}
-	
 	#pieCarousel .carousel-control-next {
 		top: 42px;
 		transform: translateY(-50%);
@@ -198,8 +288,8 @@
 		padding-left: 38%;
 	}
 	.conmo-m {
-		font-family: 'Outfit', sans-serif;
-		color:white;
+		font-family: "Outfit", sans-serif;
+		color: white;
 		padding: 10px;
 		font-size: 250%;
 	}
@@ -211,479 +301,409 @@
 		margin-top: 1rem;
 		cursor: pointer;
 	}
+	.table-columns {
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50rem;
+		padding: 1rem;
+		color: white;
+	}
+	.type-table-title {
+		font-size: calc(1.375rem + 1.5vw);
+		font-weight: bold;
+		padding: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
 }
 
+/* General */
 body {
-    font-family: 'Quicksand', sans-serif;
-    background-color: rgba(40, 124, 147, 0.162);
-    /* background: #8bc34a; este es el color verde */
+	font-family: "Quicksand", sans-serif;
+	background-color: rgba(40, 124, 147, 0.162);
 }
-
-#resumen tr {
-/*	color: brown;*/
-	background-color: rgb(184, 213, 222);
+button {
+	outline: none !important;
+	border: none;
 }
-
-#resumen {
-	background-color: rgb(184, 213, 222);
-	font-weight: bold;
+a {
+    height: 5rem;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    font-size:large;
+    text-decoration: none;
+	outline: none !important;
 }
-
-#resumen h2{
-	font-size:300%;
+a:link {
+    color:white;
 }
-
-#resumen .table{
-	background-color: rgb(151, 192, 206);
-} */
-
-#table-title {
-	background-color: rgba(49, 133, 156, 0.596);
+a:hover {
+    color:white;
+    font-weight: bold;
 }
-
-.amarilloclaro {
-	background-color:  rgb(237, 209, 29);
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
-
-/* #table-incomes {
-    border-width: 3px;
-    border-style: solid;
-    border-color: rgb(207, 193, 44);
-} */
-
-.textincomes {
-	color: rgb(207, 193, 44);
-}
-
-.incomes-bg {
-	background-color: rgb(207, 193, 44);
-	font-weight: bold;
-	border-radius: 50px;
-	font-size:1.5em;
-}
-
-.incomes-part-right {
-	background-color: rgb(231, 204, 35);
-	font-weight: bold;
-	border-top-right-radius: 50px;
-	border-bottom-right-radius: 50px;
-}
-
-.income-light-bg {
-	/* background-color: rgb(220, 214, 149); */
-	font-weight: bold;
-	font-size:1.1em;
-	background-color: rgb(207, 193, 44);
-}
-
-.income-content-text {
-	/* background-color: rgb(255, 251, 204); */
-	font-size:1.2em;
-}
-
-.text-saves {
-	color: rgb(27, 100, 113);
-}
-
-.saves-light-bg {
-	font-weight: bold;
-	font-size:1.1em;
-	background-color: rgb(27, 100, 113);
-}
-
-.saves-content-bg {
-	background-color: rgb(187, 239, 241);
-	font-size:1.2em;
-}
-
-.saves-part-right {
-	background-color: rgb(7, 128, 139); 
-	font-weight: bold;
-	border-top-right-radius: 50px;
-	border-bottom-right-radius: 50px;
-}
-
-.saves-bold-bg {
-	background-color: rgb(27, 100, 113);
-	border-top-left-radius: 50px;
-	border-bottom-left-radius: 50px;
-}
-
-.text-usage {
-	color: rgb(43, 160, 214);
-}
-
-.usage-light-bg {
-	background-color: rgb(43, 160, 214);
-	font-weight: bold;
-	font-size:1.1em;
-}
-
-.usage-content-bg {
-	background-color: rgb(175, 226, 255);
-	font-size:1.2em;
-}
-
-.usage-part-right {
-	background-color: rgb(108, 181, 223);
-	font-weight: bold;
-	border-top-right-radius: 50px;
-	border-bottom-right-radius: 50px;
-}
-
-.usage-bold-bg {
-	background-color: rgb(43, 160, 214);
-	border-top-left-radius: 50px;
-	border-bottom-left-radius: 50px;
-}
-
-.text-fixed {
-	color: rgb(147, 40, 90);
-}
-
-.fixed-bg {
-	background-color: rgb(147, 40, 90);
-	font-weight: bold;
-	border-radius: 50px;
-	font-size:1.5em;
-}
-
-.fixed-light-bg {
-	font-weight: bold;
-	font-size:1.1em;
-	background-color:  rgb(147, 40, 90);
-}
-
-.fixed-content-bg {
-	background-color: rgb(228, 184, 205);
-	font-size:1.2em;
-}
-
-.fixed-part-right {
-	background-color: rgb(192, 22, 101);
-	font-weight: bold;
-	border-top-right-radius: 50px;
-	border-bottom-right-radius: 50px;
-}
-
-.fixed-bold-bg {
-	background-color: rgb(147, 40, 90);
-	border-top-left-radius: 50px;
-	border-bottom-left-radius: 50px;
-}
-
-.shadow-right {
-	box-shadow: 3px 0px 10px 0px rgba(43, 43, 43, 0.171);
-}
-
-.fixed-medium {
-	background-color: rgb(183, 73, 124);
-}
-
-.fixed-light {
-	background-color: rgb(203, 64, 129);
-}
-
-.text-ocassional {
-	color: rgb(138, 181, 63);
-}
-
-.ocassional-bg {
-	background-color: rgb(138, 181, 63);
-	font-weight: bold;
-	border-radius: 50px;
-	font-size:1.5em;
-}
-
-.ocassional-light-bg {
-	font-weight: bold;
-	font-size:1.1em;
-	background-color:  rgb(138, 181, 63);
-}
-
-.ocassional-content-bg {
-	background-color: rgb(233, 255, 177);
-	font-size:1.2em;
-}
-
-.ocassional-part-right {
-	background-color: rgb(175, 200, 62);
-	font-weight: bold;
-	border-top-right-radius: 50px;
-	border-bottom-right-radius: 50px;
-}
-
-.ocassional-bold-bg {
-	background-color: rgb(138, 181, 63);
-	border-top-left-radius: 50px;
-	border-bottom-left-radius: 50px;
-}
-
-.text-expenses {
-	color: brown;
-}
-
-.expense-light-bg {
-	font-weight: bold;
-	font-size:1.1em;
-	background-color: brown;
-}
-
-.expense-content-bg {
-	background-color: rgb(237, 191, 191);
-	font-size:1.2em;
-}
-
-.expense-pill {
-	margin: 30px 300px;
-	justify-self: center;
-}
-
-.expense-part-bottom {
-	background-color: rgb(195, 111, 111);
-	font-weight: bold;
-	font-size:1.1em;
-	border-radius: 5px;
-}
-
-.expense-part-top {
-	background-color: brown;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-}
-
-.half-width {
-	width: 70%;
-  }
-
-.table tbody .line {
-	height: 50px; /* Ajusta este valor según tus preferencias para la altura de las filas */
-	/* border-bottom: 3px solid rgb(237, 209, 29); */
+input {
 	font-size: 1.3em;
-  }
-
-#table-saves {
-	background-color: rgb(27, 100, 113);
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: white;
 }
-
-.table-usage {
-	background-color: rgb(43, 160, 214);
+input::placeholder {
+	font-size: 1.3em;
+	color:white;
 }
-
-#table-expenses {
-	background-color: brown;
+.object-fit-cover {
+	object-fit: cover;
 }
-
-#table-fixed {
-	background-color: rgb(147, 40, 90);
+.custom-dropdown:hover .dropdown-content {
+    display: block;
 }
-
-#table-ocassional {
-	background-color: rgb(138, 181, 63);
+.title-in {
+	color: white;
+	font-size: 300%;
 }
-
-#table-of-percentages {
-	font-size: small;
+.conmo {
+    font-family: 'Outfit', sans-serif;
+    color:white;
+    padding: 10px;
+    font-size: 190%;
 }
-
-
-/* #fondo    aqui estan todos los colores de los piecharts {
-	background-color:  rgb(207, 193, 44),
-	rgb(147, 40, 129),
-
-	rgb(145, 79, 134),
-	rgb(109, 57, 110),
-	rgb(161, 6, 112),
-	rgb(147, 40, 90),
-
-	rgb(40, 124, 147),
-
-	rgb(29, 180, 122),
-	rgb(29, 174, 159),
-	rgb(12, 95, 118),
-	rgb(75, 130, 139),
-
-	rgb(138, 181, 63),
-
-	rgb(188, 207, 44),
-	rgb(96, 146, 12),
-	rgb(141, 180, 95),
-
-
-
-
-	rgb(147, 40, 90),
-
-	rgb(147, 60, 100),
-	rgb(147, 70, 110),
-	rgb(147, 80, 120),
-	rgb(147, 90, 130),
-
-	rgb(40, 124, 147),
-
-	rgb(40, 130, 150),
-	rgb(40, 140, 160),
-	rgb(40, 150, 170),
-	rgb(40, 160, 180),
-
-	rgb(138, 181, 63),
-	
-	rgb(138, 190, 70),
-	rgb(138, 200, 80),
-	rgb(138, 210, 90),
-} */
-
-#fondoizq {
-	background-color: rgb(40, 124, 147, 0.564);
+.conmo-lg {
+	font-family: "Outfit", sans-serif;
+	color: white;
+	padding: 10px;
+	font-size: 400%;
 }
-
-.conmo /*Da formato al logo*/ {
+.conmo-title {
     font-family: 'Outfit', sans-serif;
     color:white;
     padding: 10px;
 }
-
-.btn-check:focus+.btn, .btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 0 #ffffff00;
+.navbar {
+    background-color:  rgb(27, 100, 113);
+    height: 100px;
+}
+.rounded-right {
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+.rounded-left {
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+.btn-check:focus + .btn,
+.btn:focus {
+	outline: none;
+	box-shadow: 0 0 0 0 #ffffff00;
+}
+.fs-1-2-em {
+	font-size: 1.2em;
+}
+.modal-border {
+	border-radius: 2rem;
+}
+#fs-small {
+	font-size: small;
 }
 
-.icon {
-	cursor: pointer;
-	font-size: 20%;
-}
-  
-
-
-.table-title {
-	background-color: rgb(207, 193, 44);
-}
-
+/* DateSelector */
 .year-selector {
 	border: none;
 	font-size: 0.8em;
 }
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.drop-title {
+    color: #ffffff;
+    padding-left: 8px;
+}
+.dropdown-arrow {
+    font-size: 0.5em;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    color: white;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgb(221, 232, 236);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: 100%;
+    padding: 10px 0px;
+}
+.dropdown-item {
+    padding: 8px 50px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+.dropdown-item:hover {
+    background-color: rgb(194, 221, 231);
+}
 
+/* Sesion forms */
+#inputEmail {
+	font-size: 1.3em;
+    outline: none;
+    background-color: rgb(7, 128, 139);
+	color: white;
+}
+#inputEmail::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+#inputPassword {
+	font-size: 1.3em;
+	outline: none;
+    background-color: rgb(7, 128, 139);
+	color: white;
+}
+#inputPassword::placeholder {
+	font-size: 1.3em;
+	color:white;
+}
+#button-confirm {
+    background-color: rgb(33, 107, 127);
+}
+#modifyCategory::placeholder {
+	font-size: 1.3em;
+	color: rgb(27, 100, 113);
+}
+
+/* Add forms */
+select option{
+	font-size: 1.3em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: white;
+}
+select option::placeholder {
+	font-size: 1.3em;
+	color: rgb(27, 100, 113);
+}
+#inputDate {
+	font-size: 1.5em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color:  rgb(27, 100, 113);
+	text-align: center;
+	border-bottom-color:  rgb(27, 100, 113);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+#inputDate::placeholder {
+	color:  rgb(27, 100, 113);
+	text-align: center;
+}
+#inputQuantity {
+	font-size: 1.5em;
+	color:  rgb(27, 100, 113);
+	text-align: center;
+	border-bottom-color:  rgb(27, 100, 113);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+#inputQuantity::placeholder {
+	color:  rgb(27, 100, 113);
+	text-align: center;
+}
+#inputCategory {
+	font-size: 1.5em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color:  rgb(27, 100, 113);
+	text-align: center;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	border-bottom-color:  rgb(27, 100, 113);
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+#inputCategory::placeholder {
+	color:  rgb(27, 100, 113);
+	font-size: 1em;
+	text-align: center;
+}
+#inputCategory option::placeholder {
+	font-size: 1em;
+	color: rgb(27, 100, 113);	
+	background-color: rgba(40, 124, 147, 0);
+}
+#inputCategory option{
+	font-size: 1em;
+	outline: none;
+	background-color: rgba(40, 124, 147, 0);
+	color: rgb(27, 100, 113);	
+}
+
+/* Header */
+.info-icon {
+	cursor: pointer;
+	font-size: 20%;
+}
+
+/* AddButtons */
+.group-floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+#all-buttons-up {
+	display: none;
+}
+.main-button {
+	position: relative;
+}
+.sub-buttons > .boton {
+	position: absolute;
+	bottom: 10px;
+	right: 5px;
+	transition: bottom .5s ease;
+	z-index: 0;
+}
+.sub-buttons .all-buttons-up-toggle:checked ~ .boton button {
+	box-shadow: 5px 5px 10px #33333387;
+}
+.sub-buttons .all-buttons-up-toggle:checked ~ .main-button span {
+	transform: rotate(-45deg);
+	transition: transform .35s ease;
+}
+.sub-buttons .all-buttons-up-toggle ~ .main-button span {
+	transition: transform .35s ease;
+	opacity: 1;
+}
+.sub-buttons > .main-button > button {
+	box-shadow: 0px 5px 10px #333333;
+}
+.sub-buttons /* modifies foldable buttons */ > li button {
+	font-size: 30px;
+    color: white;
+	background:  rgb(27, 100, 113);
+	width: 70px;
+	height: 70px;
+	display: block;
+	border-radius: 100%;
+	position: relative;
+	text-align: center;
+} 
+.sub-buttons > .main-button button {
+    font-size: 40px;
+    color: white;
+    background:  rgb(27, 100, 113);
+    width: 80px;
+    height: 80px;
+    display: block;
+    border-radius: 100%;
+    position: relative;
+    text-align: center;
+    z-index: 19;
+}
+.sub-buttons > li > button span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	height: 40px;
+	width: 40px;
+	opacity: 0;
+	z-index: 12;
+}
+
+/* Movements List */
 .movements-list {
 	font-weight: bold;
-	font-size:1.1em;
+	font-size: 1.1em;
+}
+.movements-list:hover {
+	background-color: rgb(207, 222, 227);
+}
+.details {
+	display: none;
+}
+.row:hover .details {
+	display: block;
+	cursor: pointer;
 }
 
-.income-movements {
+/* Colors */
+.income-bg {
+	background-color: rgb(207, 193, 44);
+}
+.saves-bg {
+	background-color: rgb(27, 100, 113);
+}
+.usage-bg {
+	background-color: rgb(43, 160, 214);
+}
+.expense-bg {
+	background-color: brown;
+}
+.fixed-bg {
+	background-color: rgb(147, 40, 90);
+}
+.ocassional-bg {
+	background-color: rgb(138, 181, 63);
+}
+.conmo-bg {
+    background-color: rgb(27, 100, 113);
+}
+
+
+.income-light-bg {
+	background-color: rgb(231, 204, 35);
+}
+.ocassional-light-bg {
+	background-color: rgb(175, 200, 62);
+}
+.fixed-light-bg {
+	background-color: rgb(192, 22, 101);
+}
+.usage-light-bg {
+	background-color: rgb(108, 181, 223);
+}
+.saves-light-bg {
+	background-color: rgb(7, 128, 139);
+}
+.conmo-light-bg {
+    background-color: rgb(7, 128, 139);
+}
+
+.income-text {
 	color: rgb(207, 193, 44);
 }
-
-.saves-movements {
+.saves-text {
 	color: rgb(40, 124, 147);
 }
-
-.usage-movements {
-	color:  rgb(43, 160, 214);
+.usage-text {
+	color: rgb(43, 160, 214);
 }
-
-.fixed-movements {
+.expenses-text {
+	color: brown;
+}
+.fixed-text {
 	color: rgb(147, 40, 90);
 }
-
-.ocassional-movements {
+.ocassional-text {
 	color: rgb(138, 181, 63);
 }
-
-.movements-head {
-	background-color: rgb(27, 100, 113);
-}
-
-.movements-list:hover {
-    background-color: rgb(207, 222, 227);
-}
-
-.seleccionarcolores {
-	background-color: rgb(94, 0, 42);
-	background-color: rgb(62, 1, 49);
-	background-color: rgb(142, 137, 134);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.uno{
-	background-color: rgb(62, 229, 237);
+.conmo-text {
 	color: rgb(27, 100, 113);
 }
-.dos {
-	background-color: rgb(13, 180, 186);
-	color: rgb(27, 100, 113);
-}
-.tres{
-	background-color: rgb(7, 128, 139);
+.conmo-light-text {
 	color: rgb(7, 128, 139);
 }
-.cuatro{
-	background-color: rgb(27, 100, 113);
-	color: rgb(27, 100, 113);
-}
-.cinco{
-	background-color: rgb(27, 113, 113);
-	color: rgb(27, 100, 113);
-}
-.seis{
-	background-color: rgb(6, 151, 156);
-	color: rgb(27, 100, 113);
-}
-.siete{
-	background-color: rgb(64, 170, 184);
-	color: rgb(40, 124, 147);
-}
-
-
-.uno-cl {
-	background-color: rgb(108, 181, 223);
-	color: rgb(27, 100, 113);
-}
-.dos-cl {
-	background-color: rgb(34, 147, 199);
-	color: rgb(27, 100, 113);
-}
-.tres-cl {
-	background-color: rgb(3, 104, 144);
-	color: rgb(27, 100, 113);
-}
-.cuatro-cl {
-	background-color: rgb(23, 87, 123);
-	color: rgb(27, 100, 113);
-}
-.cinco-cl {
-	background-color: rgb(29, 126, 167);
-	color: rgb(27, 100, 113);
-}
-.seis-cl {
-	background-color: rgb(8, 168, 212);
-	color: rgb(40, 124, 147);
-}
-.siete-cl {
-	background-color: rgb(72, 183, 224);
-	color: rgb(7, 128, 139);
-}
-.conmo-lg {
-    font-family: 'Outfit', sans-serif;
-    color:white;
-    padding: 10px;
-	font-size: 400%;
-}
-
-.title-in {
-    color:white;
-	font-size: 300%;
-}
-.object-fit-cover {
-    object-fit: cover;
-}
-

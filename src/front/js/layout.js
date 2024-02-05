@@ -15,7 +15,7 @@ import { FixedExpenses } from "./pages/fixedexpenses.jsx";
 import { OcassionalExpenses } from "./pages/ocassionalexpenses.jsx";
 import { Saves } from "./pages/saves.jsx";
 import { Settings } from "./pages/settings.jsx";
-import { Navbar } from "./component/navbar.jsx";
+import { Navbar } from "./component/Navbar.jsx";
 
 
 //create your first component

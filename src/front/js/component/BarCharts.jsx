@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import { Context } from "../store/appContext";
-import { allDataBarOptions, barOptions, allDataBarOptionsMobile, barOptionsMobile } from "../pages/chartoptions.jsx";
-import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
+import { allDataBarOptions, barOptions, allDataBarOptionsMobile, barOptionsMobile } from "../chartoptions.jsx";
+import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
 import { Bar } from "react-chartjs-2";
 import {
     filterDataByMonthYear,
@@ -9,11 +9,11 @@ import {
     loadData,
     calculateTypeDayTotals,
     calculateTypeMonthTotals,
-  } from '../pages/utils.jsx';
+  } from '../utils.jsx';
 import { Spinner } from "../component/Spinner.jsx";
 
 export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, renderAsDataBar }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -56,6 +56,13 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
     };
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedMonthIndex, selectedYear]);
     const getTypeColor = (type) => {
         if (type === 'Ingresos') {
@@ -110,7 +117,7 @@ export const MonthlyBarTypes = ({ dataFunctions, types, typeNames, selectedMonth
 };
 
 export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, renderAsDataBar }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -152,6 +159,13 @@ export const AnualBarTypes = ({ dataFunctions, types, typeNames, selectedYear, r
     };
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedYear]);
     const getTypeColor = (type) => {
         if (type === 'Ingresos') {

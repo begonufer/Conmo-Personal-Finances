@@ -1,14 +1,13 @@
 import React, { useContext , useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
-import "../../styles/welcome.css";
 
 export const Settings =()=>{
     return (
         <>
             <div className="container-fluid">
                 <div className="m-0 vh-100 row justify-content-center align-items-center">
-                    <div className="col-9 p-0 rounded shadow" id="left-background">
+                    <div className="col-9 p-0 rounded shadow conmo-light-bg">
                         <div className="row d-flex text-center justify-content-between text-center align-items-center rounded-1">
                             <div className="col-8 p-5 text-center rounded" id="right-background">
                                 <h1 className="text-white pb-5 mb-5">Configuración</h1>

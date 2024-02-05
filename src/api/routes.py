@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
+from sqlalchemy import union_all
 
 from api.models.db import db
 from api.models.user import User
@@ -65,23 +66,6 @@ def is_logged():
         return jsonify({"Logged": False}), 401
 
 
-# #Obtiene los datos del usuario
-# @api.route('/user/id', methods= ['GET'])
-# def get_user():
-
-
-# #Elimina el usuario
-
-# @api.route('/user/id', methods= ['PUT'])
-# def update_user():
-
-
-# #Actualiza los datos del usuario
-
-# @api.route('/user/id', methods= ['DELETE'])
-# def delete_user():
-
-
 #Esta ruta obtiene las categorías de ingresos
 
 @api.route('/incomecategories', methods=['GET'])
@@ -89,6 +73,22 @@ def is_logged():
 def get_incomecategories():
     user_id = get_jwt_identity()
     return jsonify([income_category.serialize() for income_category in IncomeCategory.query.filter_by(user_id=user_id).all()])
+
+#Esta ruta obtiene las categorías de fijos
+
+@api.route('/fixedcategories', methods=['GET'])
+@jwt_required()
+def get_fixedcategories():
+    user_id = get_jwt_identity()
+    return jsonify([fixed_category.serialize() for fixed_category in FixedCategory.query.filter_by(user_id=user_id).all()])
+
+#Esta ruta obtiene las categorías de gastos ocasionales
+
+@api.route('/ocassionalcategories', methods=['GET'])
+@jwt_required()
+def get_ocassionalcategories():
+    user_id = get_jwt_identity()
+    return jsonify([ocassional_category.serialize() for ocassional_category in OcassionalCategory.query.filter_by(user_id=user_id).all()])
 
 #Añade un ingreso
 
@@ -106,51 +106,73 @@ def add_income():
     db.session.commit()
     return jsonify(income.serialize()),200
 
-#Obtiene los ingresos
+#Añade un ahorro 
 
-@api.route('/income', methods=['GET'])
+@api.route('/save', methods=['POST'])
 @jwt_required()
-def get_incomes():
-    user_id = get_jwt_identity() 
-    incomes = Income.query.filter_by(user_id=user_id).order_by(Income.dateTime).all()
-    return jsonify([income.serialize() for income in incomes])
+def add_saves():
+    try:
+        user_id = get_jwt_identity()
+
+        value = request.json.get("value")
+        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
+        datetime_str = request.json.get("dateTime")
+        
+        if value is None or ocassionalcategory_id is None or datetime_str is None:
+            return jsonify({"error": "Campos incompletos"}), 400
+
+        category = OcassionalCategory.query.get(ocassionalcategory_id)
+        if not category:
+            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
+
+        save = Save(
+            user_id=user_id,
+            value=value,
+            category=category,
+            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
+        )
+
+        db.session.add(save)
+        db.session.commit()
+
+        return jsonify(save.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
-
-# #Actualiza los datos de un ingreso
-
-# @api.route('/income/id', methods= ['PUT'])
-# def update_income():
-
-
-# #Elimina el ingreso
-
-# @api.route('/income/id', methods= ['DELETE'])
-# def delete_income():
-
-
-# #Añade categorías de gastos fijos
-
-# @api.route('/fixedcategories', methods=['POST'])
-# @jwt_required()
-# def add_fixed_categories():
-
-
-#Esta ruta obtiene las categorías de fijos
-
-@api.route('/fixedcategories', methods=['GET'])
+@api.route('/usage', methods=['POST'])
 @jwt_required()
-def get_fixedcategories():
-    user_id = get_jwt_identity()
-    return jsonify([fixed_category.serialize() for fixed_category in FixedCategory.query.filter_by(user_id=user_id).all()])
+def add_usages():
+    try:
+        user_id = get_jwt_identity()
 
-# #Elimina categorías de gastos fijos
+        value = request.json.get("value")
+        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
+        datetime_str = request.json.get("dateTime")
+        
+        if value is None or ocassionalcategory_id is None or datetime_str is None:
+            return jsonify({"error": "Campos incompletos"}), 400
 
-# @api.route('/fixedcategories/id', methods=['DELETE'])
-# @jwt_required()
-# def delete_fixed_categories():
+        category = OcassionalCategory.query.get(ocassionalcategory_id)
+        if not category:
+            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
 
-#Añade un gasto fijo the good -->
+        usage = Usage(
+            user_id=user_id,
+            value=value,
+            category=category,
+            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
+        )
+
+        db.session.add(usage)
+        db.session.commit()
+
+        return jsonify(save.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @api.route('/fixed', methods=['POST'])
 @jwt_required()
@@ -165,47 +187,6 @@ def add_fixed():
     db.session.add(fixed)
     db.session.commit()
     return jsonify(fixed.serialize()),200
-
-#Obtiene los gastos fijos
-
-@api.route('/fixed', methods=['GET'])
-@jwt_required()
-def get_fixes():
-    user_id = get_jwt_identity()
-    fixes = Fixed.query.filter_by(user_id=user_id).all()
-    return jsonify([fixed.serialize() for fixed in fixes])
-
-# #Actualiza los datos de un gasto fijo
-
-# @api.route('/fixed/expense/id', methods= ['PUT'])
-# def update_fixed_expense():
-
-
-# #Elimina el gasto fijo
-
-# @api.route('/fixed/expense/id', methods= ['DELETE'])
-# def delete_fixed_expense():
-
-
-# #Añade categorías de gastos ocasionales
-
-# @api.route('/ocassionalcategories', methods=['POST'])
-# @jwt_required()
-# def add_ocassional_categories():
-
-#Esta ruta obtiene las categorías de gastos ocasionales
-
-@api.route('/ocassionalcategories', methods=['GET'])
-@jwt_required()
-def get_ocassionalcategories():
-    user_id = get_jwt_identity()
-    return jsonify([ocassional_category.serialize() for ocassional_category in OcassionalCategory.query.filter_by(user_id=user_id).all()])
-
-# #Elimina categorías de gastos ocasionales
-
-# @api.route('/ocassionalcategories/id', methods=['DELETE'])
-# @jwt_required()
-# def delete_ocassional_categories():
 
 #Añade un gasto ocasional
 
@@ -223,85 +204,15 @@ def add_ocassional():
     db.session.commit()
     return jsonify(ocassional.serialize()),200
 
+#Obtiene los ingresos
 
-#Obtiene los gastos ocasionales
-
-@api.route('/ocassional', methods=['GET'])
+@api.route('/income', methods=['GET'])
 @jwt_required()
-def get_ocassionals():
+def get_incomes():
     user_id = get_jwt_identity() 
-    ocassionals = Ocassional.query.filter_by(user_id=user_id).all()
-    return jsonify([ocassional.serialize() for ocassional in ocassionals])
-
-# #Actualiza los datos de un gasto ocasional
-
-# @api.route('/ocassional/expense/id', methods= ['PUT'])
-# def update_ocassional_expense():
-
-
-# #Elimina el gasto ocasional
-
-# @api.route('/ocassional/expense/id', methods= ['DELETE'])
-# def delete_ocassional_expense():
-
-
-
-
-# #Añade un ahorro
-
-# @api.route('/save', methods= ['POST'])
-# def add_saves():
-
-
-# #Obtiene los ahorros
-
-# @api.route('/save', methods= ['GET'])
-# def get_saves():
-
-
-
-
-#Añade un ahorro  comprobar funcionamiento
-
-
-@api.route('/save', methods=['POST'])
-@jwt_required()
-def add_saves():
-    try:
-        user_id = get_jwt_identity()
-
-        value = request.json.get("value")
-        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
-        datetime_str = request.json.get("dateTime")
-        
-        # Verificar que los campos requeridos estén presentes
-        if value is None or ocassionalcategory_id is None or datetime_str is None:
-            return jsonify({"error": "Campos incompletos"}), 400
-
-        # Obtener la categoría ocassional
-        category = OcassionalCategory.query.get(ocassionalcategory_id)
-        if not category:
-            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
-
-        # Crear una instancia de Save
-        save = Save(
-            user_id=user_id,
-            value=value,
-            category=category,
-            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
-        )
-
-        # Agregar y confirmar la transacción en la base de datos
-        db.session.add(save)
-        db.session.commit()
-
-        return jsonify(save.serialize()), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-#Obtiene los gastos ocasionales
+    incomes = Income.query.filter_by(user_id=user_id).order_by(Income.dateTime).all()
+    return jsonify([income.serialize() for income in incomes])
+    
 
 @api.route('/save', methods= ['GET'])
 @jwt_required()
@@ -311,19 +222,6 @@ def get_saves():
     return jsonify([save.serialize() for save in saves])
 
 
-
-
-
-# @api.route('/types', methods=['GET'])
-# @jwt_required()
-# def get_types():
-#     # all_types = Type.query.all()
-#     # all_types_serialized = []
-#     # for type in all_types: 
-#     #     type.serialize()
-#     #     all_types_serialized.append(type)
-#     return jsonify([type.serialize() for type in Type.query.all()])
-
 @api.route('/usage', methods= ['GET'])
 @jwt_required()
 def get_usages():
@@ -331,45 +229,23 @@ def get_usages():
     usages = Usage.query.filter_by(user_id=user_id).all()
     return jsonify([usage.serialize() for usage in usages])
 
+#Obtiene los gastos fijos
 
-
-@api.route('/usage', methods=['POST'])
+@api.route('/fixed', methods=['GET'])
 @jwt_required()
-def add_usages():
-    try:
-        user_id = get_jwt_identity()
+def get_fixes():
+    user_id = get_jwt_identity()
+    fixes = Fixed.query.filter_by(user_id=user_id).all()
+    return jsonify([fixed.serialize() for fixed in fixes])
 
-        value = request.json.get("value")
-        ocassionalcategory_id = request.json.get("ocassionalcategory_id")
-        datetime_str = request.json.get("dateTime")
-        
-        # Verificar que los campos requeridos estén presentes
-        if value is None or ocassionalcategory_id is None or datetime_str is None:
-            return jsonify({"error": "Campos incompletos"}), 400
+#Obtiene los gastos ocasionales
 
-        # Obtener la categoría ocassional
-        category = OcassionalCategory.query.get(ocassionalcategory_id)
-        if not category:
-            return jsonify({"error": "Categoría ocassional no encontrada"}), 404
-
-        # Crear una instancia de Save
-        usage = Usage(
-            user_id=user_id,
-            value=value,
-            category=category,
-            dateTime=datetime.strptime(datetime_str, "%Y-%m-%d").date()
-        )
-
-        # Agregar y confirmar la transacción en la base de datos
-        db.session.add(usage)
-        db.session.commit()
-
-        return jsonify(save.serialize()), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
+@api.route('/ocassional', methods=['GET'])
+@jwt_required()
+def get_ocassionals():
+    user_id = get_jwt_identity() 
+    ocassionals = Ocassional.query.filter_by(user_id=user_id).all()
+    return jsonify([ocassional.serialize() for ocassional in ocassionals])
 
 @api.route('/ocassionalcategory', methods=['POST'])
 @jwt_required()
@@ -430,3 +306,259 @@ def add_income_category():
         traceback.print_exc()
         return jsonify({"error": "Error al agregar la categoría ingreso"}), 500
 
+
+@api.route('/fixedcategory/<int:fixedcategory_id>', methods=['DELETE'])
+@jwt_required()
+def delete_fixed_category(fixedcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_delete = FixedCategory.query.filter_by(id=fixedcategory_id, user_id=user_id).first()
+        if not category_to_delete:
+            return jsonify({"error": "Fixed category not found"}), 404
+        db.session.delete(category_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Category delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+
+@api.route('/ocassionalcategory/<int:ocassionalcategory_id>', methods=['DELETE'])
+@jwt_required()
+def delete_ocassional_category(ocassionalcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_delete = OcassionalCategory.query.filter_by(id=ocassionalcategory_id, user_id=user_id).first()
+        if not category_to_delete:
+            return jsonify({"error": "Ocassional category not found"}), 404
+        db.session.delete(category_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Category delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+
+@api.route('/incomecategory/<int:incomecategory_id>', methods=['DELETE'])
+@jwt_required()
+def delete_income_category(incomecategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_delete = IncomeCategory.query.filter_by(id=incomecategory_id, user_id=user_id).first()
+        if not category_to_delete:
+            return jsonify({"error": "Income category not found"}), 404
+        db.session.delete(category_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Category delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+@api.route('/ocassionalcategory/<int:ocassionalcategory_id>', methods=['PUT'])
+@jwt_required()
+def modify_ocassional_category(ocassionalcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_modify = OcassionalCategory.query.filter_by(id=ocassionalcategory_id, user_id=user_id).first()
+        
+        if not category_to_modify:
+            return jsonify({"error": "Ocassional category not found"}), 404
+        
+        data = request.get_json()
+        new_name = data.get("name")
+
+        if not new_name:
+            return get_error_response("Name of category is required", 400)
+
+        category_to_modify.name = new_name
+        db.session.commit()
+
+        return jsonify(category_to_modify.serialize()), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return get_error_response("Error in modifying category", 500)
+
+@api.route('/fixedcategory/<int:fixedcategory_id>', methods=['PUT'])
+@jwt_required()
+def modify_fixed_category(fixedcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_modify = FixedCategory.query.filter_by(id=fixedcategory_id, user_id=user_id).first()
+        
+        if not category_to_modify:
+            return jsonify({"error": "Fixed category not found"}), 404
+        
+        data = request.get_json()
+        new_name = data.get("name")
+
+        if not new_name:
+            return get_error_response("Name of category is required", 400)
+
+        category_to_modify.name = new_name
+        db.session.commit()
+
+        return jsonify(category_to_modify.serialize()), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return get_error_response("Error in modifying category", 500)
+
+@api.route('/incomecategory/<int:incomecategory_id>', methods=['PUT'])
+@jwt_required()
+def modify_income_category(incomecategory_id):
+    try:
+        user_id = get_jwt_identity()
+        category_to_modify = IncomeCategory.query.filter_by(id=incomecategory_id, user_id=user_id).first()
+        
+        if not category_to_modify:
+            return jsonify({"error": "Income category not found"}), 404
+        
+        data = request.get_json()
+        new_name = data.get("name")
+
+        if not new_name:
+            return get_error_response("Name of category is required", 400)
+
+        category_to_modify.name = new_name
+        db.session.commit()
+
+        return jsonify(category_to_modify.serialize()), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return get_error_response("Error in modifying category", 500)
+
+@api.route('/incomes/<int:incomecategory_id>', methods=['GET'])
+@jwt_required()
+def get_movements_by_incomecategory(incomecategory_id):
+    try:
+        user_id = get_jwt_identity()
+        income_category = IncomeCategory.query.filter_by(id=incomecategory_id, user_id=user_id).first()
+        if not income_category:
+            return jsonify({"error": "Income category not found"}), 404
+        movements = Income.query.filter_by(incomecategory_id=incomecategory_id, user_id=user_id).all()
+        return jsonify([movement.serialize() for movement in movements]), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
+@api.route('/fixed/<int:fixedcategory_id>', methods=['GET'])
+@jwt_required()
+def get_movements_by_fixedcategory(fixedcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        fixed_category = FixedCategory.query.filter_by(id=fixedcategory_id, user_id=user_id).first()
+        if not fixed_category:
+            return jsonify({"error": "Fixed category not found"}), 404
+        movements = Fixed.query.filter_by(fixedcategory_id=fixedcategory_id, user_id=user_id).all()
+        return jsonify([movement.serialize() for movement in movements]), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
+@api.route('/ocassionals/<int:ocassionalcategory_id>', methods=['GET'])
+@jwt_required()
+def get_movements_by_ocassionalcategory(ocassionalcategory_id):
+    try:
+        user_id = get_jwt_identity()
+        ocassional_category = OcassionalCategory.query.filter_by(id=ocassionalcategory_id, user_id=user_id).first()
+        
+        if not ocassional_category:
+            return jsonify({"error": "Category not found"}), 404
+        
+        ocassional_movements = Ocassional.query.filter_by(ocassionalcategory_id=ocassionalcategory_id, user_id=user_id).all()
+        saved_movements = Save.query.filter_by(category_id=ocassionalcategory_id, user_id=user_id).all()
+        usage_movements = Usage.query.filter_by(category_id=ocassionalcategory_id, user_id=user_id).all()
+
+        all_movements = []
+
+        for movement in ocassional_movements:
+            all_movements.append(movement.serialize())
+
+        for movement in saved_movements:
+            all_movements.append(movement.serialize())
+
+        for movement in usage_movements:
+            all_movements.append(movement.serialize())
+
+        return jsonify(all_movements), 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
+@api.route('/income/<int:movement_id>', methods=['DELETE'])
+@jwt_required()
+def delete_income_(movement_id):
+    try:
+        user_id = get_jwt_identity()
+        movement_to_delete = Income.query.filter_by(id=movement_id, user_id=user_id).first()
+        if not movement_to_delete:
+            return jsonify({"error": "Movement not found"}), 404
+        db.session.delete(movement_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Movement delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+@api.route('/saved/<int:movement_id>', methods=['DELETE'])
+@jwt_required()
+def delete_saved_(movement_id):
+    try:
+        user_id = get_jwt_identity()
+        movement_to_delete = Save.query.filter_by(id=movement_id, user_id=user_id).first()
+        if not movement_to_delete:
+            return jsonify({"error": "Movement not found"}), 404
+        db.session.delete(movement_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Movement delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+@api.route('/usage/<int:movement_id>', methods=['DELETE'])
+@jwt_required()
+def delete_usage_(movement_id):
+    try:
+        user_id = get_jwt_identity()
+        movement_to_delete = Usage.query.filter_by(id=movement_id, user_id=user_id).first()
+        if not movement_to_delete:
+            return jsonify({"error": "Movement not found"}), 404
+        db.session.delete(movement_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Movement delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+@api.route('/fixed/<int:movement_id>', methods=['DELETE'])
+@jwt_required()
+def delete_fixed_(movement_id):
+    try:
+        user_id = get_jwt_identity()
+        movement_to_delete = Fixed.query.filter_by(id=movement_id, user_id=user_id).first()
+        if not movement_to_delete:
+            return jsonify({"error": "Movement not found"}), 404
+        db.session.delete(movement_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Movement delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()
+
+@api.route('/ocassional/<int:movement_id>', methods=['DELETE'])
+@jwt_required()
+def delete_ocassional_(movement_id):
+    try:
+        user_id = get_jwt_identity()
+        movement_to_delete = Ocassional.query.filter_by(id=movement_id, user_id=user_id).first()
+        if not movement_to_delete:
+            return jsonify({"error": "Movement not found"}), 404
+        db.session.delete(movement_to_delete)
+        db.session.commit()
+
+        return jsonify({"message": "Movement delete succesfully"}), 200
+    except Exception as e:
+        traceback.print_exc()

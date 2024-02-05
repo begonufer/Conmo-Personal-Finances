@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
-import { MovementsListSaves } from "../component/movementslistsaves.jsx";
-import { AddButton } from "../component/addbutton.jsx";
-import { Selector } from "../component/graphics/dateselector.jsx";
-import { Header } from "../component/header.jsx";
-import { AllDataTypeTable } from "../component/alldatatypetable.jsx";
-import { useMonthSelection } from './utils.jsx';
+import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { MovementsListSaves } from "../component/MovementsLists.jsx";
+import { AddButton } from "../component/AddButton.jsx";
+import { Selector } from "../component/DateSelector.jsx";
+import { Header } from "../component/Header.jsx";
+import { TypeResume } from "../component/TypeResume.jsx";
+import { useMonthSelection } from '../utils.jsx';
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
 import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
 import { MonthlyLineBalance, AnualLineBalance } from "../component/LineCharts.jsx";
@@ -85,13 +85,13 @@ const TypeTables = ({
 }) => (
     <div className="d-block w-100 h-100 align-items-center">
         <div className="row justify-content-center align-items-center m-md-5 my-md-5 mb-5 mb-md-0 mx-1">
-            <AllDataTypeTable
+            <TypeResume
                 selectedMonth={selectedMonth}
                 selectedMonthIndex={selectedMonthIndex}
                 selectedYear={selectedYear}
                 previousMonth={previousMonth}
-                MonthlyTypeTable={'MonthlySavesTable'}
-                AnualTypeTable={'AnualSavesTable'}
+                MonthlyTypeResume={'MonthlySavedResume'}
+                AnualTypeResume={'AnualSavedResume'}
             />
         </div>
     </div>
@@ -102,7 +102,7 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
     return(
         <>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Mensual</h2>
                 <div className="col-md-4 text-center my-md-3 justify-content-center align-items-center gap-5">
                     <div className="p-3 mb-5">
                         <MonthlyPie
@@ -151,7 +151,7 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                 </div>
             </div>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Anual</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-3 fs-1 fw-semibold">Anual</h2>
                 <div className="col-md-4 text-center my-md-3 justify-content-center align-items-center gap-5">
                     <div className="p-3 mb-5">
                         <AnualPie

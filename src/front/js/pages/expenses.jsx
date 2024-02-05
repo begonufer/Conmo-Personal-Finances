@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
-import { MovementsListExpenses } from "../component/movementslistexpenses.jsx";
-import { AddButton } from "../component/addbutton.jsx";
+import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { MovementsListExpenses } from "../component/MovementsLists.jsx";
+import { AddButton } from "../component/AddButton.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
-import { Selector } from "../component/graphics/dateselector.jsx";
-import { Header } from "../component/header.jsx";
-import { AnualExpensesTable } from "../component/graphics/expensesanualtable.jsx";
-import { MonthlyExpensesTable } from "../component/graphics/expensesmonthlytable.jsx";
+import { Selector } from "../component/DateSelector.jsx";
+import { Header } from "../component/Header.jsx";
+import { MonthlyExpenseTable, AnualExpenseTable } from "../component/ExpenseTables.jsx";
 import {
     useMonthSelection,
     filterDataByMonthYear,
@@ -18,7 +17,7 @@ import {
     calculateCategoryMonthTotals,
     setCategoryDailyData,
     useCategoryDailyAccumulated
-} from './utils.jsx';
+} from '../utils.jsx';
 
 import { MonthlyPie, MonthlyPieTypes, AnualPie, AnualPieTypes } from "../component/PieCharts.jsx";
 import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
@@ -27,135 +26,6 @@ import { MonthlyLineTypes, AnualLineTypes } from "../component/LineCharts.jsx";
 export const Expenses = () => {
 
     const { store, actions } = useContext(Context);
-    // const [incomeBarData, setIncomeBarData] = useState([]);
-    // const [saveBarData, setSaveBarData] = useState([]);
-    // const [usageBarData, setUsageBarData] = useState([]);
-    // const [fixedBarData, setFixedBarData] = useState([]);
-    // const [ocassionalBarData, setOcassionalBarData] = useState([]);
-    
-    // const [chartData, setChartData] = useState([]);
-
-    // const [incomeBarAnualData, setIncomeBarAnualData] = useState([]);
-    // const [saveBarAnualData, setSaveBarAnualData] = useState([]);
-    // const [usageBarAnualData, setUsageBarAnualData] = useState([]);
-    // const [fixedBarAnualData, setFixedBarAnualData] = useState([]);
-    // const [ocassionalBarAnualData, setOcassionalBarAnualData] = useState([]);
-    // const [chartAnualData, setChartAnualData] = useState([]);
-    
-    // const buildBarAnualDataChart = async () => {
-    //     await actions.getIncomes();
-    //     await actions.getSaves();
-    //     await actions.getUsage();
-    //     await actions.getFixes();
-    //     await actions.getOcassionals();
-    
-    //     const filteredIncome = filterDataByYear(store.incomes, selectedYear);
-    //     const filteredSave = filterDataByYear(store.saves, selectedYear);        
-    //     const filteredUsage = filterDataByYear(store.usages, selectedYear);
-    //     const filteredFixed = filterDataByYear(store.fixes, selectedYear);
-    //     const filteredOcassional = filterDataByYear(store.ocassionals, selectedYear);
-    
-    //     const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
-    
-    //     const incomeTotalCategoryMonthly = calculateCategoryMonthTotals(filteredIncome, 'incomecategory');
-    //     const saveTotalCategoryMonthly = calculateCategoryMonthTotals(filteredSave, 'category');
-    //     const usageTotalCategoryMonthly = calculateCategoryMonthTotals(filteredUsage, 'category');
-    //     const fixedTotalCategoryMonthly = calculateCategoryMonthTotals(filteredFixed, 'fixedcategory');
-    //     const ocassionalTotalCategoryMonthly = calculateCategoryMonthTotals(filteredOcassional, 'ocassionalcategory');
-    
-    //     const incomeDataArray = monthsArray.map((month) => incomeTotalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin ingresos' });
-    //     const saveDataArray = monthsArray.map((month) => saveTotalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin reservas' });
-    //     const usageDataArray = monthsArray.map((month) => usageTotalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin gastos de reservas' });
-    //     const fixedDataArray = monthsArray.map((month) => fixedTotalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin gastos fijos' });
-    //     const ocassionalDataArray = monthsArray.map((month) => ocassionalTotalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin gastos ocasionales' });
-    
-    //     setIncomeBarAnualData(incomeDataArray);
-    //     setSaveBarAnualData(saveDataArray);
-    //     setUsageBarAnualData(usageDataArray);
-    //     setFixedBarAnualData(fixedDataArray);
-    //     setOcassionalBarAnualData(ocassionalDataArray);
-    
-    //     const calculateAnualChartData = () => {
-    //         let accumulatedNetValue = 0;
-        
-    //         const monthNames = store.months;
-        
-    //         const netDataArray = monthsArray.map((month) => {
-    //             const incomeValue = incomeTotalCategoryMonthly.get(month)?.value || 0;
-    //             const saveValue = saveTotalCategoryMonthly.get(month)?.value || 0;
-    //             const usageValue = usageTotalCategoryMonthly.get(month)?.value || 0;
-    //             const fixedValue = fixedTotalCategoryMonthly.get(month)?.value || 0;
-    //             const ocassionalValue = ocassionalTotalCategoryMonthly.get(month)?.value || 0;
-        
-    //             const netValue = incomeValue - saveValue - usageValue - fixedValue - ocassionalValue;
-    //             accumulatedNetValue += netValue;
-        
-    //             return {
-    //                 month: monthNames[month - 1],
-    //                 netValue: accumulatedNetValue,
-    //             };
-    //         });
-        
-    //         setChartAnualData(netDataArray);
-    //     };
-    
-    //     calculateAnualChartData();
-    // };
-
-    // const dataAnualBar = {
-    //     labels: chartAnualData.map((data) => `${data.month}`),
-    //     datasets: [
-    //         {
-    //             label: "Uso de reservado",
-    //             data: usageBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(34, 147, 199)"],
-    //         },
-    //         {
-    //             label: "Gastos fijos",
-    //             data: fixedBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(147, 40, 90)"],
-    //         },
-    //         {
-    //             label: "Gastos ocasionales",
-    //             data: ocassionalBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(138, 181, 63)"],
-    //         },
-    //     ],
-    // };
-
-    // const anualAllDataBar = {
-    //     labels: chartAnualData.map((data) => `${data.month}`),
-    //     datasets: [
-    //         {
-    //             label: "Uso de reservado",
-    //             data: usageBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(34, 147, 199)"],
-    //             borderColor: ["rgb(34, 147, 199)"],
-    //             tension: 0.2,
-    //             pointRadius: 1,
-    //         },
-    //         {
-    //             label: "Gastos fijos",
-    //             data: fixedBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(147, 40, 90)"],
-    //             borderColor: ["rgb(147, 40, 90)"],
-    //             tension: 0.2,
-    //             pointRadius: 1,
-    //         },
-    //         {
-    //             label: "Gastos ocasionales",
-    //             data: ocassionalBarAnualData.map((data) => data.value),
-    //             backgroundColor: ["rgb(138, 181, 63)"],
-    //             borderColor: ["rgb(138, 181, 63)"],
-    //             tension: 0.2,
-    //             pointRadius: 1,
-    //         },
-    //     ],
-    // };
-
-    // useEffect(() => {
-    //     buildBarAnualDataChart();
-    // }, [selectedMonthIndex, selectedYear]);
 
     const {
         todayDate,
@@ -317,7 +187,7 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
     return(
         <>
             <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-lg-5 mx-lg-5 mx-3 gap-5">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-lg-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-lg-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
                 <div className="col-lg col-md-8 col-12 text-center">
                     <MonthlyBarTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
@@ -349,7 +219,7 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="row text-center justify-content-center align-items-bottom py-lg-5 mt-lg-3 px-lg-5 mx-lg-5 mx-3 gap-5">
-                <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Tipos</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Tipos</h2>
                 <div className="col-lg col-md-8 col-12 text-center">
                     <MonthlyLineTypes
                         dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
@@ -377,13 +247,13 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
 
 const ExpensesTables = ({ selectedMonth, selectedMonthIndex, selectedYear }) => (
     <>
-        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
-            <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedMonth}</h2>
-            <MonthlyExpensesTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/>
+        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5 fs-small">
+            <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedMonth}</h2>
+            <MonthlyExpenseTable selectedMonth={selectedMonth} selectedMonthIndex={selectedMonthIndex} selectedYear={selectedYear}/>
         </div>
-        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5" id="table-of-percentages">
-            <h2 className="movements-head text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedYear}</h2>
-            <AnualExpensesTable selectedYear={selectedYear} />
+        <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5 fs-small">
+            <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedYear}</h2>
+            <AnualExpenseTable selectedYear={selectedYear} />
         </div>
     </>
 );

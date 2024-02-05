@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../store/appContext";
+import { Context } from "./store/appContext";
 
 export const calculatePercentage = (amount, total) => {
     if (total === 0) {
@@ -179,37 +179,10 @@ export const setCategoryMonthlyData = (data, categoryType, selectedYear) => {
     
 };
 
-// export const useCategoryDailyAccumulated = (data, categoryType, selectedMonthIndex, selectedYear) => {
-
-//     let accumulatedNetValue = 0;
-
-//     const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
-//     const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
-  
-//     const filteredData = filterDataByMonthYear(data, selectedMonthIndex, selectedYear);
-//     const totalCategoryDaily = calculateCategoryDayTotals(filteredData, categoryType);
-  
-//     return daysArray.map((day, index) => {
-//         const dayValues = totalCategoryDaily.map((categoryData) => categoryData[index]?.value || 0);
-//         const netValue = dayValues.reduce((total, value) => total + value, 0);
-        
-//         accumulatedNetValue += netValue;
-    
-//         return {
-//             day,
-//             netValue: accumulatedNetValue,
-//         };
-//     });
-// };
 
 export const calculateTotals = (data) => {
     return data.reduce((total, type) => total + type.value, 0);
 }
-
-// const calculatePropertySum = (data, property) => {
-//     return data.reduce((total, item) => total + item[property], 0);
-//   };  
-// dejo aquí esta función como guia por si en la anterior no funciona correctamente en todos los tipos para usar el atributo property(cambiar por type)
 
 
 export const loadData = async (actionFunctions) => {

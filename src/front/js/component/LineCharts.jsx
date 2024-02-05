@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import { Context } from "../store/appContext";
-import { optionsLinear, optionsLinearMobile, optionsBalanceLinear, optionsBalanceLinearMobile } from "../pages/chartoptions.jsx";
-import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../pages/typescolors.jsx";
+import { optionsLinear, optionsLinearMobile, optionsBalanceLinear, optionsBalanceLinearMobile } from "../chartoptions.jsx";
+import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
 import { Line } from "react-chartjs-2";
 import { Spinner } from "../component/Spinner.jsx";
-import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals } from '../pages/utils.jsx';
+import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals } from '../utils.jsx';
 
 export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);        
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -48,6 +48,13 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
     };
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedMonthIndex, selectedYear]);
     const getTypeColor = (type) => {
         if (type === 'Ingresos') {
@@ -94,7 +101,7 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
 };
 
 export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear, color }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -157,6 +164,13 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
     };
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedMonthIndex, selectedYear]);
 
     const chartDataBar = {
@@ -192,7 +206,7 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
 };
 
 export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useLayoutEffect(() => {
@@ -232,6 +246,13 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
     };
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedYear]);
     const getTypeColor = (type) => {
         if (type === 'Ingresos') {
@@ -285,7 +306,7 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
 };
 
 export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear, color }) => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     
     const [loading, setLoading] = useState(false);
     
@@ -353,6 +374,13 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
 
     useEffect(() => {
         buildBarDataChart();
+        const unsubscribe = actions.subscribeToType(types, () => {
+            buildBarDataChart();
+        console.log('Type changed.');
+        });
+        return () => {
+            unsubscribe();
+        };
     }, [selectedYear]);
 
     const customizeLabels = (labels) => {

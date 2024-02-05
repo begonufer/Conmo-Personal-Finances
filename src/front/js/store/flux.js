@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 				'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 			],
+			movements: [],
 			user: {},
 			logged: false,
 			incomes: [],
@@ -29,9 +30,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			saves: [],
 			usages: [],
 			token: "",
+			listeners: [],
 		},
 		actions: {
-
 			setNewUser: async (name,surname,email,password) => {
 				const response = await fetch (process.env.BACKEND_URL + "api/user", {
 					method: "POST",
@@ -81,6 +82,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({...getStore(), token: '', user: {}})
 			},
 
+			subscribeToType: (types, listener) => {
+				const { listeners } = getStore();
+				setStore({ ...getStore(), listeners: [...listeners, { types, listener }] });
+			
+				return () => {
+					const index = listeners.findIndex((item) => item.listener === listener);
+					if (index !== -1) {
+						listeners.splice(index, 1);
+						setStore({ ...getStore(), listeners: [...listeners] });
+					}
+				};
+			},
+
+			notifyTypeChange: (types) => {
+				const { listeners } = getStore();
+				listeners.forEach((item) => {
+					if (types.some((type) => item.types.includes(type))) {
+						item.listener();
+					}
+				});
+			},
+
 			setIncome: async (dateTime,incomecategory_id,value) => {
 				const store = getStore();
 				const response = await fetch (process.env.BACKEND_URL + "api/income", {
@@ -95,33 +118,64 @@ const getState = ({ getStore, getActions, setStore }) => {
 						dateTime,
 					})
 				})
-				const income = await response.json()
-				setStore({...store, income})
+				const newIncome = await response.json();
+				setStore({
+					...store,
+					income: { ...store.income, ...newIncome },
+					incomes: [...store.incomes, newIncome]
+				});
+				console.log(store.incomes);
+				getActions().notifyTypeChange(['incomes']);
 			},
-
-			getIncomeCategories: async() => {
-				const response = await fetch (process.env.BACKEND_URL + "api/incomecategories", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
+			
+			setSaved: async (dateTime,ocassionalcategory_id,value) => {
+				const store = getStore();
+				const response = await fetch (process.env.BACKEND_URL + "api/save", {
+					method: "POST",
+					headers: {
+						"Content-Type":"application/json",
+						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					},
+					body: JSON.stringify({
+						value,
+						ocassionalcategory_id,
+						dateTime,
+					})
 				})
-				const incomecategories = await response.json();
-				setStore({...getStore(), incomecategories });
+				const newSaved = await response.json();
+				setStore({
+					...store,
+					save: { ...store.save, ...newSaved },
+					saves: [...store.saves, newSaved]
+				});
+				console.log(store.saves);
+				getActions().notifyTypeChange(['saves']);
 			},
+			
+			setUsage: async (dateTime,ocassionalcategory_id,value) => {
+				const store = getStore();
+				const response = await fetch (process.env.BACKEND_URL + "api/usage", {
+					method: "POST",
+					headers: {
+						"Content-Type":"application/json",
+						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					},
+					body: JSON.stringify({
+						value,
+						ocassionalcategory_id,
+						dateTime,
+					})
+				})
 
-			getIncomes: async() => {
-                const response = await fetch (process.env.BACKEND_URL + "api/income", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-                })
-                const incomes = await response.json();
-                setStore({ ...getStore(), incomes });
-            },
+				const newUsage = await response.json();
+				setStore({
+					...store,
+					usage: { ...store.usage, ...newUsage },
+					usages: [...store.usages, newUsage]
+				});
+				console.log(store.usages);
+				getActions().notifyTypeChange(['usages']);
+			},
 
 			setFixed: async (dateTime,fixedcategory_id,value) => {
 				const store = getStore();
@@ -137,40 +191,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						dateTime,
 					})
 				})
-				const fixes = await response.json()
-				setStore({...store, fixes})
+				const newFixed = await response.json();
+				setStore({
+					...store,
+					fixed: { ...store.fixed, ...newFixed },
+					fixes: [...store.fixes, newFixed]
+				});
+				console.log(store.fixes);
+				getActions().notifyTypeChange(['fixes']);
 			},
-
-			getFixedCategories: async() => {
-				const response = await fetch (process.env.BACKEND_URL + "api/fixedcategories", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-				})
-				const fixedcategories = await response.json();
-				setStore({...getStore(), fixedcategories });
-			},
-
-			getFixes: async() => {
-                const response = await fetch (process.env.BACKEND_URL + "api/fixed", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-                })
-                const fixes = await response.json();
-                setStore({ ...getStore(), fixes });
-            },
-
-			setOcassional: async (dateTime,ocassionalcategory_id,value) => {
+			
+			setOcassional: async (dateTime, ocassionalcategory_id, value) => {
 				const store = getStore();
-				const response = await fetch (process.env.BACKEND_URL + "api/ocassional", {
+				const response = await fetch(process.env.BACKEND_URL + "api/ocassional", {
 					method: "POST",
 					headers: {
-						"Content-Type":"application/json",
+						"Content-Type": "application/json",
 						"Authorization": `Bearer ${localStorage.getItem('token')}`
 					},
 					body: JSON.stringify({
@@ -178,56 +214,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 						ocassionalcategory_id,
 						dateTime,
 					})
-				})
-				const ocassional = await response.json()
-				setStore({...store, ocassional})
+				});
+				const newOcassional = await response.json();
+				setStore({
+					...store,
+					ocassionals: [...store.ocassionals, newOcassional]
+				});
+				console.log(store.ocassionals);
+				getActions().notifyTypeChange(['ocassionals']);
 			},
-
-			getOcassionalCategories: async() => {
-				const response = await fetch (process.env.BACKEND_URL + "api/ocassionalcategories", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-				})
-				const ocassionalcategories = await response.json();
-				setStore({...getStore(), ocassionalcategories });
-			},
-
-			getOcassionals: async() => {
-                const response = await fetch (process.env.BACKEND_URL + "api/ocassional", {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-                })
-                const ocassionals = await response.json();
-                setStore({ ...getStore(), ocassionals });
-            },
-
-			setSaved: async (dateTime,ocassionalcategory_id,value) => {
-				const store = getStore();
-				const response = await fetch (process.env.BACKEND_URL + "api/save", {
-					method: "POST",
-					headers: {
-						"Content-Type":"application/json",
-						"Authorization": `Bearer ${localStorage.getItem('token')}`
-					},
-					body: JSON.stringify({
-						value,
-						ocassionalcategory_id,
-						dateTime,
-					})
-				})
-				const save = await response.json()
-				setStore({...store, save})
-			},
-
-			setOcassionalCategory: async (value) => {
+			
+			setIncomeCategory: async (value) => {
 				try {
-				   const response = await fetch(process.env.BACKEND_URL + "api/ocassionalcategory", {
+				   const response = await fetch(process.env.BACKEND_URL + "api/incomecategory", {
 					  method: "POST",
 					  headers: {
 						 "Content-Type": "application/json",
@@ -238,13 +237,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			 
 				   if (!response.ok) {
 					  const errorText = await response.text();
-					  throw new Error(`Error al agregar la categoría ocasional. Estado: ${response.status}. Detalles: ${errorText}`);
+					  throw new Error(`Error al agregar la categoría ingreso. Estado: ${response.status}. Detalles: ${errorText}`);
 				   }
 			 
 				   const newCategory = await response.json();
 				   return newCategory;
 				} catch (error) {
-				   console.error("Error al agregar la categoría ocasional:", error);
+				   console.error("Error al agregar la categoría ingreso:", error);
 				   throw error;
 				}
 			},
@@ -272,10 +271,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				   throw error;
 				}
 			},
-
-			setIncomeCategory: async (value) => {
+			
+			setOcassionalCategory: async (value) => {
 				try {
-				   const response = await fetch(process.env.BACKEND_URL + "api/incomecategory", {
+				   const response = await fetch(process.env.BACKEND_URL + "api/ocassionalcategory", {
 					  method: "POST",
 					  headers: {
 						 "Content-Type": "application/json",
@@ -286,17 +285,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 			 
 				   if (!response.ok) {
 					  const errorText = await response.text();
-					  throw new Error(`Error al agregar la categoría ingreso. Estado: ${response.status}. Detalles: ${errorText}`);
+					  throw new Error(`Error al agregar la categoría ocasional. Estado: ${response.status}. Detalles: ${errorText}`);
 				   }
 			 
 				   const newCategory = await response.json();
 				   return newCategory;
 				} catch (error) {
-				   console.error("Error al agregar la categoría ingreso:", error);
+				   console.error("Error al agregar la categoría ocasional:", error);
 				   throw error;
 				}
 			},
-			 
+
+			getIncomes: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/income", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                const incomes = await response.json();
+                setStore({ ...getStore(), incomes });
+            },
 
 			getSaves: async() => {
                 const response = await fetch (process.env.BACKEND_URL + "api/save", {
@@ -321,56 +331,234 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const usages = await response.json();
                 setStore({ ...getStore(), usages });
             },
+			
+			getFixes: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/fixed", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                const fixes = await response.json();
+                setStore({ ...getStore(), fixes });
+            },
+			
+			getOcassionals: async() => {
+                const response = await fetch (process.env.BACKEND_URL + "api/ocassional", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                const ocassionals = await response.json();
+                setStore({ ...getStore(), ocassionals });
+            },
 
-
-
-			// setSaveUsage: async (dateTime,ocassionalcategory_id,value) => {
-			// 	const store = getStore();
-			// 	const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {
-			// 		method: "POST",
-			// 		headers: {
-			// 			"Content-Type":"application/json",
-			// 			"Authorization": `Bearer ${localStorage.getItem('token')}`
-			// 		},
-			// 		body: JSON.stringify({
-			// 			value,
-			// 			ocassionalcategory_id,
-			// 			dateTime,
-			// 		})
-			// 	})
-			// 	const saveusage = await response.json()
-			// 	setStore({...store, saveusage})
-			// },
-			setUsage: async (dateTime,ocassionalcategory_id,value) => {
-				const store = getStore();
-				const response = await fetch (process.env.BACKEND_URL + "api/usage", {
-					method: "POST",
-					headers: {
-						"Content-Type":"application/json",
-						"Authorization": `Bearer ${localStorage.getItem('token')}`
-					},
-					body: JSON.stringify({
-						value,
-						ocassionalcategory_id,
-						dateTime,
-					})
+			getIncomeCategories: async() => {
+				const response = await fetch (process.env.BACKEND_URL + "api/incomecategories", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
 				})
-				const usage = await response.json()
-				setStore({...store, usage})
+				const incomecategories = await response.json();
+				setStore({...getStore(), incomecategories });
 			},
 
-			// getSavesUsage: async() => {
-            //     const response = await fetch (process.env.BACKEND_URL + "api/saveusage", {
-            //         method: 'GET',
-            //         headers: {
-            //             "Content-Type":"application/json",
-            //             "Authorization": `Bearer ${localStorage.getItem('token')}`
-            //         },
-            //     })
-            //     const saves_usage = await response.json();
-            //     setStore({ ...getStore(), saves_usage });
-            // },
+			getFixedCategories: async() => {
+				const response = await fetch (process.env.BACKEND_URL + "api/fixedcategories", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+				})
+				const fixedcategories = await response.json();
+				setStore({...getStore(), fixedcategories });
+			},
+			
+			getOcassionalCategories: async() => {
+				const response = await fetch (process.env.BACKEND_URL + "api/ocassionalcategories", {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+				})
+				const ocassionalcategories = await response.json();
+				setStore({...getStore(), ocassionalcategories });
+			},
+			
+			getMovementsByCategory: async (category_id, endpoint) => {
+				try {
+					const response = await fetch( process.env.BACKEND_URL + `api/${endpoint}/${category_id}`, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${localStorage.getItem('token')}`
+						},
+					});
+					if (response.ok) {
+						const movements = await response.json();
+						setStore({ ...getStore(), movements });
+					} else {
+						console.error(`Error getting movements by category. Status: ${response.status}`);
+						return [];
+					}
+				} catch (error) {
+					console.error('Error:', error.message);
+					return [];
+				}
+			},
+						
+			deleteIncomeCategory: async (incomecategory_id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/incomecategory/${incomecategory_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+					});
+					if (response.ok) {
+						console.log(`Category with ID ${incomecategory_id} delete.`);
+					} else {
+						console.error(`Error to delete category with ID ${incomecategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error en la solicitud de eliminación: ${error.message}`);
+				}
+			},
 
+			deleteFixedCategory: async (fixedcategory_id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/fixedcategory/${fixedcategory_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+					});
+					if (response.ok) {
+						console.log(`Category with ID ${fixedcategory_id} delete.`);
+					} else {
+						console.error(`Error to delete category with ID ${fixedcategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error en la solicitud de eliminación: ${error.message}`);
+				}
+			},
+
+			deleteOcassionalCategory: async (ocassionalcategory_id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/ocassionalcategory/${ocassionalcategory_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+					});
+					if (response.ok) {
+						console.log(`Category with ID ${ocassionalcategory_id} delete.`);
+					} else {
+						console.error(`Error to delete category with ID ${ocassionalcategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error en la solicitud de eliminación: ${error.message}`);
+				}
+			},
+			
+			deleteMovement: async (movement_id, endpoint, typeData) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/${endpoint}/${movement_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+					});
+					if (response.ok) {
+						console.log(`Movement with ID ${movement_id} delete.`);
+						getActions().notifyTypeChange([typeData]);
+					} else {
+						console.error(`Error to delete movement with ID ${movement_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error en la solicitud de eliminación: ${error.message}`);
+				}
+			},
+						
+			modifyIncomeCategory: async (incomecategory_id, newCategoryName) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/incomecategory/${incomecategory_id}`, {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+						body: JSON.stringify({
+							name: newCategoryName,
+						}),
+					});
+				
+					if (response.ok) {
+						console.log(`Category with ID ${incomecategory_id} modified.`);
+					} else {
+						console.error(`Error to modify category with ID ${incomecategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error in modification request: ${error.message}`);
+				}
+			},
+
+			modifyFixedCategory: async (fixedcategory_id, newCategoryName) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/fixedcategory/${fixedcategory_id}`, {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+						body: JSON.stringify({
+							name: newCategoryName,
+						}),
+					});
+				
+					if (response.ok) {
+						console.log(`Category with ID ${fixedcategory_id} modified.`);
+					} else {
+						console.error(`Error to modify category with ID ${fixedcategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error in modification request: ${error.message}`);
+				}
+			},
+
+			modifyOcassionalCategory: async (ocassionalcategory_id, newCategoryName) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `api/ocassionalcategory/${ocassionalcategory_id}`, {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${localStorage.getItem('token')}`
+						},
+						body: JSON.stringify({
+							name: newCategoryName,
+						}),
+					});
+				
+					if (response.ok) {
+						console.log(`Category with ID ${ocassionalcategory_id} modified.`);
+					} else {
+						console.error(`Error to modify category with ID ${ocassionalcategory_id}. ${response.status}`);
+					}
+				} catch (error) {
+					console.error(`Error in modification request: ${error.message}`);
+				}
+			},
 
 
 

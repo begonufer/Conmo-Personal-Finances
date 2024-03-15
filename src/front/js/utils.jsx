@@ -1,24 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "./store/appContext";
+import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "./typescolors.jsx";
 
-export const calculatePercentage = (amount, total) => {
-    if (total === 0) {
-        return 0;
-    }
 
-    const result = (amount / total) * 100;
-    
-    if (isNaN(result) || !isFinite(result)) {
-        return 0;
-    }
-
-    return result.toFixed(0);
-};
-
-export const calculateAverage = (monthlyValues) => {
-    return (monthlyValues / 12).toFixed(2); 
-};
-
+//Hook personalizado para la selección del rango de fechas que se va a usar
 export const useMonthSelection = () => {
 
     const { store } = useContext(Context);
@@ -54,13 +39,7 @@ export const useMonthSelection = () => {
     }
 
     return {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
-        currentPreviousMonthIndex,
         previousMonthIndex,
-        currentPreviousMonthName,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -73,127 +52,55 @@ export const useMonthSelection = () => {
     };
 };
 
-export const filterAllDataBeforeMonth = (data, month, year) => {
-    return data.filter(item => {
-        const itemDate = new Date(item.dateTime);
-        const itemMonth = itemDate.getMonth();
-        const itemYear = itemDate.getFullYear();
-        return (itemYear < year || (itemYear === year && itemMonth <= month));
-    });
-};
+export const calculatePercentage = (amount, total) => {
+    if (total === 0) {
+        return 0;
+    }
 
-export const filterAllDataPreviousMonth = (data, month, year) => {
-    return data.filter((item) => {
-        const itemDate = new Date(item.dateTime);
-        const itemMonth = itemDate.getMonth();
-        const itemYear = itemDate.getFullYear();
-        return itemYear < year || (itemYear === year && itemMonth <= month);
-    });
-};
-
-export const filterDataByMonthYear = (data, selectedMonthIndex, selectedYear) => {
-    return data.filter((item) => {
-        const date = new Date(item.dateTime);
-        return date.getMonth() === selectedMonthIndex && date.getFullYear() === selectedYear;
-    });
-};
-
-export const filterDataByYear = (data, selectedYear) => {
-    return data.filter((item) => {
-        const date = new Date(item.dateTime);
-        return date.getFullYear() === selectedYear;
-    });
-};
-
-export const filterAndBuildData = (data, selectedMonthIndex, selectedYear, typeName, category, colors ) => {
-    const filteredData = filterDataByMonthYear(data, selectedMonthIndex, selectedYear);
-    const categoryTotals = buildCategoryColorTotals(filteredData, typeName, category, colors);
-    return categoryTotals;
-}
-
-export const calculateCategoryTotals = (data, categoryKey) => {
-
-    const categoryTotals = {};
-  
-    data.forEach(({ value, [categoryKey]: category }) => {
-      const categoryName = category.name;
-      categoryTotals[categoryName] = (categoryTotals[categoryName] || 0) + value;
-    });
-  
-    return categoryTotals;
-};
-
-export const calculateCategoryDayTotals = (data, categoryData) => {
-    const chartDataMap = new Map();
-  
-    data.forEach((item) => {
-        const itemDay = new Date(item.dateTime).getDate();
-        const existingData = chartDataMap.get(itemDay) || { value: 0, category: 'Sin datos' };
+    const result = (amount / total) * 100;
     
-        chartDataMap.set(itemDay, {
-            day: itemDay,
-            value: existingData.value + item.value,
-            category: item[categoryData].name,
-        });
+    if (isNaN(result) || !isFinite(result)) {
+        return 0;
+    }
+
+    return result.toFixed(0);
+};
+
+export const calculateAverage = (selectedMonthIndex, monthlyValues) => {
+    const monthsSelected = selectedMonthIndex +1;
+    return (monthlyValues / monthsSelected).toFixed(2); 
+};
+
+
+//Filtra los datos del tipo seleccionado del mes anterior al seleccionado
+export const filterAllDataPreviousMonth = ( selectedTypeData, month, year) => {
+    return selectedTypeData.filter((typeMovement) => {
+        const typeMovementDate = new Date(typeMovement.dateTime);
+        const typeMovementMonth = typeMovementDate.getMonth();
+        const typeMovementYear = typeMovementDate.getFullYear();
+        return typeMovementYear < year || (typeMovementYear === year && typeMovementMonth <= month);
     });
-  
-    return chartDataMap;
 };
 
-export const calculateCategoryMonthTotals = (data, categoryData) => {
-    const chartAnualDataMap = new Map();
-
-    data.forEach((item) => {
-        const itemMonth = new Date(item.dateTime).getMonth() + 1;
-        const existingData = chartAnualDataMap.get(itemMonth) || { value: 0, category: 'Sin datos' };
-
-        chartAnualDataMap.set(itemMonth, {
-            month: itemMonth,
-            value: existingData.value + item.value,
-            category: item[categoryData].name,
-        });
+//Filtra los datos del tipo seleccionado del mes y año seleccionado
+export const filterDataByMonthYear = ( selectedTypeData, selectedMonthIndex, selectedYear) => {
+    return selectedTypeData.filter((typeMovement) => {
+        const typeMovementDate = new Date(typeMovement.dateTime);
+        return typeMovementDate.getMonth() === selectedMonthIndex && typeMovementDate.getFullYear() === selectedYear;
     });
-      
-    return chartAnualDataMap;
 };
 
-export const setCategoryDailyData = (data, categoryType, selectedMonthIndex, selectedYear) => {
-    const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
-    const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
-  
-    const filteredData = filterDataByMonthYear(data, selectedMonthIndex, selectedYear);
-    const totalCategoryDaily = calculateCategoryDayTotals(filteredData, categoryType);
-  
-    return daysArray.map((day) => totalCategoryDaily.get(day) || { day, value: 0, category: 'Sin datos' });
+//Filtra los datos del tipo seleccionado del año seleccionado
+export const filterDataByYear = (selectedTypeData, selectedYear) => {
+    return selectedTypeData.filter((typeMovement) => {
+        const typeMovementDate = new Date(typeMovement.dateTime);
+        return typeMovementDate.getFullYear() === selectedYear;
+    });
 };
 
-export const setCategoryMonthlyData = (data, categoryType, selectedYear) => {
-
-    const monthsArray = Array.from({ length: 12 }, (_, index) => index + 1);
-
-    const filteredData = filterDataByYear(data, selectedYear);
-
-    const totalCategoryMonthly = calculateCategoryMonthTotals(filteredData, categoryType);
-
-    return monthsArray.map((month) => totalCategoryMonthly.get(month) || { month, value: 0, category: 'Sin datos' });
-    
-};
-
-
-export const calculateTotals = (data) => {
-    return data.reduce((total, type) => total + type.value, 0);
-}
-
-
-export const loadData = async (actionFunctions) => {
-    const promises = actionFunctions.map((actionFunction) => actionFunction());
-    await Promise.all(promises);
-};
-
+//Construye los colores por categoría dados un grupo de datos, tipo, categoría y colores.
 export const buildCategoryColorTotals = (filteredData, typeName, categoryKey, colors) => {
-
     const categoryColorTotals = {};
-
     filteredData.forEach(({ value, [categoryKey]: category }, index) => {
         const categoryName = category.name;
         categoryColorTotals[categoryName] = {
@@ -202,57 +109,130 @@ export const buildCategoryColorTotals = (filteredData, typeName, categoryKey, co
             typeName: typeName,
         };
     });
-
     return categoryColorTotals;
 };
 
-export const loadDataAndFilter = async (actions, dataFunction, type, selectedMonthIndex, selectedYear, categoryKey, colors) => {
-    try {
-        await loadData([dataFunction]);
-        const totals = filterAndBuildData(store[type], selectedMonthIndex, selectedYear, categoryKey, colors);
-        return totals;
-    } catch (error) {
-        console.error("Error loading and filtering data:", error);
-        return {};
-    }
+//Devuelve los totales por categoría dado un grupo de datos.
+export const calculateCategoryTotals = (filteredData, categoryKey) => {
+    const categoryTotals = {};
+    filteredData.forEach(({ value, [categoryKey]: category }) => {
+      const categoryName = category.name;
+      categoryTotals[categoryName] = (categoryTotals[categoryName] || 0) + value;
+    });
+    return categoryTotals;
 };
 
+//Llama a las actions seleccionadas
+export const loadData = async (actionFunctions) => {
+    const promises = actionFunctions.map((actionFunction) => actionFunction());
+    await Promise.all(promises);
+};
 
-export const filterAndBuildAnualData = (data, selectedYear, typeName, category, colors ) => {
-    const filteredData = filterDataByYear(data, selectedYear);
-    const categoryTotals = buildCategoryColorTotals(filteredData, typeName, category, colors);
-    return categoryTotals;
-}
-
-
-export const calculateTypeDayTotals = (data, typeName) => {
+//Dado un conjunto de datos y su tipo, calcula el total por tipo en un mismo día
+export const calculateTypeDayTotals = (filteredData, typeName) => {
     const chartDataMap = new Map();
-  
-    data.forEach((item) => {
-        const itemDay = new Date(item.dateTime).getDate();
-        const existingData = chartDataMap.get(itemDay) || { value: 0, type: 'Sin datos' };
-    
-        chartDataMap.set(itemDay, {
-            day: itemDay,
-            value: existingData.value + item.value,
+    filteredData.forEach((movement) => {
+        const movementDay = new Date(movement.dateTime).getDate();
+        const existingData = chartDataMap.get(movementDay) || { value: 0, type: 'Sin datos' };
+        chartDataMap.set(movementDay, {
+            day: movementDay,
+            value: existingData.value + movement.value,
             type: typeName,
         });
     });
-  
     return chartDataMap;
 };
 
-export const calculateTypeMonthTotals = (data, typeName) => {
+//Dado un conjunto de datos y su tipo, calcula el total por tipo al mes
+export const calculateTypeMonthTotals = (filteredData, typeName) => {
     const chartAnualDataMap = new Map();
-    data.forEach((item) => {
-        const itemMonth = new Date(item.dateTime).getMonth() + 1;
-        const existingData = chartAnualDataMap.get(itemMonth) || { value: 0, type: 'Sin datos' };
-
-        chartAnualDataMap.set(itemMonth, {
-            month: itemMonth,
-            value: existingData.value + item.value,
+    filteredData.forEach((movement) => {
+        const movementMonth = new Date(movement.dateTime).getMonth() + 1;
+        const existingData = chartAnualDataMap.get(movementMonth) || { value: 0, type: 'Sin datos' };
+        chartAnualDataMap.set(movementMonth, {
+            month: movementMonth,
+            value: existingData.value + movement.value,
             type: typeName,
         });
     });
     return chartAnualDataMap;
+};
+
+//Dado un tipo devuelve su conjunto de colores correspondiente
+export const getTypeColor = (type) => {
+    switch (type) {
+        case 'Ingresos' :
+            return incomeTypeColor;
+        case 'Reservado' :
+            return saveTypeColor;
+        case 'Uso de reservado' :
+            return usageTypeColor;
+        case 'Gastos fijos' :
+            return fixedTypeColor;
+        case 'Gastos ocasionales' :
+            return ocassionalTypeColor;
+        default :
+            return 'rgb(0, 0, 0)';
+    }
+};
+
+
+export const calculateTypeCategoryTotals = (filteredData, typeName, categoryKey, colors) => {
+    const categoryColorTotals = {};
+    filteredData.forEach(({ value, [categoryKey]: category, dateTime }, index) => {
+        const categoryName = category.name;
+        const movementMonth = new Date(dateTime).getMonth() + 1;
+        if (!categoryColorTotals[typeName]) {
+            categoryColorTotals[typeName] = [];
+        }
+        const existingEntryIndex = categoryColorTotals[typeName].findIndex(entry => entry.month === movementMonth && entry.category === categoryName);
+        if (existingEntryIndex !== -1) {
+            categoryColorTotals[typeName][existingEntryIndex].value += value;
+        } else {
+            categoryColorTotals[typeName].push({
+                month: movementMonth,
+                category: categoryName,
+                value,
+                color: colors[index % colors.length],
+            });
+        }
+    });
+    return categoryColorTotals;
+};
+
+export const calculateTypeCategoryDayTotals = (filteredData, typeName, categoryKey, colors) => {
+    const categoryColorTotals = {};
+    filteredData.forEach(({ value, [categoryKey]: category, dateTime }, index) => {
+        const categoryName = category.name;
+        const movementDay = new Date(dateTime).getDate();
+        if (!categoryColorTotals[typeName]) {
+            categoryColorTotals[typeName] = [];
+        }
+        const existingEntryIndex = categoryColorTotals[typeName].findIndex(entry => entry.day === movementDay && entry.category === categoryName);
+        if (existingEntryIndex !== -1) {
+            categoryColorTotals[typeName][existingEntryIndex].value += value;
+        } else {
+            categoryColorTotals[typeName].push({
+                day: movementDay,
+                category: categoryName,
+                value,
+                color: colors[index % colors.length],
+            });
+        }
+    });
+
+    return categoryColorTotals;
+};
+
+export const filterDataByYearToSelectedMonth = (selectedTypeData, selectedMonthIndex, selectedYear) => {
+    return selectedTypeData.filter((typeMovement) => {
+        const typeMovementDate = new Date(typeMovement.dateTime);
+        const movementMonth = typeMovementDate.getMonth();
+        const movementYear = typeMovementDate.getFullYear();
+        if (movementYear === selectedYear && movementMonth <= selectedMonthIndex) {
+            const lastDayOfMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
+            return typeMovementDate.getDate() <= lastDayOfMonth;
+        }
+        return false;
+    });
 };

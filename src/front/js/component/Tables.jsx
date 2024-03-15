@@ -27,18 +27,21 @@ export const Resume = ({ selectedMonth, selectedMonthIndex, selectedYear, previo
     );
 };
 
-export const ResumeAnual = ({ selectedYear }) => {
+export const ResumeAnual = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="col text-center justify-content-center align-items-bottom mx-2 fs-1-2-em">
                 <h2 className="conmo-bg text-white text-center fs-1 fw-semibold shadow rounded-pill p-3 mb-5">{selectedYear}</h2>
                 <AnualIncomeTable 
+                    selectedMonthIndex={selectedMonthIndex}
                     selectedYear={selectedYear}
                 />
                 <AnualSavedTable
+                    selectedMonthIndex={selectedMonthIndex}
                     selectedYear={selectedYear}
                 />
                 <AnualExpenseTable
+                    selectedMonthIndex={selectedMonthIndex}
                     selectedYear={selectedYear}
                 />
             </div>

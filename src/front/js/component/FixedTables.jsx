@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, calculateTotals, filterDataByYear, calculateAverage } from "../utils.jsx";
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, filterDataByYear, filterDataByYearToSelectedMonth, calculateAverage } from "../utils.jsx";
 
 export const MonthlyFixedResume = ({ selectedMonthIndex, selectedYear, previousMonthIndex }) => {
 
@@ -184,7 +184,7 @@ export const MonthlyFixedTable = ({ selectedMonthIndex, selectedYear, previousMo
     );
 };
 
-export const AnualFixedResume = ({ selectedYear }) => {
+export const AnualFixedResume = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -200,9 +200,9 @@ export const AnualFixedResume = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
-        const filteredSaved = filterDataByYear(store.saves, selectedYear);
-        const filteredFixed = filterDataByYear(store.fixes, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredFixed = filterDataByYearToSelectedMonth(store.fixes, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         const saveYearAmount = filteredSaved.reduce((total, save) => total + save.value, 0);
@@ -227,7 +227,7 @@ export const AnualFixedResume = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -242,7 +242,7 @@ export const AnualFixedResume = ({ selectedYear }) => {
                 <div className="col-md col-12">
                     <div className="row text-white fixed-bg rounded-pill fs-4">
                         <div className="col mobile-text p-3 fw-bold">Media</div>
-                        <div className="col mobile-text p-3 fixed-light-bg rounded-right fw-normal">{calculateAverage(totalIncomeAmount)}€</div>
+                        <div className="col mobile-text p-3 fixed-light-bg rounded-right fw-normal">{calculateAverage(selectedMonthIndex, totalIncomeAmount)}€</div>
                     </div>
                 </div>
             </div>
@@ -252,7 +252,7 @@ export const AnualFixedResume = ({ selectedYear }) => {
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col mobile-text">{total}€</div>
                         <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                        <div className="col mobile-text">{calculateAverage(total)}€</div>                          
+                        <div className="col mobile-text">{calculateAverage(selectedMonthIndex, total)}€</div>                          
                     </div>
                 ))}
             </div>
@@ -260,13 +260,13 @@ export const AnualFixedResume = ({ selectedYear }) => {
                 <div className="col mobile-text p-3 fixed-bg rounded-left fw-bold">Libre</div>
                 <div className="col mobile-text p-3 fw-normal">{balanceBeforeFixed}€</div>
                 <div className="col mobile-text p-3 fw-normal">{calculatePercentage(balanceBeforeFixed, totalIncomeAmount)}%</div>
-                <div className="col mobile-text p-3 fw-normal">{calculateAverage(balanceBeforeFixed)}€</div>
+                <div className="col mobile-text p-3 fw-normal">{calculateAverage(selectedMonthIndex, balanceBeforeFixed)}€</div>
             </div>
         </>
     );
 };
 
-export const AnualFixedTable = ({ selectedYear }) => {
+export const AnualFixedTable = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -282,9 +282,9 @@ export const AnualFixedTable = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
-        const filteredSaved = filterDataByYear(store.saves, selectedYear);
-        const filteredFixed = filterDataByYear(store.fixes, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredFixed = filterDataByYearToSelectedMonth(store.fixes, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         const saveYearAmount = filteredSaved.reduce((total, save) => total + save.value, 0);
@@ -303,13 +303,12 @@ export const AnualFixedTable = ({ selectedYear }) => {
         getTableData();
         const unsubscribe = actions.subscribeToType(['incomes','saves','usages','fixes','ocassionals'], () => {
             getTableData();
-        console.log('Type changed.');
         });
     
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -326,7 +325,7 @@ export const AnualFixedTable = ({ selectedYear }) => {
                     <div className="row mobile-text">
                         <div className="col">{totalFixedAmount}€</div>
                         <div className="col">{calculatePercentage(totalFixedAmount, totalIncomeAmount)}%</div>
-                        <div className="col">{calculateAverage(totalFixedAmount)}€</div>
+                        <div className="col">{calculateAverage(selectedMonthIndex, totalFixedAmount)}€</div>
                     </div>
                 </div>
                 <div className="fixed-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -343,7 +342,7 @@ export const AnualFixedTable = ({ selectedYear }) => {
                             <div className="col-3 overflow-hidden text-truncate">{category}</div>
                             <div className="col">{total.toFixed(2)}€</div>
                             <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                            <div className="col">{calculateAverage(total)}€</div>
+                            <div className="col">{calculateAverage(selectedMonthIndex, total)}€</div>
                         </div>
                     </div>
                 ))}
@@ -352,7 +351,7 @@ export const AnualFixedTable = ({ selectedYear }) => {
                         <div className="col-3 mobile-text overflow-hidden text-truncate">LIBRE</div>
                         <div className="col mobile-text">{balanceBeforeFixed}€</div>
                         <div className="col mobile-text">{calculatePercentage(balanceBeforeFixed,totalIncomeAmount)}%</div>
-                        <div className="col mobile-text">{calculateAverage(balanceBeforeFixed)}€</div>
+                        <div className="col mobile-text">{calculateAverage(selectedMonthIndex, balanceBeforeFixed)}€</div>
                     </div>
                 </div>
             </div>

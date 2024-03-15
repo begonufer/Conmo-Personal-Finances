@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, balanceColor, incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { savesColors, fixedColors, ocassionalColors, balanceColor, incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor, incomeColors } from "../typescolors.jsx";
 import { Resume } from "../component/Tables.jsx";
 import { ResumeAnual } from "../component/Tables.jsx";
 import { AddButton } from "../component/AddButton.jsx";
@@ -8,10 +8,10 @@ import { MovementsList } from "../component/MovementsLists.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
 import { Selector } from "../component/DateSelector.jsx";
 import { Header } from "../component/Header.jsx";
-import { useMonthSelection, filterAllDataPreviousMonth } from "../utils.jsx";
+import { useMonthSelection } from "../utils.jsx";
 
 import { MonthlyPie, MonthlyPieTypes, AnualPie, AnualPieTypes } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, MonthlyBarCategories, AnualBarTypes, AnualBarCategories } from "../component/BarCharts.jsx";
 import { MonthlyLineTypes, MonthlyLineBalance, AnualLineTypes, AnualLineBalance } from "../component/LineCharts.jsx";
 
 import {
@@ -42,13 +42,7 @@ export const MyConmo = () => {
     const { store, actions } = useContext(Context);
 
     const {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
         previousMonthIndex,
-        currentPreviousMonthName,
-        currentPreviousMonthIndex,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -127,16 +121,22 @@ export const MyConmo = () => {
                     previousMonth={previousMonth}
                     previousMonthIndex={previousMonthIndex}
                 />
-                <ResumeAnual selectedYear={selectedYear} />
+                <ResumeAnual 
+                    selectedMonthIndex={selectedMonthIndex}
+                    selectedYear={selectedYear} 
+                />
             </div>
-            <MovementsList />
+            <MovementsList 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
             <AddButton />
         </>
     );
 };
 
 const PieCharts = ({selectedMonthIndex, selectedYear}) => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     return(
         <>
             <div className="row justify-content-center align-items-center mx-5">
@@ -222,26 +222,24 @@ const CategoriesCharts = ({ selectedMonthIndex, selectedYear }) => {
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
-                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Categorías</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Tipos</h2>
                 <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyBarTypes
-                        dataFunctions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
+                        selectedTypesGetActions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['saves', 'fixes', 'ocassionals']}
-                        colors={[saveTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        renderDataInOneBar={true}
                     />                    
                 </div>
                 <div className="col-lg col-md-8 col-12 mt-5 text-center">
                     <AnualBarTypes 
-                        dataFunctions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
+                        selectedTypesGetActions={[actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['saves', 'fixes', 'ocassionals']}
-                        colors={[saveTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        renderDataInOneBar={true}
                     />                    
                 </div>
             </div>
@@ -250,30 +248,32 @@ const CategoriesCharts = ({ selectedMonthIndex, selectedYear }) => {
 };
 
 const TypesCharts = ({ selectedMonthIndex, selectedYear }) => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 ">
-                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Tipos</h2>
+                <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Categorías</h2>
                 <div className="col-lg col-md-8 col-12 mt-lg-5 text-center">
-                    <MonthlyBarTypes
-                        dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
+                    <MonthlyBarCategories
+                        selectedTypesGetActions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
-                        colors={[incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Ingresos', 'Reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={false}
+                        categoryKeys={['incomecategory', 'category', 'fixedcategory', 'ocassionalcategory']}
+                        colors={[incomeColors, savesColors, fixedColors, ocassionalColors]}
+                        renderDataInOneBar={false}
                     />                    
                 </div>
                 <div className="col-lg col-md-8 col-12 mt-5 text-center">
-                    <AnualBarTypes 
-                        dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
+                    <AnualBarCategories 
+                        selectedTypesGetActions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
-                        colors={[incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Ingresos', 'Reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={false}
+                        categoryKeys={['incomecategory', 'category', 'fixedcategory', 'ocassionalcategory']}
+                        colors={[incomeColors, savesColors, fixedColors, ocassionalColors]}
+                        renderDataInOneBar={false}
                     />                    
                 </div>
             </div>
@@ -282,14 +282,14 @@ const TypesCharts = ({ selectedMonthIndex, selectedYear }) => {
 };
 
 const LineCharts = ({ selectedMonthIndex, selectedYear }) => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     return (
         <>
             <div className="row justify-content-center pb-lg-5 pb-4 mx-lg-5 mx-3 mt-lg-5 mb-3">
                 <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 mt-5 fs-1 fw-semibold">Evolución</h2>
                 <div className="col-lg-6 col-md-8 col-12 mt-lg-5 text-center">
                     <MonthlyLineTypes
-                        dataFunctions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
+                        selectedTypesGetActions={[actions.getIncomes, actions.getSaves, actions.getFixes, actions.getOcassionals]}
                         types={['incomes', 'saves', 'fixes', 'ocassionals']}
                         colors={[incomeTypeColor, saveTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Ingresos', 'Reservado', 'Gastos fijos', 'Gastos ocasionales']}

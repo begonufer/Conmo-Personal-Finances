@@ -7,8 +7,7 @@ import {
     filterDataByMonthYear,
     loadData,
     filterDataByYear,
-    filterAndBuildData,
-    filterAndBuildAnualData
+    buildCategoryColorTotals
 } from "../utils.jsx";
 import { Pie } from "react-chartjs-2";
 
@@ -16,11 +15,6 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
     const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
     const [typesTotals, setTypesTotals] = useState({});
-    const filterAndBuildTypeData = (data, selectedMonthIndex, selectedYear, typeName, color ) => {
-        const filteredData = filterDataByMonthYear(data, selectedMonthIndex, selectedYear);
-        const typeTotals = buildTypeColorTotals(filteredData, typeName, color);
-        return typeTotals;
-    }
     const buildTypeColorTotals = (filteredData, typeName, color) => {
         const typeColorTotals = {};
         filteredData.forEach((item) => {
@@ -35,7 +29,8 @@ export const MonthlyPieTypes = ({ dataFunctions, types, colors, typeNames, selec
     const loadDataAndFilter = async (actions, dataFunction, type, selectedMonthIndex, selectedYear, typeName, colors) => {
         try {
             await loadData([dataFunction]);
-            const totals = filterAndBuildTypeData(store[type], selectedMonthIndex, selectedYear, typeName, colors);
+            const filteredData = filterDataByMonthYear(store[type], selectedMonthIndex, selectedYear);
+            const totals = buildTypeColorTotals(filteredData, typeName, colors);
             return totals;
         } catch (error) {
             console.error("Error loading and filtering data:", error);
@@ -107,7 +102,8 @@ export const MonthlyPie = ({ dataFunctions, types, categoryKeys, colors, typeNam
     const loadDataAndFilter = async (actions, dataFunction, type, selectedMonthIndex, selectedYear, typeName, categoryKey, colors) => {
         try {
             await loadData([dataFunction]);
-            const totals = filterAndBuildData(store[type], selectedMonthIndex, selectedYear, typeName, categoryKey, colors);
+            const filteredData = filterDataByMonthYear(store[type], selectedMonthIndex, selectedYear);
+            const totals = buildCategoryColorTotals(filteredData, typeName, categoryKey, colors);
             return totals;
         } catch (error) {
             console.error("Error loading and filtering data:", error);
@@ -266,7 +262,8 @@ export const AnualPie = ({ dataFunctions, types, categoryKeys, colors, typeNames
     const loadAnualDataAndFilter = async (actions, dataFunction, type, selectedYear, typeName, categoryKey, colors) => {
         try {
             await loadData([dataFunction]);
-            const totals = filterAndBuildAnualData(store[type], selectedYear, typeName, categoryKey, colors);
+            const filteredData = filterDataByYear(store[type], selectedYear);
+            const totals = buildCategoryColorTotals(filteredData, typeName, categoryKey, colors);
             return totals;
         } catch (error) {
             console.error("Error loading and filtering data:", error);

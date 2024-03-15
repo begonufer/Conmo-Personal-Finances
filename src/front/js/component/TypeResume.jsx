@@ -15,7 +15,7 @@ export const TypeResume = ({ MonthlyTypeResume, selectedMonth, selectedMonthInde
                 <div id="tableCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
                     <div className="carousel-inner">
                         <div className="carousel-item active pe-md-5 pe-0 pb-md-0 pb-4 text-center">
-                            <DynamicComponent
+                            <MonthlyTable
                                 componentName={MonthlyTypeResume}
                                 selectedMonth={selectedMonth}
                                 selectedMonthIndex={selectedMonthIndex}
@@ -24,9 +24,10 @@ export const TypeResume = ({ MonthlyTypeResume, selectedMonth, selectedMonthInde
                             />
                         </div>
                         <div className="carousel-item pe-md-5 pe-0 pb-md-0 pb-4 text-center">
-                            <DynamicComponent
+                            <AnualTable
                                 componentName={AnualTypeResume}
                                 selectedYear={selectedYear}
+                                selectedMonthIndex={selectedMonthIndex}
                             />
                         </div>
                     </div>
@@ -40,7 +41,7 @@ export const TypeResume = ({ MonthlyTypeResume, selectedMonth, selectedMonthInde
     );
 };
 
-const DynamicComponent = ({ componentName, ...props }) => {
+const MonthlyTable = ({ componentName, ...props }) => {
     switch (componentName) {
         case "MonthlyIncomeResume":
             return <MonthlyIncomeResume {...props} />;
@@ -50,7 +51,14 @@ const DynamicComponent = ({ componentName, ...props }) => {
             return <MonthlyFixedResume {...props} />;
         case "MonthlyOcassionalResume":
             return <MonthlyOcassionalResume {...props} />;
+        default:
+            return null;
+    }
+};
 
+
+const AnualTable = ({ componentName, ...props }) => {
+    switch (componentName) {
         case "AnualIncomeResume":
             return <AnualIncomeResume {...props} />;
         case "AnualSavedResume":
@@ -59,7 +67,6 @@ const DynamicComponent = ({ componentName, ...props }) => {
             return <AnualFixedResume {...props} />;
         case "AnualOcassionalResume":
             return <AnualOcassionalResume {...props} />;
-
         default:
             return null;
     }

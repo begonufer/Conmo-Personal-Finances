@@ -1,26 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { usageColors, fixedColors, ocassionalColors, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
 import { MovementsListExpenses } from "../component/MovementsLists.jsx";
 import { AddButton } from "../component/AddButton.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
 import { Selector } from "../component/DateSelector.jsx";
 import { Header } from "../component/Header.jsx";
 import { MonthlyExpenseTable, AnualExpenseTable } from "../component/ExpenseTables.jsx";
-import {
-    useMonthSelection,
-    filterDataByMonthYear,
-    filterAllDataBeforeMonth,
-    loadData,
-    calculateCategoryDayTotals,
-    filterDataByYear,
-    calculateCategoryMonthTotals,
-    setCategoryDailyData,
-    useCategoryDailyAccumulated
-} from '../utils.jsx';
+import { useMonthSelection } from '../utils.jsx';
 
 import { MonthlyPie, MonthlyPieTypes, AnualPie, AnualPieTypes } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, AnualBarTypes, MonthlyBarCategories, AnualBarCategories } from "../component/BarCharts.jsx";
 import { MonthlyLineTypes, AnualLineTypes } from "../component/LineCharts.jsx";
 
 export const Expenses = () => {
@@ -28,13 +18,7 @@ export const Expenses = () => {
     const { store, actions } = useContext(Context);
 
     const {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
         previousMonthIndex,
-        currentPreviousMonthName,
-        currentPreviousMonthIndex,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -93,13 +77,16 @@ export const Expenses = () => {
                 previousMonth={previousMonth}
                 previousMonthIndex={previousMonthIndex}
             />
-            <MovementsListExpenses />
+            <MovementsListExpenses 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
             <AddButton />
         </>
     );
 };
 
-const PieChart = ({peggyConmo, selectedMonth, selectedMonthIndex, selectedYear}) => {
+const PieChart = ({peggyConmo, selectedMonthIndex, selectedYear}) => {
     const { store, actions } = useContext(Context);
     return(
         <>
@@ -189,24 +176,26 @@ const BarChart = ({ selectedMonthIndex, selectedYear }) => {
             <div className="row text-center justify-content-center align-items-bottom py-5 mt-3 px-lg-5 mx-lg-5 mx-3 gap-5">
                 <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-lg-5 bg-body-tertiary fs-1 fw-semibold">Categorías</h2>
                 <div className="col-lg col-md-8 col-12 text-center">
-                    <MonthlyBarTypes
-                        dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                    <MonthlyBarCategories
+                        selectedTypesGetActions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
-                        colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
+                        colors={[usageColors, fixedColors, ocassionalColors]}
+                        renderDataInOneBar={false}
                     />                    
                 </div>
                 <div className="col-lg col-md-8 col-12 text-center">
-                    <AnualBarTypes
-                        dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                    <AnualBarCategories
+                        selectedTypesGetActions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
-                        colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['category', 'fixedcategory', 'ocassionalcategory']}
+                        colors={[usageColors, fixedColors, ocassionalColors]}
+                        renderDataInOneBar={false}
                     />                    
                 </div>
             </div>
@@ -222,7 +211,7 @@ const LineChart = ({ selectedMonthIndex, selectedYear }) => {
                 <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mb-5 bg-body-tertiary fs-1 fw-semibold">Tipos</h2>
                 <div className="col-lg col-md-8 col-12 text-center">
                     <MonthlyLineTypes
-                        dataFunctions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
+                        selectedTypesGetActions={[actions.getUsage, actions.getFixes, actions.getOcassionals]}
                         types={['usages', 'fixes', 'ocassionals']}
                         colors={[usageTypeColor, fixedTypeColor, ocassionalTypeColor]}
                         typeNames={['Uso de reservado', 'Gastos fijos', 'Gastos ocasionales']}
@@ -253,7 +242,10 @@ const ExpensesTables = ({ selectedMonth, selectedMonthIndex, selectedYear }) => 
         </div>
         <div className="row align-items-center justify-content-center m-lg-5 mx-3 px-lg-5 fs-small">
             <h2 className="conmo-bg text-white text-center py-3 shadow rounded-pill p-3 mt-5 fs-1 fw-semibold">{selectedYear}</h2>
-            <AnualExpenseTable selectedYear={selectedYear} />
+            <AnualExpenseTable
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
         </div>
     </>
 );

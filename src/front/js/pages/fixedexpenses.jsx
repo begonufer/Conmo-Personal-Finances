@@ -9,7 +9,7 @@ import { Header } from "../component/Header.jsx";
 import { TypeResume } from "../component/TypeResume.jsx";
 import { useMonthSelection } from '../utils.jsx';
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, AnualBarTypes, MonthlyBarCategories, AnualBarCategories } from "../component/BarCharts.jsx";
 
 export const FixedExpenses = () => {
 
@@ -66,7 +66,10 @@ export const FixedExpenses = () => {
                 selectedYear={selectedYear}
             />
 
-            <MovementsListFixed />
+            <MovementsListFixed 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
 
             <AddButton />
         </>
@@ -116,14 +119,15 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     />
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <MonthlyBarTypes
-                        dataFunctions={[actions.getFixes]}
+                    <MonthlyBarCategories
+                        selectedTypesGetActions={[actions.getFixes]}
                         types={['fixes']}
-                        colors={[fixedTypeColor]}
                         typeNames={['Gastos fijos']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['fixedcategory']}
+                        colors={[fixedColors]}
+                        renderDataInOneBar={true}
                     />
                 </div>
             </div>
@@ -140,13 +144,14 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     /> 
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <AnualBarTypes
-                        dataFunctions={[actions.getFixes]}
+                    <AnualBarCategories
+                        selectedTypesGetActions={[actions.getFixes]}
                         types={['fixes']}
-                        colors={[fixedTypeColor]}
                         typeNames={['Gastos fijos']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['fixedcategory']}
+                        colors={[fixedColors]}
+                        renderDataInOneBar={true}
                     /> 
                 </div>
             </div>

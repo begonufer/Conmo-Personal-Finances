@@ -707,3 +707,11 @@ select option::placeholder {
 .conmo-light-text {
 	color: rgb(7, 128, 139);
 }
+
+
+.sweet-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}

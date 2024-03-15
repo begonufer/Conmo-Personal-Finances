@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, filterDataByYear, calculateAverage } from "../utils.jsx";
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, filterDataByYear, filterDataByYearToSelectedMonth, calculateAverage } from "../utils.jsx";
 
 export const MonthlySavedResume = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
@@ -90,7 +90,7 @@ export const MonthlySavedResume = ({ selectedMonthIndex, selectedYear }) => {
                         <div className="col-md col-2 mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
                         <div className="col-md col-3 mobile-text">{- ((usageCategoryTotals[category]) || 0).toFixed(2)}€</div>
                         <div className="col-md col-2 mobile-text">{calculatePercentage(usageCategoryTotals[category] || 0, total)}%</div>
-                        <div className="col d-none d-md-block">{(total - usageCategoryTotals[category] || 0).toFixed(2)}€</div>
+                        <div className="col d-none d-md-block">{(total - usageCategoryTotals[category] || total).toFixed(2)}€</div>
                     </div>
                 ))}
             </div>
@@ -185,7 +185,7 @@ export const MonthlySavedTable = ({ selectedMonthIndex, selectedYear }) => {
     );
 };
 
-export const AnualSavedResume = ({ selectedYear }) => {
+export const AnualSavedResume = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
 
     const [savedCategoryTotals, setSavedCategoryTotals] = useState({});
@@ -202,9 +202,15 @@ export const AnualSavedResume = ({ selectedYear }) => {
         await actions.getSaves();
         await actions.getUsage();
 
-        const filteredIncome = filterDataByYear(store.incomes,selectedYear);
-        const filteredSaved = filterDataByYear(store.saves,selectedYear);
-        const filteredUsage = filterDataByYear(store.usages,selectedYear);
+        const todayDate = new Date();
+        const currentMonthIndex = todayDate.getMonth();
+        const currentYear = new Date().getFullYear();
+        let previousYear = currentYear;
+        if (currentMonthIndex < 0) {currentMonthIndex = 11; previousYear -= 1;}
+
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredUsage = filterAllDataPreviousMonth(store.usages, selectedMonthIndex, previousYear);
 
         const incomeMonthAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         setTotalIncomeAmount(incomeMonthAmount.toFixed(2));
@@ -226,13 +232,12 @@ export const AnualSavedResume = ({ selectedYear }) => {
         getTableData();
         const unsubscribe = actions.subscribeToType(['saves', 'usages', 'incomes'], () => {
             getTableData();
-            console.log('Type changed.');
         });
 
         return () => {
             unsubscribe();
         };
-    }, [selectedYear]);
+    }, [selectedMonthIndex, selectedYear]);
 
     return (
         <>
@@ -273,11 +278,11 @@ export const AnualSavedResume = ({ selectedYear }) => {
                         <div className="col-md-3 col-2 mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col-md col-3 mobile-text">{total.toFixed(2)}€</div>
                         <div className="col-md col-2 mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                        <div className="col d-none d-md-block">{calculateAverage(total)}€</div>
+                        <div className="col d-none d-md-block">{calculateAverage(selectedMonthIndex, total)}€</div>
                         <div className="col-md col-3 mobile-text">{- ((usageCategoryTotals[category]) || 0).toFixed(2)}€</div>
                         <div className="col-md col-2 mobile-text">{calculatePercentage(usageCategoryTotals[category] || 0, total)}%</div>
-                        <div className="col d-none d-md-block">{calculateAverage((usageCategoryTotals[category]) || 0)}€</div>
-                        <div className="col d-none d-md-block">{(total - usageCategoryTotals[category] || 0).toFixed(2)}€</div>
+                        <div className="col d-none d-md-block">{calculateAverage(selectedMonthIndex, (usageCategoryTotals[category]) || 0)}€</div>
+                        <div className="col d-none d-md-block">{(total - usageCategoryTotals[category] || total).toFixed(2)}€</div>
                     </div>
                 ))}
             </div>
@@ -285,7 +290,7 @@ export const AnualSavedResume = ({ selectedYear }) => {
     );
 };
 
-export const AnualSavedTable = ({ selectedYear }) => {
+export const AnualSavedTable = ({ selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
 
     const [savedCategoryTotals, setSavedCategoryTotals] = useState({});
@@ -302,9 +307,16 @@ export const AnualSavedTable = ({ selectedYear }) => {
         await actions.getSaves();
         await actions.getUsage();
 
-        const filteredIncome = filterDataByYear(store.incomes,selectedYear);
-        const filteredSaved = filterDataByYear(store.saves,selectedYear);
-        const filteredUsage = filterDataByYear(store.usages,selectedYear);
+
+        const todayDate = new Date();
+        const currentMonthIndex = todayDate.getMonth();
+        const currentYear = new Date().getFullYear();
+        let previousYear = currentYear;
+        if (currentMonthIndex < 0) {currentMonthIndex = 11; previousYear -= 1;}
+
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredUsage = filterAllDataPreviousMonth(store.usages, selectedMonthIndex, previousYear);
 
         const incomeMonthAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         setTotalIncomeAmount(incomeMonthAmount.toFixed(2));
@@ -332,7 +344,7 @@ export const AnualSavedTable = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [selectedYear]);
+    }, [selectedMonthIndex, selectedYear]);
 
     return (
         <>
@@ -350,7 +362,7 @@ export const AnualSavedTable = ({ selectedYear }) => {
                         <div className="row mobile-text">
                             <div className="col">{totalSavedAmount}€</div>
                             <div className="col">{calculatePercentage(totalSavedAmount, totalIncomeAmount)}%</div>
-                            <div className="col">{calculateAverage(totalSavedAmount)}€</div>
+                            <div className="col">{calculateAverage(selectedMonthIndex, totalSavedAmount)}€</div>
                         </div>
                     </div>
                     <div className="saves-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -367,7 +379,7 @@ export const AnualSavedTable = ({ selectedYear }) => {
                                 <div className="col-3 overflow-hidden text-truncate">{category}</div>
                                 <div className="col">{total.toFixed(2)}€</div>
                                 <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                                <div className="col">{calculateAverage(total)}€</div>
+                                <div className="col">{calculateAverage(selectedMonthIndex, total)}€</div>
                             </div>
                         </div>
                     ))}
@@ -383,7 +395,7 @@ export const AnualSavedTable = ({ selectedYear }) => {
                     <div className="text-center justify-content-center align-items-center p-3">
                         <div className="row mobile-text">
                             <div className="col">{totalUsageAmount}€</div>
-                            <div className="col">{calculateAverage(totalUsageAmount)}€</div>
+                            <div className="col">{calculateAverage(selectedMonthIndex, totalUsageAmount)}€</div>
                         </div>
                     </div>
                     <div className="usage-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -398,7 +410,7 @@ export const AnualSavedTable = ({ selectedYear }) => {
                             <div className="row mobile-text">
                                 <div className="col-4 overflow-hidden text-truncate">{category}</div>
                                 <div className="col">{total.toFixed(2)}€</div>
-                                <div className="col">{calculateAverage(total)}€</div>
+                                <div className="col">{calculateAverage(selectedMonthIndex, total)}€</div>
                             </div>
                         </div>
                     ))}

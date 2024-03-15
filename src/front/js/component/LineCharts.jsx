@@ -4,9 +4,9 @@ import { optionsLinear, optionsLinearMobile, optionsBalanceLinear, optionsBalanc
 import { incomeColors, usageColors, fixedColors, ocassionalColors, incomeTypeColor, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
 import { Line } from "react-chartjs-2";
 import { Spinner } from "../component/Spinner.jsx";
-import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals } from '../utils.jsx';
+import { filterDataByMonthYear, filterDataByYear, loadData, calculateTypeDayTotals, calculateTypeMonthTotals, getTypeColor } from '../utils.jsx';
 
-export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMonthIndex, selectedYear }) => {
+export const MonthlyLineTypes = ({ selectedTypesGetActions, types, typeNames, selectedMonthIndex, selectedYear }) => {
     const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);        
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -20,64 +20,45 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
         };
     }, []);
     const isMobile = windowWidth <= 768;
-    const getOptions = () => {
+    const getOptionsByWindowSize = () => {
         return isMobile ? optionsLinearMobile : optionsLinear;
     };
 
     const [typeBarData, setTypeBarData] = useState([]);
     const buildBarDataChart = async () => {
-        
         setLoading(true);
-
-        const daysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
-        const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1);
-        const typeDataArray = await Promise.all(dataFunctions.map(async (dataFunction, index) => {
-            await loadData([dataFunction]);
+        const calculateNumberOfDaysInMonth = new Date(selectedYear, selectedMonthIndex + 1, 0).getDate();
+        const arrayOfDays = Array.from({ length: calculateNumberOfDaysInMonth }, (_, index) => index + 1);
+        const typeDataArray = await Promise.all(selectedTypesGetActions.map(async (selectedTypeGetAction, index) => {
+            await loadData([selectedTypeGetAction]);
             const filteredType = filterDataByMonthYear(store[types[index]], selectedMonthIndex, selectedYear);
-            const totalDailyType = calculateTypeDayTotals(filteredType, typeNames[index]);
+            const typeDailyTotals = calculateTypeDayTotals(filteredType, typeNames[index]);
             return {
                 label: typeNames[index],
-                data: daysArray.map((day) => totalDailyType.get(day) || { day, value: 0, type: `Sin datos` }),
+                data: arrayOfDays.map((day) => typeDailyTotals.get(day) || { day, value: 0, type: `Sin datos` }),
                 backgroundColor: getTypeColor(typeNames[index]),
             };
         }));
-        console.log(typeDataArray)
         setTypeBarData(typeDataArray);
-        
         setLoading(false);
     };
     useEffect(() => {
         buildBarDataChart();
         const unsubscribe = actions.subscribeToType(types, () => {
             buildBarDataChart();
-        console.log('Type changed.');
         });
         return () => {
             unsubscribe();
         };
     }, [selectedMonthIndex, selectedYear]);
-    const getTypeColor = (type) => {
-        if (type === 'Ingresos') {
-            return incomeTypeColor;
-        } else if (type === 'Reservado') {
-            return saveTypeColor;
-        } else if (type === 'Uso de reservado') {
-            return usageTypeColor;
-        } else if (type === 'Gastos fijos') {
-            return fixedTypeColor;
-        } else if (type === 'Gastos ocasionales') {
-            return ocassionalTypeColor;
-        }
-        return 'rgb(0, 0, 0)';
-    };
 
-    const daTabarras = {
+    const barsByCategories = {
         labels: typeBarData[0]?.data.map((data) => `${data.day}`) || [],
-        datasets: typeBarData.map((typeData, index) => ({
-            label: typeNames[index],
+        datasets: typeBarData.map((typeData) => ({
+            label: typeData.label,
             data: typeData.data.map((data) => data.value),
-            backgroundColor: [getTypeColor(typeNames[index])],
-            borderColor: [getTypeColor(typeNames[index])],
+            backgroundColor: typeData.backgroundColor,
+            borderColor: typeData.backgroundColor,
             tension: 0.2,
             pointRadius: 1,
         })),
@@ -90,12 +71,12 @@ export const MonthlyLineTypes = ({ dataFunctions, types, typeNames, selectedMont
             ) : (
                 <>
                     {typeBarData.length > 0 ? (
-                        <Line options={getOptions()} data={daTabarras} />
+                        <Line options={getOptionsByWindowSize()} data={barsByCategories} />
                     ) : (
                         <p>No hay datos en este mes.</p>
                     )}
                 </>
-            )};
+            )}
         </>
     );
 };
@@ -202,7 +183,7 @@ export const MonthlyLineBalance = ({ dataFunctions, types, typeNames, selectedMo
                 </>
             )}
         </>
-    );
+    )
 };
 
 export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }) => {
@@ -302,7 +283,7 @@ export const AnualLineTypes = ({ dataFunctions, types, typeNames, selectedYear }
                 </>
             )}
         </>
-    );
+    )
 };
 
 export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear, color }) => {
@@ -419,5 +400,5 @@ export const AnualLineBalance = ({ dataFunctions, types, typeNames, selectedYear
                 </>
             )}
         </>
-    );
+    )
 };

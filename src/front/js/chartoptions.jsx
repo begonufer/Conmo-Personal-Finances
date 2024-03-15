@@ -72,23 +72,13 @@ export const barOptionsMobile = {
 export const allDataBarOptions = {
     plugins: {
         legend: {
-            position: "bottom",
-            margin: 20,
-            display: true,
-            labels: {
-                usePointStyle: true,
-                pointStyle: "circle",
-                font: {
-                    size: 11,
-                },
-                padding: 20,
-            },
-        },
+            display: false,
+        }
     },
     responsive: true,
     scales: {
         x: {
-            stacked: false,
+            stacked: true,
             ticks: {
                 font: {
                     size: 10,
@@ -96,13 +86,14 @@ export const allDataBarOptions = {
             },
         },
         y: {
-            stacked: false,
+            stacked: true,
             display: false,
             grid: {
                 display: false,
             },
         },
     },
+
 };
 
 export const allDataBarOptionsMobile = {
@@ -126,7 +117,7 @@ export const allDataBarOptionsMobile = {
     responsive: true,
     scales: {
         x: {
-            stacked: false,
+            stacked: true,
             ticks: {
                 font: {
                     size: 10,
@@ -136,7 +127,7 @@ export const allDataBarOptionsMobile = {
             },
         },
         y: {
-            stacked: false,
+            stacked: true,
             display: false,
             grid: {
                 display: false,

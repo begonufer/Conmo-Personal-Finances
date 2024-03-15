@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, saveTypeColor, usageTypeColor, fixedTypeColor, ocassionalTypeColor } from "../typescolors.jsx";
+import { savesColors, usageColors, saveTypeColor, usageTypeColor } from "../typescolors.jsx";
 import { MovementsListSaves } from "../component/MovementsLists.jsx";
 import { AddButton } from "../component/AddButton.jsx";
 import { Selector } from "../component/DateSelector.jsx";
@@ -8,18 +8,12 @@ import { Header } from "../component/Header.jsx";
 import { TypeResume } from "../component/TypeResume.jsx";
 import { useMonthSelection } from '../utils.jsx';
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, AnualBarTypes, AnualBarCategories, MonthlyBarCategories } from "../component/BarCharts.jsx";
 import { MonthlyLineBalance, AnualLineBalance } from "../component/LineCharts.jsx";
 
 export const Saves = () => {
 
     const {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
-        previousMonthIndex,
-        currentPreviousMonthName,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -40,7 +34,7 @@ export const Saves = () => {
                         <h3>Estadísticas y tablas sobre tus reservas y el uso que haces de ellas.</h3>
                         <div className="description-text">
                             <ul>
-                                <li>Dinero que se reserva mes a mes en una categoría determinada para poder gastarlo en el momento en el que lo necesites.</li>
+                                <li>Dinero que se reserva mes a mes en una categoría que tu determinas para poder gastarlo en el momento en el que lo necesites.</li>
                                 <li>Ejemplos: Fotografía, ropa, muebles...</li>
                             </ul>
                         </div>
@@ -70,7 +64,10 @@ export const Saves = () => {
                 selectedYear={selectedYear}
             />
 
-            <MovementsListSaves />
+            <MovementsListSaves 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
 
             <AddButton />
         </>
@@ -97,8 +94,8 @@ const TypeTables = ({
     </div>
 );
 
-const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
-    const { store, actions } = useContext(Context);
+const ChartBody = ({ selectedMonthIndex, selectedYear }) => {
+    const { actions } = useContext(Context);
     return(
         <>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
@@ -129,14 +126,15 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center align-items-center my-3">
                     <div className="pb-5 mb-5">
-                        <MonthlyBarTypes
-                            dataFunctions={[actions.getSaves, actions.getUsage]}
+                        <MonthlyBarCategories
+                            selectedTypesGetActions={[actions.getSaves, actions.getUsage]}
                             types={['saves', 'usages']}
-                            colors={[saveTypeColor, usageTypeColor]}
                             typeNames={['Reservado', 'Uso de reservado']}
                             selectedMonthIndex={selectedMonthIndex}
                             selectedYear={selectedYear}
-                            renderAsDataBar={true}
+                            categoryKeys={['category', 'category']}
+                            colors={[savesColors, usageColors]}
+                            renderDataInOneBar={true}
                         />                    
                     </div>
                     <MonthlyLineBalance
@@ -176,13 +174,14 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center align-items-center my-3">
                     <div className="pb-5 mb-5">
-                        <AnualBarTypes
-                            dataFunctions={[actions.getSaves, actions.getUsage]}
+                        <AnualBarCategories
+                            selectedTypesGetActions={[actions.getSaves, actions.getUsage]}
                             types={['saves', 'usages']}
-                            colors={[saveTypeColor, usageTypeColor]}
                             typeNames={['Reservado', 'Uso de reservado']}
                             selectedYear={selectedYear}
-                            renderAsDataBar={true}
+                            categoryKeys={['category', 'category']}
+                            colors={[savesColors, usageColors]}
+                            renderDataInOneBar={true}
                         />
                     </div>
                     <AnualLineBalance

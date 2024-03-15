@@ -1,19 +1,27 @@
 import React , { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { filterAllDataPreviousMonth } from "../utils.jsx";
 
 export const Navbar = () => {
 
     const { store, actions } = useContext(Context);
 
+    const todayDate = new Date();
+    const currentMonthIndex = todayDate.getMonth();
+    const currentYear = new Date().getFullYear();
+    let previousYear = currentYear;
+    if (currentMonthIndex < 0) {currentMonthIndex = 11; previousYear -= 1;}
+
     const [categoryTotals, setCategoryTotals] = useState({});
     const [usageCategoryTotals, setUsageCategoryTotals] = useState({});
+    
     const getCategorySavesBalance = async () => {
         await actions.getSaves();
         await actions.getUsage();
 
-        const filteredSave = store.saves
-        const filteredUsage = store.usages
+        const filteredSave = filterAllDataPreviousMonth(store.saves,currentMonthIndex,previousYear);
+        const filteredUsage = filterAllDataPreviousMonth(store.usages,currentMonthIndex,previousYear);
 
         const totals = {};
         filteredSave.forEach(({ value, category }) => {
@@ -41,13 +49,13 @@ export const Navbar = () => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const incomesAmount = store.incomes.reduce((total, income) => total + income.value, 0);
-        const savesAmount = store.saves.reduce((total, save) => total + save.value, 0);
-        const usageAmount = store.usages.reduce((total, usage) => total + usage.value, 0);
-        const fixesAmount = store.fixes.reduce((total, fixed) => total + fixed.value, 0);
-        const ocassionalsAmount = store.ocassionals.reduce((total, ocassional) => total + ocassional.value, 0);
+        const incomesAmount = filterAllDataPreviousMonth(store.incomes,currentMonthIndex,previousYear).reduce((total, income) => total + income.value, 0);
+        const savesAmount = filterAllDataPreviousMonth(store.saves,currentMonthIndex,previousYear).reduce((total, save) => total + save.value, 0);
+        const usagesAmount = filterAllDataPreviousMonth(store.usages,currentMonthIndex,previousYear).reduce((total, usage) => total + usage.value, 0);
+        const fixesAmount = filterAllDataPreviousMonth(store.fixes,currentMonthIndex,previousYear).reduce((total, fixed) => total + fixed.value, 0);
+        const ocassionalsAmount = filterAllDataPreviousMonth(store.ocassionals,currentMonthIndex,previousYear).reduce((total, ocassional) => total + ocassional.value, 0);
 
-        const balance = savesAmount - usageAmount;
+        const balance = savesAmount - usagesAmount;
         setSavesBalance(balance.toFixed(2));
 
         const generalBalance = incomesAmount - (fixesAmount + savesAmount + ocassionalsAmount);
@@ -142,7 +150,7 @@ export const Navbar = () => {
                                 <div id="collapseBalance" className="conmo-light-bg collapse p-2 text-white" aria-labelledby="categoriesBalance" data-bs-parent="#savedBalance">
                                     {Object.entries(categoryTotals).map(([category, total]) => (
                                         <div key={category} className="row fs-5 px-3 lh-lg">
-                                            <div className="col-8 mobile-text fw-bold">{category}</div>
+                                            <div className="col-8 mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                                             <div className="col-4 mobile-text text-end">{(total - usageCategoryTotals[category] || total).toFixed(2)}€</div>
                                         </div>
                                     ))}

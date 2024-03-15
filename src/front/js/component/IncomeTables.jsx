@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, calculateAverage, filterDataByYear } from "../utils.jsx";
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, calculateAverage, filterDataByYearToSelectedMonth, filterDataByYear } from "../utils.jsx";
 
 export const MonthlyIncomeResume = ({ selectedMonth, selectedMonthIndex, selectedYear, previousMonthIndex }) => {
     
@@ -177,7 +177,7 @@ export const MonthlyIncomeTable = ({ selectedMonthIndex, selectedYear, previousM
     );
 };
 
-export const AnualIncomeResume = ({ selectedYear }) => {
+export const AnualIncomeResume = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -190,7 +190,7 @@ export const AnualIncomeResume = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         setTotalIncomeAmount(incomeYearAmount.toFixed(2));
@@ -208,7 +208,7 @@ export const AnualIncomeResume = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -222,7 +222,7 @@ export const AnualIncomeResume = ({ selectedYear }) => {
                 <div className="col-md col-12">
                     <div className="row fs-4 income-bg rounded-pill">
                         <div className="col mobile-text p-3 fw-bold">Media</div>
-                        <div className="col mobile-text p-3 rounded-right income-light-bg fw-normal">{calculateAverage(totalIncomeAmount)}€</div>
+                        <div className="col mobile-text p-3 rounded-right income-light-bg fw-normal">{calculateAverage(selectedMonthIndex, totalIncomeAmount)}€</div>
                     </div>
                 </div>
             </div>
@@ -232,7 +232,7 @@ export const AnualIncomeResume = ({ selectedYear }) => {
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col mobile-text">{total.toFixed(2)}€</div>
                         <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                        <div className="col mobile-text">{calculateAverage(total)}€</div>                          
+                        <div className="col mobile-text">{calculateAverage(selectedMonthIndex, total)}€</div>                          
                     </div>
                 ))}
             </div>
@@ -240,7 +240,7 @@ export const AnualIncomeResume = ({ selectedYear }) => {
     );
 };
 
-export const AnualIncomeTable = ({ selectedYear }) => {
+export const AnualIncomeTable = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -253,7 +253,7 @@ export const AnualIncomeTable = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         setTotalIncomeAmount(incomeYearAmount.toFixed(2));
@@ -272,7 +272,7 @@ export const AnualIncomeTable = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -287,7 +287,7 @@ export const AnualIncomeTable = ({ selectedYear }) => {
                 <div className="text-center justify-content-center align-items-center p-3">
                     <div className="row">
                         <div className="col">{totalIncomeAmount}€</div>
-                        <div className="col">{calculateAverage(totalIncomeAmount)}€</div>
+                        <div className="col">{calculateAverage(selectedMonthIndex, totalIncomeAmount)}€</div>
                     </div>
                 </div>
                 <div className="income-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -304,7 +304,7 @@ export const AnualIncomeTable = ({ selectedYear }) => {
                             <div className="col-3 overflow-hidden text-truncate">{category}</div>
                             <div className="col">{total.toFixed(2)}€</div>
                             <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                            <div className="col">{calculateAverage(total)}€</div>
+                            <div className="col">{calculateAverage(selectedMonthIndex, total)}€</div>
                         </div>
                     </div>
                 ))}

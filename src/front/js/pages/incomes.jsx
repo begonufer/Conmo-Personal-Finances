@@ -9,17 +9,11 @@ import { Header } from "../component/Header.jsx";
 import { TypeResume } from "../component/TypeResume.jsx";
 import { useMonthSelection } from '../utils.jsx';
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, MonthlyBarCategories, AnualBarTypes, AnualBarCategories } from "../component/BarCharts.jsx";
 
 export const Incomes = () => {
 
     const {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
-        previousMonthIndex,
-        currentPreviousMonthName,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -66,7 +60,10 @@ export const Incomes = () => {
                 selectedYear={selectedYear}
             />
 
-            <MovementsListIncomes />
+            <MovementsListIncomes 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
 
             <AddButton />
         </>
@@ -115,14 +112,15 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     />
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <MonthlyBarTypes
-                        dataFunctions={[actions.getIncomes]}
+                    <MonthlyBarCategories
+                        selectedTypesGetActions={[actions.getIncomes]}
                         types={['incomes']}
-                        colors={[incomeTypeColor]}
                         typeNames={['Ingresos']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['incomecategory']}
+                        colors={[incomeColors]}
+                        renderDataInOneBar={true}
                     />   
                 </div>
             </div>
@@ -139,14 +137,15 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     />
                 </div> 
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <AnualBarTypes
-                        dataFunctions={[actions.getIncomes]}
+                    <AnualBarCategories
+                        selectedTypesGetActions={[actions.getIncomes]}
                         types={['incomes']}
-                        colors={[incomeTypeColor]}
                         typeNames={['Ingresos']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
-                    /> 
+                        categoryKeys={['incomecategory']}
+                        colors={[incomeColors]}
+                        renderDataInOneBar={true}
+                    />
                 </div>
             </div>
         </>

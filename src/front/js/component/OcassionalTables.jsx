@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, calculateTotals, filterDataByYear, calculateAverage } from "../utils.jsx";
+import { calculatePercentage, filterDataByMonthYear, filterAllDataPreviousMonth, calculateCategoryTotals, filterDataByYear, filterDataByYearToSelectedMonth, calculateAverage } from "../utils.jsx";
 
 export const MonthlyOcassionalResume = ({ selectedMonthIndex, selectedYear, previousMonthIndex }) => {
 
@@ -193,7 +193,7 @@ export const MonthlyOcassionalTable = ({ selectedMonthIndex, selectedYear, previ
     );
 };
 
-export const AnualOcassionalResume = ({ selectedYear }) => {
+export const AnualOcassionalResume = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -208,10 +208,10 @@ export const AnualOcassionalResume = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
-        const filteredSaved = filterDataByYear(store.saves, selectedYear);
-        const filteredFixed = filterDataByYear(store.fixes, selectedYear);
-        const filteredOcassional = filterDataByYear(store.ocassionals, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredFixed = filterDataByYearToSelectedMonth(store.fixes, selectedMonthIndex, selectedYear);
+        const filteredOcassional = filterDataByYearToSelectedMonth(store.ocassionals, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         const saveYearAmount = filteredSaved.reduce((total, save) => total + save.value, 0);
@@ -237,7 +237,7 @@ export const AnualOcassionalResume = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -252,7 +252,7 @@ export const AnualOcassionalResume = ({ selectedYear }) => {
                 <div className="col-md col-12">
                     <div className="row text-white ocassional-bg rounded-pill fs-4">
                         <div className="col mobile-text p-3 fw-bold">Media</div>
-                        <div className="col mobile-text p-3 ocassional-light-bg rounded-right fw-normal">{calculateAverage(totalOcassionalAmount)}€</div>
+                        <div className="col mobile-text p-3 ocassional-light-bg rounded-right fw-normal">{calculateAverage(selectedMonthIndex, totalOcassionalAmount)}€</div>
                     </div>
                 </div>
             </div>
@@ -262,7 +262,7 @@ export const AnualOcassionalResume = ({ selectedYear }) => {
                         <div className="col mobile-text fw-bold overflow-hidden text-truncate">{category}</div>
                         <div className="col mobile-text">{total.toFixed(2)}€</div>
                         <div className="col mobile-text">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                        <div className="col mobile-text">{calculateAverage(total)}€</div>                          
+                        <div className="col mobile-text">{calculateAverage(selectedMonthIndex, total)}€</div>                          
                     </div>
                 ))}
             </div>
@@ -270,13 +270,13 @@ export const AnualOcassionalResume = ({ selectedYear }) => {
                 <div className="col mobile-text p-3 overflow-hidden text-truncate ocassional-bg rounded-left fw-bold">Restante</div>
                 <div className="col mobile-text p-3 fw-normal">{totalRestAmount}€</div>
                 <div className="col mobile-text p-3 fw-normal">{calculatePercentage(totalRestAmount, totalIncomeAmount)}%</div>
-                <div className="col mobile-text p-3 fw-normal">{calculateAverage(totalRestAmount)}€</div>
+                <div className="col mobile-text p-3 fw-normal">{calculateAverage(selectedMonthIndex, totalRestAmount)}€</div>
             </div>
         </>
     );
 };
 
-export const AnualOcassionalTable = ({ selectedYear }) => {
+export const AnualOcassionalTable = ({ selectedMonthIndex, selectedYear }) => {
       
     const { store, actions } = useContext(Context);
 
@@ -291,10 +291,10 @@ export const AnualOcassionalTable = ({ selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByYear(store.incomes, selectedYear);
-        const filteredSaved = filterDataByYear(store.saves, selectedYear);
-        const filteredFixed = filterDataByYear(store.fixes, selectedYear);
-        const filteredOcassional = filterDataByYear(store.ocassionals, selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByYearToSelectedMonth(store.saves, selectedMonthIndex, selectedYear);
+        const filteredFixed = filterDataByYearToSelectedMonth(store.fixes, selectedMonthIndex, selectedYear);
+        const filteredOcassional = filterDataByYearToSelectedMonth(store.ocassionals, selectedMonthIndex, selectedYear);
 
         const incomeYearAmount = filteredIncome.reduce((total, income) => total + income.value, 0);
         const saveYearAmount = filteredSaved.reduce((total, save) => total + save.value, 0);
@@ -320,7 +320,7 @@ export const AnualOcassionalTable = ({ selectedYear }) => {
         return () => {
             unsubscribe();
         };
-    }, [ selectedYear ]);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     return (
         <>
@@ -337,7 +337,7 @@ export const AnualOcassionalTable = ({ selectedYear }) => {
                     <div className="row mobile-text">
                         <div className="col">{totalOcassionalAmount}€</div>
                         <div className="col">{calculatePercentage(totalOcassionalAmount,totalIncomeAmount)}%</div>
-                        <div className="col">{calculateAverage(totalOcassionalAmount)}€</div>
+                        <div className="col">{calculateAverage(selectedMonthIndex, totalOcassionalAmount)}€</div>
                     </div>
                 </div>
                 <div className="ocassional-bg text-center justify-content-center align-items-center p-lg-3 p-2 rounded-pill">
@@ -354,7 +354,7 @@ export const AnualOcassionalTable = ({ selectedYear }) => {
                             <div className="col-3 overflow-hidden text-truncate">{category}</div>
                             <div className="col">{total.toFixed(2)}€</div>
                             <div className="col">{calculatePercentage(total, totalIncomeAmount)}%</div>
-                            <div className="col">{calculateAverage(total)}€</div>
+                            <div className="col">{calculateAverage(selectedMonthIndex, total)}€</div>
                         </div>
                     </div>
                 ))}
@@ -363,7 +363,7 @@ export const AnualOcassionalTable = ({ selectedYear }) => {
                         <div className="col-3 mobile-text overflow-hidden text-truncate">RESTANTE</div>
                         <div className="col mobile-text">{totalRestAmount}€</div>
                         <div className="col mobile-text">{calculatePercentage(totalRestAmount, totalIncomeAmount)}%</div>
-                        <div className="col mobile-text">{calculateAverage(totalRestAmount)}€</div>
+                        <div className="col mobile-text">{calculateAverage(selectedMonthIndex, totalRestAmount)}€</div>
                     </div>
                 </div>
             </div>

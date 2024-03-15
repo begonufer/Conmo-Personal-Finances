@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Spinner } from "../component/Spinner.jsx";
+import { filterDataByMonthYear } from "../utils.jsx";
 
-export const MovementsList = () => {
+
+export const MovementsList = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -17,12 +19,18 @@ export const MovementsList = () => {
         await actions.getUsage();
         await actions.getFixes();
         await actions.getOcassionals();
-  
-        const incomesData = store.incomes.map((income) => ({ ...income, type: 'Ingreso', balance: income.value, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
-        const savesData = store.saves.map((save) => ({ ...save, type: 'Reservado', balance: -save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
-        const usageData = store.usages.map((usage) => ({ ...usage, type: 'Uso reservado', balance: usage.balance ?? 0, dateTime: new Date(usage.dateTime), category: usage.category.name }));
-        const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', balance: -fixed.value, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
-        const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', balance: -ocassional.value, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
+
+        const filteredIncome = filterDataByMonthYear(store.incomes, selectedMonthIndex, selectedYear);
+        const filteredSaved = filterDataByMonthYear(store.saves, selectedMonthIndex, selectedYear);
+        const filteredUsage = filterDataByMonthYear(store.usages, selectedMonthIndex, selectedYear);
+        const filteredFixed = filterDataByMonthYear(store.fixes, selectedMonthIndex, selectedYear);
+        const filteredOcassional = filterDataByMonthYear(store.ocassionals, selectedMonthIndex, selectedYear);
+
+        const incomesData = filteredIncome.map((income) => ({ ...income, type: 'Ingreso', balance: income.value, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
+        const savesData = filteredSaved.map((save) => ({ ...save, type: 'Reservado', balance: -save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
+        const usageData = filteredUsage.map((usage) => ({ ...usage, type: 'Uso reservado', balance: usage.balance ?? 0, dateTime: new Date(usage.dateTime), category: usage.category.name }));
+        const fixesData = filteredFixed.map((fixed) => ({ ...fixed, type: 'Gasto fijo', balance: -fixed.value, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
+        const ocassionalData = filteredOcassional.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', balance: -ocassional.value, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
 
         const allData = [...incomesData, ...savesData, ...usageData, ...fixesData, ...ocassionalData];
 
@@ -50,7 +58,7 @@ export const MovementsList = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedMonthIndex, selectedYear]);
 
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
@@ -200,7 +208,7 @@ export const MovementsList = () => {
     )
 }
 
-export const MovementsListIncomes = () => {
+export const MovementsListIncomes = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
     const [loading, setLoading] = useState(false);
@@ -223,8 +231,10 @@ export const MovementsListIncomes = () => {
     async function transformData() {
         setLoading(true);
         await actions.getIncomes();
+
+        const filteredIncome = filterDataByMonthYear(store.incomes, selectedMonthIndex, selectedYear);
   
-        const incomesData = store.incomes.map((income) => ({ ...income, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
+        const incomesData = filteredIncome.map((income) => ({ ...income, dateTime: new Date(income.dateTime), category: income.incomecategory.name }));
   
         const sortedData = incomesData.sort((a, b) => a.dateTime - b.dateTime);
 
@@ -243,7 +253,7 @@ export const MovementsListIncomes = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedMonthIndex, selectedYear]);
 
     const deleteMovement = async (movementId) => {
         await actions.deleteMovement(movementId, 'income', 'incomes');
@@ -309,7 +319,7 @@ export const MovementsListIncomes = () => {
     )
 }
 
-export const MovementsListSaves = () => {
+export const MovementsListSaves = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -322,11 +332,15 @@ export const MovementsListSaves = () => {
         setLoading(true);
         await actions.getUsage();
         await actions.getSaves();
+
+        const filteredUsage = filterDataByMonthYear(store.usages, selectedMonthIndex, selectedYear);
+
+        const filteredSaved = filterDataByMonthYear(store.saves, selectedMonthIndex, selectedYear);
   
-        const usageData = store.usages.map((usage) => ({ ...usage, type: 'Uso de reservado', balance: -usage.value, dateTime: new Date(usage.dateTime), category: usage.category.name }));
+        const usageData = filteredUsage.map((usage) => ({ ...usage, type: 'Uso de reservado', balance: -usage.value, dateTime: new Date(usage.dateTime), category: usage.category.name }));
         setUsage(usageData);
   
-        const savesData = store.saves.map((save) => ({ ...save, type: 'Reservado', balance: save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
+        const savesData = filteredSaved.map((save) => ({ ...save, type: 'Reservado', balance: save.value, dateTime: new Date(save.dateTime), category: save.category.name }));
         setSaves(savesData);
 
         const allData = [...usageData, ...savesData];
@@ -354,7 +368,7 @@ export const MovementsListSaves = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedMonthIndex, selectedYear]);
 
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
@@ -480,7 +494,7 @@ export const MovementsListSaves = () => {
     )
 }
 
-export const MovementsListExpenses = () => {
+export const MovementsListExpenses = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -493,11 +507,17 @@ export const MovementsListExpenses = () => {
         await actions.getFixes();
         await actions.getOcassionals();
   
-        const usageData = store.usages.map((usage) => ({ ...usage, type: 'Uso de reservado', dateTime: new Date(usage.dateTime), category: usage.category.name }));
+        const filteredUsage = filterDataByMonthYear(store.usages, selectedMonthIndex, selectedYear);
 
-        const fixesData = store.fixes.map((fixed) => ({ ...fixed, type: 'Gasto fijo', dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
+        const filteredFixed = filterDataByMonthYear(store.fixes, selectedMonthIndex, selectedYear);
+
+        const filteredOcassional = filterDataByMonthYear(store.ocassionals, selectedMonthIndex, selectedYear);
+
+        const usageData = filteredUsage.map((usage) => ({ ...usage, type: 'Uso de reservado', dateTime: new Date(usage.dateTime), category: usage.category.name }));
+
+        const fixesData = filteredFixed.map((fixed) => ({ ...fixed, type: 'Gasto fijo', dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
   
-        const ocassionalData = store.ocassionals.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
+        const ocassionalData = filteredOcassional.map((ocassional) => ({ ...ocassional, type: 'Gasto ocasional', dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
 
         const allData = [...usageData, ...fixesData, ...ocassionalData];
 
@@ -516,7 +536,7 @@ export const MovementsListExpenses = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedMonthIndex, selectedYear]);
 
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767); 
 
@@ -648,7 +668,7 @@ export const MovementsListExpenses = () => {
     );
 }
 
-export const MovementsListFixed = () => {
+export const MovementsListFixed = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -673,7 +693,9 @@ export const MovementsListFixed = () => {
         setLoading(true);
         await actions.getFixes();
 
-        const fixesData = store.fixes.map((fixed) => ({ ...fixed, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
+        const filteredFixed = filterDataByMonthYear(store.fixes, selectedMonthIndex, selectedYear);
+
+        const fixesData = filteredFixed.map((fixed) => ({ ...fixed, dateTime: new Date(fixed.dateTime), category: fixed.fixedcategory.name }));
 
         const sortedData = fixesData.sort((a, b) => b.dateTime - a.dateTime);
 
@@ -690,7 +712,7 @@ export const MovementsListFixed = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [selectedMonthIndex, selectedYear]);
 
     const deleteMovement = async (movementId) => {
         await actions.deleteMovement(movementId, 'fixed', 'fixes');
@@ -756,7 +778,7 @@ export const MovementsListFixed = () => {
     )
 }
 
-export const MovementsListOcassional = () => {
+export const MovementsListOcassional = ({ selectedMonthIndex, selectedYear }) => {
 
     const { store, actions } = useContext(Context);
 
@@ -774,7 +796,7 @@ export const MovementsListOcassional = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     const [ocassionals, setOcassionals] = useState([]);
 
@@ -782,7 +804,9 @@ export const MovementsListOcassional = () => {
         setLoading(true);
         await actions.getOcassionals();
 
-        const ocassionalsData = store.ocassionals.map((ocassional) => ({ ...ocassional, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
+        const filteredOcassional = filterDataByMonthYear(store.ocassionals, selectedMonthIndex, selectedYear);
+
+        const ocassionalsData = filteredOcassional.map((ocassional) => ({ ...ocassional, dateTime: new Date(ocassional.dateTime), category: ocassional.ocassionalcategory.name }));
 
         const sortedData = ocassionalsData.sort((a, b) => b.dateTime - a.dateTime);
 
@@ -800,7 +824,7 @@ export const MovementsListOcassional = () => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [ selectedMonthIndex, selectedYear ]);
 
     const deleteMovement = async (movementId) => {
         await actions.deleteMovement(movementId, 'ocassional', 'ocassionals');

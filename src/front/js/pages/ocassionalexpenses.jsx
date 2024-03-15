@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Context } from "../store/appContext.js";
-import { incomeColors, savesColors, usageColors, fixedColors, ocassionalColors, ocassionalTypeColor } from "../typescolors.jsx";
+import { ocassionalColors, ocassionalTypeColor } from "../typescolors.jsx";
 import { MovementsListOcassional } from "../component/MovementsLists.jsx";
 import { AddButton } from "../component/AddButton.jsx";
 import peggyConmo from "../../img/peggy-conmo.png";
@@ -8,18 +8,12 @@ import { Selector } from "../component/DateSelector.jsx";
 import { Header } from "../component/Header.jsx";
 import { TypeResume } from "../component/TypeResume.jsx";
 import { MonthlyPie, AnualPie } from "../component/PieCharts.jsx";
-import { MonthlyBarTypes, AnualBarTypes } from "../component/BarCharts.jsx";
+import { MonthlyBarTypes, AnualBarTypes, MonthlyBarCategories, AnualBarCategories } from "../component/BarCharts.jsx";
 
 import { useMonthSelection } from '../utils.jsx';
 
 export const OcassionalExpenses = () => {
     const {
-        todayDate,
-        currentMonthIndex,
-        nameCurrentMonth,
-        calculatePreviousMonthIndex,
-        previousMonthIndex,
-        currentPreviousMonthName,
         currentYear,
         previousMonth,
         selectedMonth,
@@ -67,7 +61,10 @@ export const OcassionalExpenses = () => {
                 selectedMonthIndex={selectedMonthIndex}
                 selectedYear={selectedYear}
             />
-            <MovementsListOcassional />
+            <MovementsListOcassional 
+                selectedMonthIndex={selectedMonthIndex}
+                selectedYear={selectedYear}
+            />
             <AddButton />
         </>
     );
@@ -97,8 +94,8 @@ const MainContent = ({
         </div>
 );
 
-const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
-    const { store, actions } = useContext(Context);
+const ChartBody = ({ selectedMonthIndex, selectedYear }) => {
+    const { actions } = useContext(Context);
     return (
         <>
             <div className="row justify-content-center pb-md-5 pb-4 mx-md-5 mx-3">
@@ -115,14 +112,15 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     />
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <MonthlyBarTypes
-                        dataFunctions={[actions.getOcassionals]}
+                    <MonthlyBarCategories
+                        selectedTypesGetActions={[actions.getOcassionals]}
                         types={['ocassionals']}
-                        colors={[ocassionalTypeColor]}
                         typeNames={['Gastos ocasionales']}
                         selectedMonthIndex={selectedMonthIndex}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['ocassionalcategory']}
+                        colors={[ocassionalColors]}
+                        renderDataInOneBar={true}
                     />
                 </div>
             </div>
@@ -139,13 +137,14 @@ const ChartBody = ({ selectedMonth, selectedMonthIndex, selectedYear }) => {
                     /> 
                 </div>
                 <div className="col-md-7 ms-md-5 align-self-center my-3">
-                    <AnualBarTypes
-                        dataFunctions={[actions.getOcassionals]}
+                    <AnualBarCategories
+                        selectedTypesGetActions={[actions.getOcassionals]}
                         types={['ocassionals']}
-                        colors={[ocassionalTypeColor]}
                         typeNames={['Gastos ocasionales']}
                         selectedYear={selectedYear}
-                        renderAsDataBar={true}
+                        categoryKeys={['ocassionalcategory']}
+                        colors={[ocassionalColors]}
+                        renderDataInOneBar={true}
                     />
                 </div>
             </div>

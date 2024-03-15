@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { calculatePercentage, filterDataByMonthYear, calculateAverage } from "../utils.jsx";
+import { calculatePercentage, filterDataByMonthYear, filterDataByYearToSelectedMonth, calculateAverage } from "../utils.jsx";
 import { AnualFixedTable, MonthlyFixedTable } from "../component/FixedTables.jsx";
 import { AnualOcassionalTable, MonthlyOcassionalTable } from "../component/OcassionalTables.jsx";
 
@@ -83,9 +83,9 @@ export const AnualExpenseTable = ({ selectedMonthIndex, selectedYear }) => {
         await actions.getFixes();
         await actions.getOcassionals();
 
-        const filteredIncome = filterDataByMonthYear(store.incomes,selectedMonthIndex,selectedYear);
-        const filteredFixed = filterDataByMonthYear(store.fixes,selectedMonthIndex,selectedYear);
-        const filteredOcassional = filterDataByMonthYear(store.ocassionals,selectedMonthIndex,selectedYear);
+        const filteredIncome = filterDataByYearToSelectedMonth(store.incomes, selectedMonthIndex,selectedYear);
+        const filteredFixed = filterDataByYearToSelectedMonth(store.fixes, selectedMonthIndex, selectedYear);
+        const filteredOcassional = filterDataByYearToSelectedMonth(store.ocassionals, selectedMonthIndex,selectedYear);
 
         const incomeMonthAmount = filteredIncome.reduce( (total, income) => total + income.value, 0 );
         setTotalIncomeAmount(incomeMonthAmount.toFixed(2));
@@ -122,15 +122,17 @@ export const AnualExpenseTable = ({ selectedMonthIndex, selectedYear }) => {
                     <div className="row mobile-text">
                         <div className="col text-center">{totalExpenses}€</div>
                         <div className="col text-center">{calculatePercentage(totalExpenses, totalIncomeAmount)}%</div>
-                        <div className="col text-center">{calculateAverage(totalExpenses)}€</div>
+                        <div className="col text-center">{calculateAverage(selectedMonthIndex, totalExpenses)}€</div>
                     </div>
                 </div>
                 <div>
                     <div className="d-md-flex pb-2 rounded-1">
                         <AnualFixedTable
+                            selectedMonthIndex={selectedMonthIndex}
                             selectedYear={selectedYear}
                         />
                         <AnualOcassionalTable
+                            selectedMonthIndex={selectedMonthIndex}
                             selectedYear={selectedYear}
                         />
                     </div>

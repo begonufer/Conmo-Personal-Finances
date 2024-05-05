@@ -235,13 +235,7 @@ export const MonthlyBarCategories = ({ selectedTypesGetActions, types, typeNames
             window.removeEventListener("resize", handleResize);
         };
     }, []);
-    const isMobile = windowWidth <= 768;
-    const customizeLabels = (labels) => {
-        if (isMobile) {
-            return labels.map((label) => label.substring(0, 2));
-        }
-        return labels;
-    };  
+    const isMobile = windowWidth <= 768;  
     const getOptionsByDataAndWindowSize = () => {
         if (renderDataInOneBar) {
             return isMobile ? barOptionsMobile : barOptions;
@@ -253,7 +247,7 @@ export const MonthlyBarCategories = ({ selectedTypesGetActions, types, typeNames
     const arrayOfDays = Array.from({ length: calculateNumberOfDaysInMonth }, (_, index) => index + 1);
   
     const dataBarByCategories = {
-        labels: customizeLabels(arrayOfDays),
+        labels: arrayOfDays,
         datasets: typeBarData.flatMap((type) => {
             return Object.entries(type).flatMap(([typeName, typeData]) => {
                 return typeData.map((categoryData) => ({

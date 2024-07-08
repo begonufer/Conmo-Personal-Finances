@@ -26,16 +26,25 @@ export const AddMovement = ({ type, actionSet, typeName, storedData, actionCateg
 
     const [value, setValue] = useState("");
     const [category_id, setCategory_id] = useState("");
+    const [category_name, setCategory_name] = useState(""); 
     const [dateTime, setDateTime] = useState("");
 
     const updateValue = (valueInputValue) => { setValue(valueInputValue); };
-    const updateCategory = (categoryInputValue) => { setCategory_id(categoryInputValue); };
+
+    const updateCategory = (categoryInputValue) => {
+        setCategory_id(categoryInputValue);
+        const selectedCategory = storedData.find(category => category.id === parseInt(categoryInputValue));
+        if (selectedCategory) {
+            setCategory_name(selectedCategory.name);
+        }
+    };
     const updateDateTime = (dateTimeInputValue) => { setDateTime(dateTimeInputValue); };
 
     const addMovement = async () => {
-        await actionSet(dateTime, category_id, value);
+        await actionSet(dateTime, category_id, category_name, value);
         setValue("");
         setCategory_id("");
+        setCategory_name("");
         setDateTime("");
     };
 

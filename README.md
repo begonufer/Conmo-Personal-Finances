@@ -14,8 +14,8 @@ Welcome to the Conmo web application project! This application allows you to man
 If you prefer to explore the application without the need to register, you can use the following demo user credentials in 
 https://sample-service-name-ivq4.onrender.com/ :
 
-- User: demo@demo.com
-- Password: demo1234
+- User: testuser
+- Password: testuser
 
 These credentials will allow you to access the application and experiment with its functionalities without the need to create a personal account.
 

@@ -104,20 +104,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-			setIncome: async (dateTime,incomecategory_id,value) => {
+			setIncome: async (dateTime, incomecategory_id, incomecategory_name, value) => {
 				const store = getStore();
-				const response = await fetch (process.env.BACKEND_URL + "api/income", {
+				const response = await fetch(process.env.BACKEND_URL + "api/income", {
 					method: "POST",
 					headers: {
-						"Content-Type":"application/json",
+						"Content-Type": "application/json",
 						"Authorization": `Bearer ${localStorage.getItem('token')}`
 					},
 					body: JSON.stringify({
 						value,
 						incomecategory_id,
-						dateTime,
+						incomecategory_name, 
+						dateTime
 					})
-				})
+				});
 				const newIncome = await response.json();
 				setStore({
 					...store,
@@ -128,7 +129,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().notifyTypeChange(['incomes']);
 			},
 			
-			setSaved: async (dateTime,ocassionalcategory_id,value) => {
+			setSaved: async (dateTime, ocassionalcategory_id, ocassionalcategory_name, value) => {
 				const store = getStore();
 				const response = await fetch (process.env.BACKEND_URL + "api/save", {
 					method: "POST",
@@ -139,7 +140,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({
 						value,
 						ocassionalcategory_id,
-						dateTime,
+						ocassionalcategory_name,
+						dateTime
 					})
 				})
 				const newSaved = await response.json();
@@ -152,7 +154,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().notifyTypeChange(['saves']);
 			},
 			
-			setUsage: async (dateTime,ocassionalcategory_id,value) => {
+			setUsage: async (dateTime, ocassionalcategory_id, ocassionalcategory_name, value) => {
 				const store = getStore();
 				const response = await fetch (process.env.BACKEND_URL + "api/usage", {
 					method: "POST",
@@ -163,7 +165,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({
 						value,
 						ocassionalcategory_id,
-						dateTime,
+						ocassionalcategory_name,
+						dateTime
 					})
 				})
 
@@ -177,7 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().notifyTypeChange(['usages']);
 			},
 
-			setFixed: async (dateTime,fixedcategory_id,value) => {
+			setFixed: async (dateTime,fixedcategory_id,fixedcategory_name,value) => {
 				const store = getStore();
 				const response = await fetch (process.env.BACKEND_URL + "api/fixed", {
 					method: "POST",
@@ -188,6 +191,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({
 						value,
 						fixedcategory_id,
+						fixedcategory_name,
 						dateTime,
 					})
 				})
@@ -201,7 +205,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().notifyTypeChange(['fixes']);
 			},
 			
-			setOcassional: async (dateTime, ocassionalcategory_id, value) => {
+			setOcassional: async (dateTime, ocassionalcategory_id, ocassionalcategory_name, value) => {
 				const store = getStore();
 				const response = await fetch(process.env.BACKEND_URL + "api/ocassional", {
 					method: "POST",
@@ -212,6 +216,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({
 						value,
 						ocassionalcategory_id,
+						ocassionalcategory_name,
 						dateTime,
 					})
 				});
